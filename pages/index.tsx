@@ -1,14 +1,15 @@
+import { AppShell } from "@mantine/core";
 import type { NextPage } from "next";
-import Head from "next/head";
+import { Navbar } from "$organisms";
+import { useState } from "react";
 
 const Index: NextPage = () => {
+  let [hidden, setHidden] = useState(true);
+
   return (
-    <>
-      <Head>
-        <title>Index</title>
-      </Head>
-      <h1>Index</h1>
-    </>
+    <AppShell padding="xl" navbar={<Navbar hidden={hidden} />}>
+      Schedule go here
+    </AppShell>
   );
 };
 
