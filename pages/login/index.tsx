@@ -12,12 +12,19 @@ import {
   Stack,
   Center,
 } from "@mantine/core";
-import { GoogleSvg } from "$svg";
+import { GoogleSvg, GithubSvg } from "$svg";
 import type { NextPage } from "next";
 import Link from "next/link";
+import { useState } from "react";
+import wait from "wait";
 
-const AuthenticationForm: NextPage = (props: PaperProps) => {
-  const form = useForm({
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
+const Login: NextPage = (props: PaperProps) => {
+  const form = useForm<LoginForm>({
     initialValues: {
       email: "",
       password: "",
@@ -28,6 +35,14 @@ const AuthenticationForm: NextPage = (props: PaperProps) => {
     },
   });
 
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (values: LoginForm) => {
+    setLoading(true);
+    await wait(3000);
+    setLoading(false);
+  };
+
   return (
     <Center sx={{ width: "100vw", height: "100vh" }}>
       <Paper p={48} shadow="xl">
@@ -37,11 +52,19 @@ const AuthenticationForm: NextPage = (props: PaperProps) => {
         <Group my="md" position="center">
           <Button
             leftIcon={<GoogleSvg width={20} height={20} />}
-            variant="subtle"
+            variant="light"
             radius="xl"
-            color="gray"
+            size="xs"
           >
             Google
+          </Button>
+          <Button
+            leftIcon={<GithubSvg width={20} height={20} />}
+            variant="light"
+            radius="xl"
+            size="xs"
+          >
+            Github
           </Button>
         </Group>
         <Divider
@@ -49,19 +72,21 @@ const AuthenticationForm: NextPage = (props: PaperProps) => {
           labelPosition="center"
           my="lg"
         />
-        <form onSubmit={form.onSubmit(() => {})} noValidate>
+        <form onSubmit={form.onSubmit(onSubmit)} noValidate>
           <Stack>
             <TextInput
               required
               label="Correo"
               placeholder="correo@gmail.com"
               {...form.getInputProps("email")}
+              disabled={loading}
             />
 
             <PasswordInput
               required
               label="Contraseña"
               {...form.getInputProps("password")}
+              disabled={loading}
             />
           </Stack>
 
@@ -74,7 +99,9 @@ const AuthenticationForm: NextPage = (props: PaperProps) => {
                 </Anchor>
               </Link>
             </Group>
-            <Button type="submit">Iniciar</Button>
+            <Button type="submit" loading={loading}>
+              Iniciar
+            </Button>
           </Group>
         </form>
       </Paper>
@@ -82,4 +109,4 @@ const AuthenticationForm: NextPage = (props: PaperProps) => {
   );
 };
 
-export default AuthenticationForm;
+export default Login;
