@@ -1,21 +1,19 @@
 import React from "react";
-import { Group, Navbar as MantineNavbar, Text, ThemeIcon } from "@mantine/core";
-import { CalendarClear } from "react-ionicons";
+import { Container, Group, Navbar as MantineNavbar } from "@mantine/core";
 
 const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
   return (
     <MantineNavbar
-      px="xl"
-      py="xl"
+      p="xl"
       width={{ md: 250 }}
       hiddenBreakpoint="md"
       hidden={hidden}
     >
       <MantineNavbar.Section grow>
-        {/* scrollable content here */}
+        {/* buttons content here */}
       </MantineNavbar.Section>
 
-      <MantineNavbar.Section>{/* Footer with user */}</MantineNavbar.Section>
+      <MantineNavbar.Section>{/* user content here */}</MantineNavbar.Section>
     </MantineNavbar>
   );
 };
