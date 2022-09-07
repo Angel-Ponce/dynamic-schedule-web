@@ -11,7 +11,6 @@ import {
   Anchor,
   Stack,
   Center,
-  ActionIcon,
 } from "@mantine/core";
 import { GoogleSvg } from "$svg";
 import type { NextPage } from "next";
@@ -30,15 +29,20 @@ const AuthenticationForm: NextPage = (props: PaperProps) => {
   });
 
   return (
-    <Center style={{ width: "100vw", height: "100vh" }}>
+    <Center sx={{ width: "100vw", height: "100vh" }}>
       <Paper p={48} shadow="xl">
         <Text size="lg" weight={500} align="center">
           Inicia Sesión
         </Text>
         <Group my="md" position="center">
-          <ActionIcon size="xl">
-            <GoogleSvg width={20} height={20} />
-          </ActionIcon>
+          <Button
+            leftIcon={<GoogleSvg width={20} height={20} />}
+            variant="subtle"
+            radius="xl"
+            color="gray"
+          >
+            Google
+          </Button>
         </Group>
         <Divider
           label="O continua con tu correo"
