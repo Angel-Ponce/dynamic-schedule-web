@@ -17,13 +17,13 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "$atoms": ["/src/components/atoms"],
-      "$molecules": ["/src/components/molecules"],
-      "$organisms": ["/src/components/organisms"],
-      "$templates": ["/src/components/templates"],
-      "$svg": ["/src/components/svg"],
-      "$helpers": ["/src/helpers"],
-      "$app/firebase": ["/src/firebase/config.ts"]
+      "$atoms": ["./src/components/atoms"],
+      "$molecules": ["./src/components/molecules"],
+      "$organisms": ["./src/components/organisms"],
+      "$templates": ["./src/components/templates"],
+      "$svg": ["./src/components/svg"],
+      "$helpers": ["./src/helpers"],
+      "$app/firebase": ["./src/firebase/config.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
