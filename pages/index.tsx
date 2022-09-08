@@ -12,7 +12,7 @@ const Index: NextPage = () => {
       navbar={<Navbar hidden={hidden} />}
       header={<Header />}
     >
-      Schedule go here
+      {/* App content */}
     </AppShell>
   );
 };
