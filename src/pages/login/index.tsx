@@ -18,7 +18,10 @@ import Link from "next/link";
 import { useState } from "react";
 import wait from "wait";
 import { auth } from "$app/firebase";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import {
+  useSignInWithGoogle,
+  useSignInWithGithub,
+} from "react-firebase-hooks/auth";
 
 interface LoginForm {
   email: string;
@@ -27,6 +30,7 @@ interface LoginForm {
 
 const Login: NextPage = (props: PaperProps) => {
   const [signInWithGoogle] = useSignInWithGoogle(auth);
+  const [signInWithGithub] = useSignInWithGithub(auth);
 
   const form = useForm<LoginForm>({
     initialValues: {
@@ -70,6 +74,9 @@ const Login: NextPage = (props: PaperProps) => {
             variant="light"
             radius="xl"
             size="xs"
+            onClick={() => {
+              signInWithGithub();
+            }}
           >
             Github
           </Button>
