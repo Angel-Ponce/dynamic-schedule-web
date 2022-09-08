@@ -20,7 +20,8 @@
       "$organisms" : ["/src/components/organisms"],
       "$templates" : ["/src/components/templates"],
       "$svg" : ["/src/components/svg"],
-      "$helpers": ["/src/helpers"]
+      "$helpers": ["/src/helpers"],
+      "$app/firebase": ["/src/firebase/config.ts"]
     },
     "baseUrl": "."
   },
