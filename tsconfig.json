@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -11,20 +11,21 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "downlevelIteration": true,
     "isolatedModules": true,
-    "jsx": "preserve",
     "incremental": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
     "paths": {
-      "$atoms" : ["/src/components/atoms"],
-      "$molecules" : ["/src/components/molecules"],
-      "$organisms" : ["/src/components/organisms"],
-      "$templates" : ["/src/components/templates"],
-      "$svg" : ["/src/components/svg"],
-      "$helpers": ["/src/helpers"]
-    },
-    "baseUrl": "."
+      "$atoms": ["/src/components/atoms"],
+      "$molecules": ["/src/components/molecules"],
+      "$organisms": ["/src/components/organisms"],
+      "$templates": ["/src/components/templates"],
+      "$svg": ["/src/components/svg"],
+      "$helpers": ["/src/helpers"],
+      "$app/firebase": ["/src/firebase/config.ts"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
-  
+  "exclude": ["node_modules"]
 }
