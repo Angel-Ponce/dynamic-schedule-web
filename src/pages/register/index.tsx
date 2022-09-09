@@ -13,7 +13,7 @@ import {
   Center,
 } from "@mantine/core";
 import { GoogleSvg, GithubSvg } from "$svg";
-import type { NextPage as Register } from "next";
+import type { NextPage } from "next";
 import Link from "next/link";
 import { useState } from "react";
 import wait from "wait";
@@ -24,7 +24,7 @@ interface RegisterForm {
   password: string;
 }
 
-const Login: Register = (props: PaperProps) => {
+const Register: NextPage = (props: PaperProps) => {
   const form = useForm<RegisterForm>({
     initialValues: {
       name: "",
@@ -124,4 +124,4 @@ const Login: Register = (props: PaperProps) => {
   );
 };
 
-export default Login;
+export default Register;

@@ -1,17 +1,9 @@
 import React from "react";
-import {
-  Group,
-  Navbar as MantineNavbar,
-  UnstyledButton,
-  Text,
-  ThemeIcon,
-  Stack,
-} from "@mantine/core";
+import { Navbar as MantineNavbar, Stack } from "@mantine/core";
 import {
   IoCalendarClear,
   IoCheckmarkCircle,
   IoDocument,
-  IoSettings,
   IoTime,
 } from "react-icons/io5";
 import { useRouter } from "next/router";
