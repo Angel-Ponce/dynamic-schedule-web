@@ -10,7 +10,7 @@ const Index: NextPage = () => {
     <AppShell
       padding="xl"
       navbar={<Navbar hidden={hidden} />}
-      header={<Header />}
+      header={<Header setHiddenNavbar={setHidden} hiddenNavbar={hidden} />}
     >
       {/* App content */}
     </AppShell>
