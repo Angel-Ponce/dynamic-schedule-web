@@ -15,6 +15,7 @@ import {
   IoTime,
 } from "react-icons/io5";
 import { useRouter } from "next/router";
+import { NavbarLink } from "$molecules";
 
 const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
   const router = useRouter();
@@ -28,114 +29,34 @@ const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
     >
       <MantineNavbar.Section grow>
         <Stack>
-          <UnstyledButton
-            sx={(theme) => ({
-              width: "100%",
-              backgroundColor:
-                router.pathname == "/" ? theme.colors.gray[0] : "transparent",
-              "&:hover": {
-                backgroundColor: theme.colors.gray[1],
-              },
-              borderRadius: theme.radius.md,
-            })}
-            py="sm"
-            px="xs"
-          >
-            <Group position="left">
-              <ThemeIcon variant="light" color="cyan">
-                <IoCalendarClear />
-              </ThemeIcon>
-              <Text>Horario</Text>
-            </Group>
-          </UnstyledButton>
-          <UnstyledButton
-            sx={(theme) => ({
-              width: "100%",
-              backgroundColor:
-                router.pathname == "/notes"
-                  ? theme.colors.gray[0]
-                  : "transparent",
-              "&:hover": {
-                backgroundColor: theme.colors.gray[1],
-              },
-              borderRadius: theme.radius.md,
-            })}
-            py="sm"
-            px="xs"
-          >
-            <Group position="left">
-              <ThemeIcon variant="light" color="orange">
-                <IoDocument />
-              </ThemeIcon>
-              <Text>Notas</Text>
-            </Group>
-          </UnstyledButton>
-          <UnstyledButton
-            sx={(theme) => ({
-              width: "100%",
-              backgroundColor:
-                router.pathname == "/tasks"
-                  ? theme.colors.gray[0]
-                  : "transparent",
-              "&:hover": {
-                backgroundColor: theme.colors.gray[1],
-              },
-              borderRadius: theme.radius.md,
-            })}
-            py="sm"
-            px="xs"
-          >
-            <Group position="left">
-              <ThemeIcon variant="light" color="blue">
-                <IoCheckmarkCircle />
-              </ThemeIcon>
-              <Text>Tareas</Text>
-            </Group>
-          </UnstyledButton>
-          <UnstyledButton
-            sx={(theme) => ({
-              width: "100%",
-              backgroundColor:
-                router.pathname == "/pomodoro"
-                  ? theme.colors.gray[0]
-                  : "transparent",
-              "&:hover": {
-                backgroundColor: theme.colors.gray[1],
-              },
-              borderRadius: theme.radius.md,
-            })}
-            py="sm"
-            px="xs"
-          >
-            <Group position="left">
-              <ThemeIcon variant="light" color="yellow">
-                <IoTime />
-              </ThemeIcon>
-              <Text>Pomodoro</Text>
-            </Group>
-          </UnstyledButton>
-          <UnstyledButton
-            sx={(theme) => ({
-              width: "100%",
-              backgroundColor:
-                router.pathname == "/settings"
-                  ? theme.colors.gray[0]
-                  : "transparent",
-              "&:hover": {
-                backgroundColor: theme.colors.gray[1],
-              },
-              borderRadius: theme.radius.md,
-            })}
-            py="sm"
-            px="xs"
-          >
-            <Group position="left">
-              <ThemeIcon variant="light" color="gray">
-                <IoSettings />
-              </ThemeIcon>
-              <Text>Configuración</Text>
-            </Group>
-          </UnstyledButton>
+          <NavbarLink
+            icon={<IoCalendarClear />}
+            title="Horario"
+            redirectTo="/"
+            pathname={router.pathname}
+            color="cyan"
+          />
+          <NavbarLink
+            icon={<IoDocument />}
+            title="Notas"
+            redirectTo="/notes"
+            pathname={router.pathname}
+            color="orange"
+          />
+          <NavbarLink
+            icon={<IoCheckmarkCircle />}
+            title="Tareas"
+            redirectTo="/todo"
+            pathname={router.pathname}
+            color="blue"
+          />
+          <NavbarLink
+            icon={<IoTime />}
+            title="Pomodoro"
+            redirectTo="/pomodoro"
+            pathname={router.pathname}
+            color="yellow"
+          />
         </Stack>
       </MantineNavbar.Section>
 
