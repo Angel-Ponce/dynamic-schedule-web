@@ -11,12 +11,8 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "$app/firebase";
 import React from "react";
-import {
-  IoChevronForward,
-  IoLogOut,
-  IoMoon,
-  IoSettings,
-} from "react-icons/io5";
+import { IoLogOut, IoMoon, IoSettings } from "react-icons/io5";
+import { signOut } from "firebase/auth";
 
 const UserOptions: React.FC = () => {
   const [user] = useAuthState(auth);
@@ -37,6 +33,9 @@ const UserOptions: React.FC = () => {
             p="md"
             sx={(theme) => ({
               backgroundColor: theme.colors.gray[0],
+              ":hover": {
+                backgroundColor: theme.colors.gray[1],
+              },
             })}
           >
             <Group spacing="xs" position="center">
@@ -47,7 +46,6 @@ const UserOptions: React.FC = () => {
                   {user?.email || "email"}
                 </Text>
               </Stack>
-              <IoChevronForward />
             </Group>
           </UnstyledButton>
         </Popover.Target>
@@ -60,6 +58,7 @@ const UserOptions: React.FC = () => {
               },
               padding: theme.spacing.sm,
             })}
+            onClick={() => signOut(auth)}
           >
             <Group position="left">
               <ThemeIcon variant="light" color="red">
