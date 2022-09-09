@@ -9,8 +9,8 @@ import { useState } from "react";
 
 export default function App(props: AppProps) {
   const router = useRouter();
-  const [user, loading] = useAuthState(auth);
-  const [loadingPath, setLoadingPath] = useState(true);
+  const [user, loadingUser] = useAuthState(auth);
+  const [loadingPath, setLoadingPath] = useState(false);
 
   useEffect(() => {
     router.events.on("routeChangeComplete", () => {
@@ -18,12 +18,18 @@ export default function App(props: AppProps) {
     });
 
     if (router.pathname == "/login" || router.pathname == "/register") {
-      if (user && !loading) router.push("/");
+      if (user && !loadingUser) {
+        setLoadingPath(true);
+        router.push("/");
+      }
       return;
     }
 
-    if (!user && !loading) router.push("/login");
-  }, [router, user, loading, setLoadingPath]);
+    if (!user && !loadingUser) {
+      setLoadingPath(true);
+      router.push("/login");
+    }
+  }, [router, user, loadingUser, setLoadingPath]);
 
   const { Component, pageProps } = props;
 
@@ -45,7 +51,7 @@ export default function App(props: AppProps) {
           colorScheme: "light",
         }}
       >
-        {loading || loadingPath ? <></> : <Component {...pageProps} />}
+        {loadingUser || loadingPath ? <></> : <Component {...pageProps} />}
       </MantineProvider>
     </>
   );
