@@ -6,7 +6,7 @@ import {
   Header as MantineHeader,
   Center,
 } from "@mantine/core";
-import { CalendarClear } from "react-ionicons";
+import { IoCalendarClear } from "react-icons/io5";
 
 const Header: React.FC = () => {
   return (
@@ -15,7 +15,7 @@ const Header: React.FC = () => {
         <Group position="apart">
           <Group position="left">
             <ThemeIcon radius="xl" size="lg" variant="light" color="blue">
-              <CalendarClear width="15px" height="15px" color="#228BE6" />
+              <IoCalendarClear size="15px" color="#228BE6" />
             </ThemeIcon>
             <Text size="lg" weight={600}>
               Horario Dinámico
