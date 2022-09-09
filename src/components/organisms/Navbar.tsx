@@ -15,7 +15,7 @@ import {
   IoTime,
 } from "react-icons/io5";
 import { useRouter } from "next/router";
-import { NavbarLink } from "$molecules";
+import { NavbarLink, UserOptions } from "$molecules";
 
 const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
   const router = useRouter();
@@ -60,7 +60,9 @@ const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
         </Stack>
       </MantineNavbar.Section>
 
-      <MantineNavbar.Section>{/* user content here */}</MantineNavbar.Section>
+      <MantineNavbar.Section>
+        <UserOptions />
+      </MantineNavbar.Section>
     </MantineNavbar>
   );
 };
