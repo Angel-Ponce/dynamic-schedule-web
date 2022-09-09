@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import { Navbar, Header } from "$organisms";
 import { useState } from "react";
 
-const Index: NextPage = () => {
+const Pomodoro: NextPage = () => {
   let [hidden, setHidden] = useState(true);
 
   return (
@@ -12,9 +12,9 @@ const Index: NextPage = () => {
       navbar={<Navbar hidden={hidden} />}
       header={<Header setHiddenNavbar={setHidden} hiddenNavbar={hidden} />}
     >
-      Schedule go here
+      Pomodoro go here
     </AppShell>
   );
 };
 
-export default Index;
+export default Pomodoro;
