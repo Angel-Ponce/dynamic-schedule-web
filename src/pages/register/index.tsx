@@ -15,8 +15,15 @@ import {
 import { GoogleSvg, GithubSvg } from "$svg";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import wait from "wait";
+import {
+  useCreateUserWithEmailAndPassword,
+  useSignInWithGithub,
+  useSignInWithGoogle,
+} from "react-firebase-hooks/auth";
+import { auth } from "$app/firebase";
+import { showNotification } from "@mantine/notifications";
 
 interface RegisterForm {
   name: string;
@@ -25,6 +32,12 @@ interface RegisterForm {
 }
 
 const Register: NextPage = (props: PaperProps) => {
+  const [registerWithGoogle, , , googleError] = useSignInWithGoogle(auth);
+  const [registerWithGithub, , , githubError] = useSignInWithGithub(auth);
+  const [registerWithEmailAndPassword, , , registerError] =
+    useCreateUserWithEmailAndPassword(auth);
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<RegisterForm>({
     initialValues: {
       name: "",
@@ -34,7 +47,7 @@ const Register: NextPage = (props: PaperProps) => {
 
     validate: {
       name: (val) => (val.trim().length > 0 ? null : "Este campo es requerido"),
-      email: (val) => (/^\S+@\S\.\S+$/.test(val) ? null : "Correo inválido"),
+      email: (val) => (/^\S+@\S+\.\S+$/.test(val) ? null : "Correo inválido"),
       password: (val) =>
         val.length >= 8
           ? null
@@ -42,11 +55,35 @@ const Register: NextPage = (props: PaperProps) => {
     },
   });
 
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (googleError) {
+      showNotification({
+        title: "Error",
+        message: "Un error ha ocurrido al registrarse con tu cuenta de Google",
+        color: "red",
+      });
+    }
+
+    if (githubError) {
+      showNotification({
+        title: "Error",
+        message: "Un error ha ocurrido al registrarse con tu cuenta de Github",
+        color: "red",
+      });
+    }
+
+    if (registerError) {
+      showNotification({
+        title: "Error",
+        message: "Un error ha ocurrido al registrarse con correo y contraseña",
+        color: "red",
+      });
+    }
+  }, [googleError, githubError, registerError]);
 
   const onSubmit = async (values: RegisterForm) => {
     setLoading(true);
-    await wait(3000);
+    await registerWithEmailAndPassword(values.email, values.password);
     setLoading(false);
   };
 
@@ -62,6 +99,9 @@ const Register: NextPage = (props: PaperProps) => {
             variant="light"
             radius="xl"
             size="xs"
+            onClick={() => {
+              registerWithGoogle();
+            }}
           >
             Google
           </Button>
@@ -70,6 +110,9 @@ const Register: NextPage = (props: PaperProps) => {
             variant="light"
             radius="xl"
             size="xs"
+            onClick={() => {
+              registerWithGithub();
+            }}
           >
             Github
           </Button>

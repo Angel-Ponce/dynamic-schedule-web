@@ -43,7 +43,7 @@ const Login: NextPage = (props: PaperProps) => {
     },
 
     validate: {
-      email: (val) => (/^\S+@\S\.\S+$/.test(val) ? null : "Correo inválido"),
+      email: (val) => (/^\S+@\S+\.\S+$/.test(val) ? null : "Correo inválido"),
     },
   });
 
