@@ -7,21 +7,35 @@ import {
   Popover,
   ThemeIcon,
   ActionIcon,
+  type ColorScheme,
 } from "@mantine/core";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "$app/firebase";
 import React from "react";
-import { IoLogOut, IoMoon, IoSettings } from "react-icons/io5";
+import { IoLogOut, IoMoon, IoSettings, IoSunny } from "react-icons/io5";
 import { signOut } from "firebase/auth";
+import { useLocalStorage } from "@mantine/hooks";
 
 const UserOptions: React.FC = () => {
   const [user] = useAuthState(auth);
+  const [userTheme, setUserTheme] = useLocalStorage<ColorScheme>({
+    key: "userTheme",
+  });
 
   return (
     <Stack spacing="xs">
       <Group position="right" spacing="xs">
-        <ActionIcon variant="light" color="indigo">
-          <IoMoon></IoMoon>
+        <ActionIcon
+          variant="light"
+          color={userTheme == "light" ? "indigo" : "yellow"}
+          onClick={() => {
+            setUserTheme((theme) => {
+              return theme == "dark" ? "light" : "dark";
+            });
+          }}
+          size="lg"
+        >
+          {userTheme == "light" ? <IoMoon /> : <IoSunny />}
         </ActionIcon>
         <ActionIcon variant="light" color="gray">
           <IoSettings></IoSettings>
@@ -32,9 +46,15 @@ const UserOptions: React.FC = () => {
           <UnstyledButton
             p="md"
             sx={(theme) => ({
-              backgroundColor: theme.colors.gray[0],
+              backgroundColor:
+                userTheme == "light"
+                  ? theme.colors.gray[0]
+                  : theme.colors.gray[8],
               ":hover": {
-                backgroundColor: theme.colors.gray[1],
+                backgroundColor:
+                  userTheme == "light"
+                    ? theme.colors.gray[1]
+                    : theme.colors.gray[9],
               },
             })}
           >
@@ -42,19 +62,22 @@ const UserOptions: React.FC = () => {
               <Avatar radius="xl" size="md" src={user?.photoURL} />
               <Stack spacing={2}>
                 <Text size="sm">{user?.displayName || "User name"}</Text>
-                <Text size="xs" color="gray">
+                <Text size="xs" color="dimmed">
                   {user?.email || "email"}
                 </Text>
               </Stack>
             </Group>
           </UnstyledButton>
         </Popover.Target>
-        <Popover.Dropdown p={0}>
+        <Popover.Dropdown p={0} color="blue">
           <UnstyledButton
             sx={(theme) => ({
               width: "100%",
               "&:hover": {
-                backgroundColor: theme.colors.gray[1],
+                backgroundColor:
+                  userTheme == "light"
+                    ? theme.colors.gray[1]
+                    : theme.colors.gray[9],
               },
               padding: theme.spacing.sm,
             })}
