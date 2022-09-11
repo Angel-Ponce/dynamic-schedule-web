@@ -16,13 +16,8 @@ import { GoogleSvg, GithubSvg } from "$svg";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { auth } from "$app/firebase";
-import {
-  useSignInWithGoogle,
-  useSignInWithGithub,
-  useSignInWithEmailAndPassword,
-} from "react-firebase-hooks/auth";
 import { showNotification } from "@mantine/notifications";
+import { useLogin } from "$hooks";
 
 interface LoginForm {
   email: string;
@@ -30,10 +25,7 @@ interface LoginForm {
 }
 
 const Login: NextPage = (props: PaperProps) => {
-  const [signInWithGoogle, , , googleError] = useSignInWithGoogle(auth);
-  const [signInWithGithub, , , githubError] = useSignInWithGithub(auth);
-  const [signInWithEmailAndPassword, , , emailAndPasswordError] =
-    useSignInWithEmailAndPassword(auth);
+  const [login, error, errorMessage] = useLogin();
   const [loading, setLoading] = useState(false);
 
   const form = useForm<LoginForm>({
@@ -48,37 +40,21 @@ const Login: NextPage = (props: PaperProps) => {
   });
 
   useEffect(() => {
-    if (googleError) {
+    if (error) {
       showNotification({
         title: "Error",
-        message:
-          "Un error ha ocurrido al iniciar sesión con tu cuenta de Google",
+        message: errorMessage,
         color: "red",
       });
     }
-
-    if (githubError) {
-      showNotification({
-        title: "Error",
-        message:
-          "Un error ha ocurrido al iniciar sesión con tu cuenta de Github",
-        color: "red",
-      });
-    }
-
-    if (emailAndPasswordError) {
-      showNotification({
-        title: "Error",
-        message:
-          "Tus credenciales no son correctas o no existen en nuestros registros",
-        color: "red",
-      });
-    }
-  }, [googleError, githubError, emailAndPasswordError]);
+  }, [error, errorMessage]);
 
   const onSubmit = async (values: LoginForm) => {
     setLoading(true);
-    await signInWithEmailAndPassword(values.email, values.password);
+    await login("emailAndPassword", {
+      email: values.email,
+      password: values.password,
+    });
     setLoading(false);
   };
 
@@ -95,7 +71,7 @@ const Login: NextPage = (props: PaperProps) => {
             radius="xl"
             size="xs"
             onClick={() => {
-              signInWithGoogle();
+              login("google");
             }}
           >
             Google
@@ -106,7 +82,7 @@ const Login: NextPage = (props: PaperProps) => {
             radius="xl"
             size="xs"
             onClick={() => {
-              signInWithGithub();
+              login("github");
             }}
           >
             Github

@@ -1,9 +1,7 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { type ColorScheme, MantineProvider } from "@mantine/core";
-import { auth } from "$app/firebase";
 import { useRouter } from "next/router";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useLocalStorage } from "@mantine/hooks";
@@ -11,7 +9,10 @@ import { NotificationsProvider } from "@mantine/notifications";
 
 export default function App(props: AppProps) {
   const router = useRouter();
-  const [user, loadingUser] = useAuthState(auth);
+  const [validUser] = useLocalStorage({
+    key: "validUser",
+    defaultValue: false,
+  });
   const [loadingPath, setLoadingPath] = useState(false);
   const [userTheme, setUserTheme] = useLocalStorage<ColorScheme>({
     key: "userTheme",
@@ -28,18 +29,18 @@ export default function App(props: AppProps) {
     });
 
     if (router.pathname == "/login" || router.pathname == "/register") {
-      if (user && !loadingUser) {
+      if (validUser) {
         setLoadingPath(true);
         router.push("/");
       }
       return;
     }
 
-    if (!user && !loadingUser) {
+    if (!validUser) {
       setLoadingPath(true);
       router.push("/login");
     }
-  }, [router, user, loadingUser, setLoadingPath]);
+  }, [router, validUser, setLoadingPath]);
 
   const { Component, pageProps } = props;
 
@@ -63,7 +64,7 @@ export default function App(props: AppProps) {
         }}
       >
         <NotificationsProvider>
-          {loadingUser || loadingPath ? <></> : <Component {...pageProps} />}
+          {loadingPath ? <></> : <Component {...pageProps} />}
         </NotificationsProvider>
       </MantineProvider>
     </>
