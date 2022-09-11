@@ -20,7 +20,7 @@ const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
       hidden={hidden}
     >
       <MantineNavbar.Section grow>
-        <Stack>
+        <Stack spacing={2}>
           <NavbarLink
             icon={<IoCalendarClear />}
             title="Horario"

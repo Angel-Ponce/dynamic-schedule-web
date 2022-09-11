@@ -1,16 +1,25 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { MantineProvider } from "@mantine/core";
+import { type ColorScheme, MantineProvider } from "@mantine/core";
 import { auth } from "$app/firebase";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useLocalStorage } from "@mantine/hooks";
 
 export default function App(props: AppProps) {
   const router = useRouter();
   const [user, loadingUser] = useAuthState(auth);
   const [loadingPath, setLoadingPath] = useState(false);
+  const [userTheme, setUserTheme] = useLocalStorage<ColorScheme>({
+    key: "userTheme",
+    defaultValue: "light",
+  });
+
+  useEffect(() => {
+    if (!userTheme) setUserTheme("light");
+  }, [userTheme, setUserTheme]);
 
   useEffect(() => {
     router.events.on("routeChangeComplete", () => {
@@ -48,7 +57,7 @@ export default function App(props: AppProps) {
         withNormalizeCSS
         theme={{
           /** Put your mantine theme override here */
-          colorScheme: "light",
+          colorScheme: userTheme,
         }}
       >
         {loadingUser || loadingPath ? <></> : <Component {...pageProps} />}
