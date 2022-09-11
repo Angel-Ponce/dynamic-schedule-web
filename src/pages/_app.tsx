@@ -7,6 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useLocalStorage } from "@mantine/hooks";
+import { NotificationsProvider } from "@mantine/notifications";
 
 export default function App(props: AppProps) {
   const router = useRouter();
@@ -58,9 +59,12 @@ export default function App(props: AppProps) {
         theme={{
           /** Put your mantine theme override here */
           colorScheme: userTheme,
+          loader: "dots",
         }}
       >
-        {loadingUser || loadingPath ? <></> : <Component {...pageProps} />}
+        <NotificationsProvider>
+          {loadingUser || loadingPath ? <></> : <Component {...pageProps} />}
+        </NotificationsProvider>
       </MantineProvider>
     </>
   );

@@ -16,13 +16,13 @@ import { GoogleSvg, GithubSvg } from "$svg";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import wait from "wait";
 import { auth } from "$app/firebase";
 import {
   useSignInWithGoogle,
   useSignInWithGithub,
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
+import { showNotification } from "@mantine/notifications";
 
 interface LoginForm {
   email: string;
@@ -49,15 +49,30 @@ const Login: NextPage = (props: PaperProps) => {
 
   useEffect(() => {
     if (googleError) {
-      alert("error");
+      showNotification({
+        title: "Error",
+        message:
+          "Un error ha ocurrido al iniciar sesión con tu cuenta de Google",
+        color: "red",
+      });
     }
 
     if (githubError) {
-      alert("error");
+      showNotification({
+        title: "Error",
+        message:
+          "Un error ha ocurrido al iniciar sesión con tu cuenta de Github",
+        color: "red",
+      });
     }
 
     if (emailAndPasswordError) {
-      alert("error");
+      showNotification({
+        title: "Error",
+        message:
+          "Tus credenciales no son correctas o no existen en nuestros registros",
+        color: "red",
+      });
     }
   }, [googleError, githubError, emailAndPasswordError]);
 
