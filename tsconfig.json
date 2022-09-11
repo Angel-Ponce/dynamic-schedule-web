@@ -23,7 +23,8 @@
       "$templates": ["./src/components/templates"],
       "$svg": ["./src/components/svg"],
       "$helpers": ["./src/helpers"],
-      "$app/firebase": ["./src/firebase/config.ts"]
+      "$app/firebase": ["./src/firebase/config.ts"],
+      "$hooks": ["./src/hooks"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
