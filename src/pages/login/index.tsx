@@ -15,12 +15,13 @@ import {
 import { GoogleSvg, GithubSvg } from "$svg";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import wait from "wait";
 import { auth } from "$app/firebase";
 import {
   useSignInWithGoogle,
   useSignInWithGithub,
+  useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
 
 interface LoginForm {
@@ -29,8 +30,11 @@ interface LoginForm {
 }
 
 const Login: NextPage = (props: PaperProps) => {
-  const [signInWithGoogle] = useSignInWithGoogle(auth);
-  const [signInWithGithub] = useSignInWithGithub(auth);
+  const [signInWithGoogle, , , googleError] = useSignInWithGoogle(auth);
+  const [signInWithGithub, , , githubError] = useSignInWithGithub(auth);
+  const [signInWithEmailAndPassword, , , emailAndPasswordError] =
+    useSignInWithEmailAndPassword(auth);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<LoginForm>({
     initialValues: {
@@ -43,11 +47,23 @@ const Login: NextPage = (props: PaperProps) => {
     },
   });
 
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (googleError) {
+      alert("error");
+    }
+
+    if (githubError) {
+      alert("error");
+    }
+
+    if (emailAndPasswordError) {
+      alert("error");
+    }
+  }, [googleError, githubError, emailAndPasswordError]);
 
   const onSubmit = async (values: LoginForm) => {
     setLoading(true);
-    await wait(3000);
+    await signInWithEmailAndPassword(values.email, values.password);
     setLoading(false);
   };
 
