@@ -10,6 +10,9 @@ const nextConfig = {
     FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
   },
+  images: {
+    domains: ["lh3.googleusercontent.com", "googleusercontent.com"],
+  },
 };
 
 module.exports = nextConfig;

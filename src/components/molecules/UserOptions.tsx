@@ -11,11 +11,11 @@ import {
 } from "@mantine/core";
 import React from "react";
 import { IoLogOut, IoMoon, IoSettings, IoSunny } from "react-icons/io5";
-import { useLogout, useUser } from "$hooks";
+import { useAppSelector, useLogout } from "$hooks";
 import { getUserInitials } from "$helpers";
 
 const UserOptions: React.FC = () => {
-  const [user] = useUser();
+  const user = useAppSelector((state) => state.user);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [logout] = useLogout();
 
@@ -54,13 +54,13 @@ const UserOptions: React.FC = () => {
             })}
           >
             <Group spacing="xs" position="center">
-              <Avatar radius="xl" size="md" src={user?.photoURL}>
-                {getUserInitials(user?.name || "User")}
+              <Avatar radius="xl" size="md" src={user.photoURL}>
+                {getUserInitials(user.name)}
               </Avatar>
               <Stack spacing={2}>
-                <Text size="sm">{user?.name || "User name"}</Text>
+                <Text size="sm">{user.name}</Text>
                 <Text size="xs" color="dimmed">
-                  {user?.email || "email"}
+                  {user.email}
                 </Text>
               </Stack>
             </Group>

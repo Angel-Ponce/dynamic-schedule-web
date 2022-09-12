@@ -6,15 +6,18 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { NotificationsProvider } from "@mantine/notifications";
 import { getUserFromLocalStorage } from "$helpers";
-import { useUserTheme } from "$hooks";
+import { useAppDispatch, useAppSelector, useUserTheme } from "$hooks";
 import { Provider } from "react-redux";
 import { defaultStore } from "$stores";
+import { emptyUser, setUser } from "$slices/userSlice";
 
 export default function App(props: AppProps) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [loadingPath, setLoadingPath] = useState(false);
   const [userTheme, toggleColorScheme] = useUserTheme();
+  const dispatch = useAppDispatch();
+  const userStore = useAppSelector((state) => state.user);
 
   useEffect(() => {
     const redirect = async () => {
@@ -22,10 +25,13 @@ export default function App(props: AppProps) {
         setLoadingPath(false);
       });
 
-      let [, exists, logedIn] = getUserFromLocalStorage();
+      let [user, exists, logedIn] = getUserFromLocalStorage();
       if (router.pathname == "/login" || router.pathname == "/register") {
-        if (exists && logedIn) {
+        if (exists && logedIn && user) {
           setLoadingPath(true);
+          if (emptyUser(userStore)) {
+            dispatch(setUser(user));
+          }
           await router.push("/");
         }
         setMounted(true);

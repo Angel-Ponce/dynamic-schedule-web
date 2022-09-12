@@ -5,7 +5,7 @@ const useUserTheme = (): [ColorScheme, { (): void }] => {
   const [userTheme, setUserTheme] = useState<ColorScheme>("light");
 
   useEffect(() => {
-    const userThemeLocal = window.localStorage.getItem(
+    const userThemeLocal = localStorage.getItem(
       "userTheme"
     ) as ColorScheme | null;
 
@@ -13,7 +13,7 @@ const useUserTheme = (): [ColorScheme, { (): void }] => {
 
     if (!exists) {
       setUserTheme("light");
-      window.localStorage.setItem("userTheme", "light");
+      localStorage.setItem("userTheme", "light");
     } else {
       setUserTheme(userThemeLocal);
     }
@@ -22,7 +22,7 @@ const useUserTheme = (): [ColorScheme, { (): void }] => {
   const toggleUserTheme = () => {
     setUserTheme((userTheme) => {
       const newUserTheme = userTheme == "dark" ? "light" : "dark";
-      window.localStorage.setItem("userTheme", newUserTheme);
+      localStorage.setItem("userTheme", newUserTheme);
       return newUserTheme;
     });
   };
