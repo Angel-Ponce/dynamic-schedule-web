@@ -1,52 +1,15 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { MantineProvider, ColorSchemeProvider } from "@mantine/core";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useState } from "react";
 import { NotificationsProvider } from "@mantine/notifications";
-import { getUserFromLocalStorage } from "$helpers";
-import { useAppDispatch, useAppSelector, useUserTheme } from "$hooks";
+
 import { Provider } from "react-redux";
 import { defaultStore } from "$stores";
-import { emptyUser, setUser } from "$slices/userSlice";
+import { useUserTheme } from "$hooks";
+import { ProtectedLayout } from "$templates";
 
 export default function App(props: AppProps) {
-  const router = useRouter();
-  const [mounted, setMounted] = useState(false);
-  const [loadingPath, setLoadingPath] = useState(false);
   const [userTheme, toggleColorScheme] = useUserTheme();
-  const dispatch = useAppDispatch();
-  const userStore = useAppSelector((state) => state.user);
-
-  useEffect(() => {
-    const redirect = async () => {
-      router.events.on("routeChangeComplete", () => {
-        setLoadingPath(false);
-      });
-
-      let [user, exists, logedIn] = getUserFromLocalStorage();
-      if (router.pathname == "/login" || router.pathname == "/register") {
-        if (exists && logedIn && user) {
-          setLoadingPath(true);
-          if (emptyUser(userStore)) {
-            dispatch(setUser(user));
-          }
-          await router.push("/");
-        }
-        setMounted(true);
-        return;
-      }
-
-      if (!exists || !logedIn) {
-        setLoadingPath(true);
-        await router.push("/login");
-      }
-      setMounted(true);
-    };
-
-    redirect();
-  }, [router, setMounted, setLoadingPath]);
 
   const { Component, pageProps } = props;
 
@@ -74,7 +37,9 @@ export default function App(props: AppProps) {
           }}
         >
           <NotificationsProvider>
-            {!mounted || loadingPath ? <></> : <Component {...pageProps} />}
+            <ProtectedLayout>
+              <Component {...pageProps} />
+            </ProtectedLayout>
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
