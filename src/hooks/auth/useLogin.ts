@@ -23,9 +23,8 @@ const useLogin = (): [
   const [loginWithEmailAndPassword, , , loginError] =
     useSignInWithEmailAndPassword(auth);
   const [firebaseUser] = useAuthState(auth);
-  const [, setValidUser] = useLocalStorage({
+  const [, setValidUser] = useLocalStorage<boolean>({
     key: "validUser",
-    defaultValue: false,
   });
 
   let login = async (type: LoginType, params?: LoginParams) => {

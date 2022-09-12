@@ -15,12 +15,14 @@ import React from "react";
 import { IoLogOut, IoMoon, IoSettings, IoSunny } from "react-icons/io5";
 import { signOut } from "firebase/auth";
 import { useLocalStorage } from "@mantine/hooks";
+import { useLogout } from "$hooks";
 
 const UserOptions: React.FC = () => {
   const [user] = useAuthState(auth);
   const [userTheme, setUserTheme] = useLocalStorage<ColorScheme>({
     key: "userTheme",
   });
+  const [logout] = useLogout();
 
   return (
     <Stack spacing="xs">
@@ -81,7 +83,7 @@ const UserOptions: React.FC = () => {
               },
               padding: theme.spacing.sm,
             })}
-            onClick={() => signOut(auth)}
+            onClick={() => logout()}
           >
             <Group position="left">
               <ThemeIcon variant="light" color="red">

@@ -25,9 +25,8 @@ const useRegister = (): [
   const [registerWithEmailAndPassword, , , registerError] =
     useCreateUserWithEmailAndPassword(auth);
   const [firebaseUser] = useAuthState(auth);
-  const [, setValidUser] = useLocalStorage({
+  const [, setValidUser] = useLocalStorage<boolean>({
     key: "validUser",
-    defaultValue: false,
   });
 
   let register = async (type: RegisterType, params?: RegisterParams) => {
