@@ -25,8 +25,7 @@ interface LoginForm {
 }
 
 const Login: NextPage = (props: PaperProps) => {
-  const [login, error, errorMessage] = useLogin();
-  const [loading, setLoading] = useState(false);
+  const [login, error, errorMessage, loading] = useLogin();
 
   const form = useForm<LoginForm>({
     initialValues: {
@@ -50,12 +49,10 @@ const Login: NextPage = (props: PaperProps) => {
   }, [error, errorMessage]);
 
   const onSubmit = async (values: LoginForm) => {
-    setLoading(true);
     await login("emailAndPassword", {
       email: values.email,
       password: values.password,
     });
-    setLoading(false);
   };
 
   return (

@@ -11,32 +11,40 @@ import {
 
 type RegisterType = "google" | "github" | "emailAndPassword";
 type RegisterParams = { name: string; email: string; password: string };
+import { useCreateAccount } from "./useCreateAccount";
+import { UserAccount } from "$types";
 
 const useRegister = (): [
   { (type: RegisterType, params?: RegisterParams): Promise<void> },
   boolean,
-  string
+  string,
+  boolean
 ] => {
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [userName, setUserName] = useState("");
+  const [validate, userAccount, successfully] = useCreateAccount();
   const [registerWithGoogle, , , googleError] = useSignInWithGoogle(auth);
   const [registerWithGithub, , , githubError] = useSignInWithGithub(auth);
   const [registerWithEmailAndPassword, , , registerError] =
     useCreateUserWithEmailAndPassword(auth);
   const [firebaseUser] = useAuthState(auth);
-  const [, setValidUser] = useLocalStorage<boolean>({
-    key: "validUser",
+  const [, setUser] = useLocalStorage<null | UserAccount>({
+    key: "user",
   });
 
   let register = async (type: RegisterType, params?: RegisterParams) => {
+    setLoading(true);
     if (type == "google") {
       await registerWithGoogle();
+      setLoading(false);
       return;
     }
 
     if (type == "github") {
       await registerWithGithub();
+      setLoading(false);
       return;
     }
 
@@ -46,6 +54,8 @@ const useRegister = (): [
       params?.email || "",
       params?.password || ""
     );
+
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -71,10 +81,28 @@ const useRegister = (): [
   }, [googleError, githubError, registerError]);
 
   useEffect(() => {
-    setValidUser(firebaseUser ? true : false);
-  }, [firebaseUser, setValidUser]);
+    const validateAccount = async () => {
+      if (!firebaseUser) {
+        setUser(null);
+        return;
+      }
 
-  return [register, error, errorMessage];
+      if (successfully) {
+        setUser(userAccount);
+        return;
+      }
+
+      await validate({
+        name: firebaseUser.displayName || userName,
+        email: firebaseUser.email || "",
+        uid: firebaseUser.uid,
+      });
+    };
+
+    validateAccount();
+  }, [firebaseUser, setUser, validate, successfully, userName, userAccount]);
+
+  return [register, error, errorMessage, loading];
 };
 
 export { useRegister };
