@@ -15,13 +15,9 @@ import {
 import { GoogleSvg, GithubSvg } from "$svg";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useState } from "react";
-import wait from "wait";
-import { auth } from "$app/firebase";
-import {
-  useSignInWithGoogle,
-  useSignInWithGithub,
-} from "react-firebase-hooks/auth";
+import { useEffect, useState } from "react";
+import { showNotification } from "@mantine/notifications";
+import { useLogin } from "$hooks";
 
 interface LoginForm {
   email: string;
@@ -29,8 +25,8 @@ interface LoginForm {
 }
 
 const Login: NextPage = (props: PaperProps) => {
-  const [signInWithGoogle] = useSignInWithGoogle(auth);
-  const [signInWithGithub] = useSignInWithGithub(auth);
+  const [login, error, errorMessage] = useLogin();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<LoginForm>({
     initialValues: {
@@ -39,15 +35,26 @@ const Login: NextPage = (props: PaperProps) => {
     },
 
     validate: {
-      email: (val) => (/^\S+@\S\.\S+$/.test(val) ? null : "Correo inválido"),
+      email: (val) => (/^\S+@\S+\.\S+$/.test(val) ? null : "Correo inválido"),
     },
   });
 
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (error) {
+      showNotification({
+        title: "Error",
+        message: errorMessage,
+        color: "red",
+      });
+    }
+  }, [error, errorMessage]);
 
   const onSubmit = async (values: LoginForm) => {
     setLoading(true);
-    await wait(3000);
+    await login("emailAndPassword", {
+      email: values.email,
+      password: values.password,
+    });
     setLoading(false);
   };
 
@@ -64,7 +71,7 @@ const Login: NextPage = (props: PaperProps) => {
             radius="xl"
             size="xs"
             onClick={() => {
-              signInWithGoogle();
+              login("google");
             }}
           >
             Google
@@ -75,7 +82,7 @@ const Login: NextPage = (props: PaperProps) => {
             radius="xl"
             size="xs"
             onClick={() => {
-              signInWithGithub();
+              login("github");
             }}
           >
             Github

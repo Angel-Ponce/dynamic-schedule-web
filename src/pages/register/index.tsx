@@ -15,8 +15,9 @@ import {
 import { GoogleSvg, GithubSvg } from "$svg";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useState } from "react";
-import wait from "wait";
+import { useEffect, useState } from "react";
+import { showNotification } from "@mantine/notifications";
+import { useRegister } from "$hooks";
 
 interface RegisterForm {
   name: string;
@@ -25,6 +26,9 @@ interface RegisterForm {
 }
 
 const Register: NextPage = (props: PaperProps) => {
+  const [register, error, errorMessage] = useRegister();
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<RegisterForm>({
     initialValues: {
       name: "",
@@ -34,7 +38,7 @@ const Register: NextPage = (props: PaperProps) => {
 
     validate: {
       name: (val) => (val.trim().length > 0 ? null : "Este campo es requerido"),
-      email: (val) => (/^\S+@\S\.\S+$/.test(val) ? null : "Correo inválido"),
+      email: (val) => (/^\S+@\S+\.\S+$/.test(val) ? null : "Correo inválido"),
       password: (val) =>
         val.length >= 8
           ? null
@@ -42,11 +46,23 @@ const Register: NextPage = (props: PaperProps) => {
     },
   });
 
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (error) {
+      showNotification({
+        title: "Error",
+        message: errorMessage,
+        color: "red",
+      });
+    }
+  }, [error, errorMessage]);
 
   const onSubmit = async (values: RegisterForm) => {
     setLoading(true);
-    await wait(3000);
+    await register("emailAndPassword", {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    });
     setLoading(false);
   };
 
@@ -62,6 +78,9 @@ const Register: NextPage = (props: PaperProps) => {
             variant="light"
             radius="xl"
             size="xs"
+            onClick={() => {
+              register("google");
+            }}
           >
             Google
           </Button>
@@ -70,6 +89,9 @@ const Register: NextPage = (props: PaperProps) => {
             variant="light"
             radius="xl"
             size="xs"
+            onClick={() => {
+              register("github");
+            }}
           >
             Github
           </Button>
