@@ -16,14 +16,8 @@ import { GoogleSvg, GithubSvg } from "$svg";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import wait from "wait";
-import {
-  useCreateUserWithEmailAndPassword,
-  useSignInWithGithub,
-  useSignInWithGoogle,
-} from "react-firebase-hooks/auth";
-import { auth } from "$app/firebase";
 import { showNotification } from "@mantine/notifications";
+import { useRegister } from "$hooks";
 
 interface RegisterForm {
   name: string;
@@ -32,10 +26,7 @@ interface RegisterForm {
 }
 
 const Register: NextPage = (props: PaperProps) => {
-  const [registerWithGoogle, , , googleError] = useSignInWithGoogle(auth);
-  const [registerWithGithub, , , githubError] = useSignInWithGithub(auth);
-  const [registerWithEmailAndPassword, , , registerError] =
-    useCreateUserWithEmailAndPassword(auth);
+  const [register, error, errorMessage] = useRegister();
   const [loading, setLoading] = useState(false);
 
   const form = useForm<RegisterForm>({
@@ -56,34 +47,22 @@ const Register: NextPage = (props: PaperProps) => {
   });
 
   useEffect(() => {
-    if (googleError) {
+    if (error) {
       showNotification({
         title: "Error",
-        message: "Un error ha ocurrido al registrarse con tu cuenta de Google",
+        message: errorMessage,
         color: "red",
       });
     }
-
-    if (githubError) {
-      showNotification({
-        title: "Error",
-        message: "Un error ha ocurrido al registrarse con tu cuenta de Github",
-        color: "red",
-      });
-    }
-
-    if (registerError) {
-      showNotification({
-        title: "Error",
-        message: "Un error ha ocurrido al registrarse con correo y contraseña",
-        color: "red",
-      });
-    }
-  }, [googleError, githubError, registerError]);
+  }, [error, errorMessage]);
 
   const onSubmit = async (values: RegisterForm) => {
     setLoading(true);
-    await registerWithEmailAndPassword(values.email, values.password);
+    await register("emailAndPassword", {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    });
     setLoading(false);
   };
 
@@ -100,7 +79,7 @@ const Register: NextPage = (props: PaperProps) => {
             radius="xl"
             size="xs"
             onClick={() => {
-              registerWithGoogle();
+              register("google");
             }}
           >
             Google
@@ -111,7 +90,7 @@ const Register: NextPage = (props: PaperProps) => {
             radius="xl"
             size="xs"
             onClick={() => {
-              registerWithGithub();
+              register("github");
             }}
           >
             Github

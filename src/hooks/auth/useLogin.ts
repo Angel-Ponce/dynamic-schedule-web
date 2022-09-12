@@ -64,7 +64,7 @@ const useLogin = (): [
       );
     }
 
-    setError(googleError || loginError || loginError ? true : false);
+    setError(googleError || githubError || loginError ? true : false);
   }, [googleError, githubError, loginError]);
 
   useEffect(() => {
