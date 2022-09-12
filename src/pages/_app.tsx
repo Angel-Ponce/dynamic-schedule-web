@@ -6,12 +6,13 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useLocalStorage } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
+import { UserAccount } from "$types";
 
 export default function App(props: AppProps) {
   const router = useRouter();
-  const [validUser] = useLocalStorage({
-    key: "validUser",
-    defaultValue: false,
+  const [user] = useLocalStorage<null | UserAccount>({
+    key: "user",
+    defaultValue: null,
   });
   const [loadingPath, setLoadingPath] = useState(false);
   const [userTheme, setUserTheme] = useLocalStorage<ColorScheme>({
@@ -29,18 +30,18 @@ export default function App(props: AppProps) {
     });
 
     if (router.pathname == "/login" || router.pathname == "/register") {
-      if (validUser) {
+      if (user) {
         setLoadingPath(true);
         router.push("/");
       }
       return;
     }
 
-    if (!validUser) {
+    if (!user) {
       setLoadingPath(true);
       router.push("/login");
     }
-  }, [router, validUser, setLoadingPath]);
+  }, [router, user, setLoadingPath]);
 
   const { Component, pageProps } = props;
 

@@ -26,8 +26,7 @@ interface RegisterForm {
 }
 
 const Register: NextPage = (props: PaperProps) => {
-  const [register, error, errorMessage] = useRegister();
-  const [loading, setLoading] = useState(false);
+  const [register, error, errorMessage, loading] = useRegister();
 
   const form = useForm<RegisterForm>({
     initialValues: {
@@ -57,13 +56,11 @@ const Register: NextPage = (props: PaperProps) => {
   }, [error, errorMessage]);
 
   const onSubmit = async (values: RegisterForm) => {
-    setLoading(true);
     await register("emailAndPassword", {
       name: values.name,
       email: values.email,
       password: values.password,
     });
-    setLoading(false);
   };
 
   return (
