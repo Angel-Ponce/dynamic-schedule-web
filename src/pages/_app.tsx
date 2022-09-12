@@ -7,6 +7,8 @@ import { useState } from "react";
 import { NotificationsProvider } from "@mantine/notifications";
 import { getUserFromLocalStorage } from "$helpers";
 import { useUserTheme } from "$hooks";
+import { Provider } from "react-redux";
+import { defaultStore } from "$stores";
 
 export default function App(props: AppProps) {
   const router = useRouter();
@@ -43,31 +45,33 @@ export default function App(props: AppProps) {
   const { Component, pageProps } = props;
 
   return (
-    <ColorSchemeProvider
-      colorScheme={userTheme}
-      toggleColorScheme={toggleColorScheme}
-    >
-      <Head>
-        <title>Dynamic Schedule</title>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-      </Head>
-
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          /** Put your mantine theme override here */
-          colorScheme: userTheme,
-          loader: "dots",
-        }}
+    <Provider store={defaultStore}>
+      <ColorSchemeProvider
+        colorScheme={userTheme}
+        toggleColorScheme={toggleColorScheme}
       >
-        <NotificationsProvider>
-          {!mounted || loadingPath ? <></> : <Component {...pageProps} />}
-        </NotificationsProvider>
-      </MantineProvider>
-    </ColorSchemeProvider>
+        <Head>
+          <title>Dynamic Schedule</title>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width"
+          />
+        </Head>
+
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{
+            /** Put your mantine theme override here */
+            colorScheme: userTheme,
+            loader: "dots",
+          }}
+        >
+          <NotificationsProvider>
+            {!mounted || loadingPath ? <></> : <Component {...pageProps} />}
+          </NotificationsProvider>
+        </MantineProvider>
+      </ColorSchemeProvider>
+    </Provider>
   );
 }

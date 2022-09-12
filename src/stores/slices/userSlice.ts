@@ -14,12 +14,17 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<UserAccount>) => {
       state = action.payload;
+      window.localStorage.setItem("user", JSON.stringify(state));
+    },
+    resetUser: (state) => {
+      state = initialState;
+      window.localStorage.setItem("user", "undefined");
     },
   },
 });
 
-const { setUser } = userSlice.actions;
+const { setUser, resetUser } = userSlice.actions;
 
 const userReducer = userSlice.reducer;
 
-export { userReducer, setUser };
+export { userReducer, setUser, resetUser };

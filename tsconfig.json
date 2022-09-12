@@ -26,7 +26,8 @@
       "$app/firebase": ["./src/firebase/config.ts"],
       "$hooks": ["./src/hooks"],
       "$types": ["./src/types"],
-      "$stores": ["./src/stores"]
+      "$stores": ["./src/stores"],
+      "$slices/*": ["./src/stores/slices/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
