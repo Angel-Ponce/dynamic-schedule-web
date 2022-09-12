@@ -8,6 +8,7 @@ import {
 import React, { ReactNode } from "react";
 import Link from "next/link";
 import { useLocalStorage } from "@mantine/hooks";
+import { ColorScheme } from "@mantine/core";
 
 const NavbarLink: React.FC<{
   pathname: string;
@@ -16,7 +17,10 @@ const NavbarLink: React.FC<{
   color: DefaultMantineColor;
   icon: ReactNode;
 }> = ({ pathname, redirectTo, title, color, icon }) => {
-  const [userTheme] = useLocalStorage({ key: "userTheme" });
+  const [userTheme] = useLocalStorage<ColorScheme>({
+    key: "userTheme",
+    defaultValue: "light",
+  });
 
   return (
     <Link passHref href={redirectTo}>

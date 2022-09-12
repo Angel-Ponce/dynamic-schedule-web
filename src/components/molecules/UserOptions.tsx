@@ -20,6 +20,7 @@ const UserOptions: React.FC = () => {
   const [user] = useAuthState(auth);
   const [userTheme, setUserTheme] = useLocalStorage<ColorScheme>({
     key: "userTheme",
+    defaultValue: "light",
   });
   const [logout] = useLogout();
 
