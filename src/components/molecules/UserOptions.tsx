@@ -9,14 +9,13 @@ import {
   ActionIcon,
   useMantineColorScheme,
 } from "@mantine/core";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "$app/firebase";
 import React from "react";
 import { IoLogOut, IoMoon, IoSettings, IoSunny } from "react-icons/io5";
-import { useLogout, useUserTheme } from "$hooks";
+import { useLogout, useUser } from "$hooks";
+import { getUserInitials } from "$helpers";
 
 const UserOptions: React.FC = () => {
-  const [user] = useAuthState(auth);
+  const [user] = useUser();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [logout] = useLogout();
 
@@ -55,9 +54,11 @@ const UserOptions: React.FC = () => {
             })}
           >
             <Group spacing="xs" position="center">
-              <Avatar radius="xl" size="md" src={user?.photoURL} />
+              <Avatar radius="xl" size="md" src={user?.photoURL}>
+                {getUserInitials(user?.name || "User")}
+              </Avatar>
               <Stack spacing={2}>
-                <Text size="sm">{user?.displayName || "User name"}</Text>
+                <Text size="sm">{user?.name || "User name"}</Text>
                 <Text size="xs" color="dimmed">
                   {user?.email || "email"}
                 </Text>

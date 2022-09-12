@@ -1,10 +1,15 @@
 import { UserAccount } from "$types";
 
-const getUser = (): [UserAccount | "undefined", boolean, boolean] => {
+const getUser = (): [UserAccount | null, boolean, boolean] => {
   const userRef = window.localStorage.getItem("user");
-  const user = JSON.parse(JSON.stringify(userRef)) as UserAccount | "undefined";
+  let user: UserAccount | null = null;
+
+  if (userRef != null && userRef != "undefined") {
+    user = JSON.parse(userRef);
+  }
+
   const exists = userRef != null;
-  const logedIn = user != "undefined";
+  const logedIn = userRef != "undefined";
 
   return [user, exists, logedIn];
 };

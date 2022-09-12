@@ -95,6 +95,7 @@ const useRegister = (): [
         name: firebaseUser.displayName || userName,
         email: firebaseUser.email || "",
         uid: firebaseUser.uid,
+        photoURL: firebaseUser.photoURL || "",
       });
     };
 

@@ -2,14 +2,13 @@ import React, { Dispatch, SetStateAction } from "react";
 import {
   Group,
   ThemeIcon,
-  ActionIcon,
   Text,
   Header as MantineHeader,
   Center,
   MediaQuery,
   Burger,
 } from "@mantine/core";
-import { IoCalendarClear, IoMoon } from "react-icons/io5";
+import { IoCalendarClear } from "react-icons/io5";
 
 const Header: React.FC<{
   setHiddenNavbar: Dispatch<SetStateAction<boolean>>;
