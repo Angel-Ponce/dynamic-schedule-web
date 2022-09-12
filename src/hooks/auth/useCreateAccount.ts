@@ -1,3 +1,4 @@
+import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { db } from "$app/firebase";
 import { UserAccount } from "$types";
@@ -15,11 +16,12 @@ import { v4 as uuidv4 } from "uuid";
 
 const useCreateAccount = (): [
   { (user: UserAccount): Promise<void> },
-  UserAccount | null,
   boolean
 ] => {
   const [successfully, setSuccessfulyy] = useState(false);
-  const [userAccount, setUserAccount] = useState<UserAccount | null>(null);
+  const [, setUser] = useLocalStorage<undefined | UserAccount>({
+    key: "user",
+  });
 
   const validate = async (user: UserAccount) => {
     const usersRef = collection(
@@ -31,7 +33,7 @@ const useCreateAccount = (): [
 
     if (users && users.size == 1) {
       setSuccessfulyy(true);
-      setUserAccount({
+      setUser({
         uid: users.docs[0].data().uid,
         name: users.docs[0].data().name,
         email: users.docs[0].data().email,
@@ -47,7 +49,7 @@ const useCreateAccount = (): [
       uid: userUid,
     });
 
-    setUserAccount({
+    setUser({
       uid: user.name,
       name: user.email,
       email: userUid,
@@ -74,7 +76,7 @@ const useCreateAccount = (): [
     setSuccessfulyy(true);
   };
 
-  return [validate, userAccount, successfully];
+  return [validate, successfully];
 };
 
 export { useCreateAccount };

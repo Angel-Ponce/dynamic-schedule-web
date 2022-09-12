@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { auth } from "$app/firebase";
@@ -19,30 +20,26 @@ const useLogin = (): [
   string,
   boolean
 ] => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [validate, userAccount, successfully] = useCreateAccount();
+  const [validate, successfully] = useCreateAccount();
   const [loginWithGoogle, , , googleError] = useSignInWithGoogle(auth);
   const [loginWithGithub, , , githubError] = useSignInWithGithub(auth);
   const [loginWithEmailAndPassword, , , loginError] =
     useSignInWithEmailAndPassword(auth);
   const [firebaseUser] = useAuthState(auth);
-  const [, setUser] = useLocalStorage<null | UserAccount>({
-    key: "user",
-  });
 
   let login = async (type: LoginType, params?: LoginParams) => {
     setLoading(true);
     if (type == "google") {
       await loginWithGoogle();
-      setLoading(false);
       return;
     }
 
     if (type == "github") {
       await loginWithGithub();
-      setLoading(false);
       return;
     }
 
@@ -50,8 +47,6 @@ const useLogin = (): [
       params?.email || "",
       params?.password || ""
     );
-
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -59,18 +54,21 @@ const useLogin = (): [
       setErrorMessage(
         "Un error ha ocurrido al iniciar sesión con tu cuenta de Google"
       );
+      setLoading(false);
     }
 
     if (githubError) {
       setErrorMessage(
         "Un error ha ocurrido al iniciar sesión con tu cuenta de Github"
       );
+      setLoading(false);
     }
 
     if (loginError) {
       setErrorMessage(
         "Tus credenciales no son correctas o no existen en nuestros registros"
       );
+      setLoading(false);
     }
 
     setError(googleError || githubError || loginError ? true : false);
@@ -79,12 +77,12 @@ const useLogin = (): [
   useEffect(() => {
     const validateAccount = async () => {
       if (!firebaseUser) {
-        setUser(null);
         return;
       }
 
       if (successfully) {
-        setUser(userAccount);
+        await router.push("/");
+        setLoading(false);
         return;
       }
 
@@ -96,7 +94,7 @@ const useLogin = (): [
     };
 
     validateAccount();
-  }, [firebaseUser, setUser, validate, successfully, userAccount]);
+  }, [firebaseUser, validate, successfully, router]);
 
   return [login, error, errorMessage, loading];
 };
