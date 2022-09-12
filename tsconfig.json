@@ -24,7 +24,8 @@
       "$svg": ["./src/components/svg"],
       "$helpers": ["./src/helpers"],
       "$app/firebase": ["./src/firebase/config.ts"],
-      "$hooks": ["./src/hooks"]
+      "$hooks": ["./src/hooks"],
+      "$types": ["./src/types"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
