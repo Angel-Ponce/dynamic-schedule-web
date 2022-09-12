@@ -7,21 +7,16 @@ import {
   Popover,
   ThemeIcon,
   ActionIcon,
-  type ColorScheme,
+  useMantineColorScheme,
 } from "@mantine/core";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "$app/firebase";
 import React from "react";
 import { IoLogOut, IoMoon, IoSettings, IoSunny } from "react-icons/io5";
-import { useLocalStorage } from "@mantine/hooks";
-import { useLogout } from "$hooks";
+import { useLogout, useUser } from "$hooks";
+import { getUserInitials } from "$helpers";
 
 const UserOptions: React.FC = () => {
-  const [user] = useAuthState(auth);
-  const [userTheme, setUserTheme] = useLocalStorage<ColorScheme>({
-    key: "userTheme",
-    defaultValue: "light",
-  });
+  const [user] = useUser();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [logout] = useLogout();
 
   return (
@@ -29,15 +24,13 @@ const UserOptions: React.FC = () => {
       <Group position="right" spacing="xs">
         <ActionIcon
           variant="light"
-          color={userTheme == "light" ? "indigo" : "yellow"}
+          color={colorScheme == "light" ? "indigo" : "yellow"}
           onClick={() => {
-            setUserTheme((theme) => {
-              return theme == "dark" ? "light" : "dark";
-            });
+            toggleColorScheme();
           }}
           size="lg"
         >
-          {userTheme == "light" ? <IoMoon /> : <IoSunny />}
+          {colorScheme == "light" ? <IoMoon /> : <IoSunny />}
         </ActionIcon>
         <ActionIcon variant="light" color="gray">
           <IoSettings></IoSettings>
@@ -49,21 +42,23 @@ const UserOptions: React.FC = () => {
             p="md"
             sx={(theme) => ({
               backgroundColor:
-                userTheme == "light"
+                colorScheme == "light"
                   ? theme.colors.gray[0]
                   : theme.colors.gray[8],
               ":hover": {
                 backgroundColor:
-                  userTheme == "light"
+                  colorScheme == "light"
                     ? theme.colors.gray[1]
                     : theme.colors.gray[9],
               },
             })}
           >
             <Group spacing="xs" position="center">
-              <Avatar radius="xl" size="md" src={user?.photoURL} />
+              <Avatar radius="xl" size="md" src={user?.photoURL}>
+                {getUserInitials(user?.name || "User")}
+              </Avatar>
               <Stack spacing={2}>
-                <Text size="sm">{user?.displayName || "User name"}</Text>
+                <Text size="sm">{user?.name || "User name"}</Text>
                 <Text size="xs" color="dimmed">
                   {user?.email || "email"}
                 </Text>
@@ -77,7 +72,7 @@ const UserOptions: React.FC = () => {
               width: "100%",
               "&:hover": {
                 backgroundColor:
-                  userTheme == "light"
+                  colorScheme == "light"
                     ? theme.colors.gray[1]
                     : theme.colors.gray[9],
               },

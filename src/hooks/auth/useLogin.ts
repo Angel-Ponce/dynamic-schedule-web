@@ -90,6 +90,7 @@ const useLogin = (): [
         name: firebaseUser.displayName || "User",
         email: firebaseUser.email || "",
         uid: firebaseUser.uid,
+        photoURL: firebaseUser.photoURL || "",
       });
     };
 

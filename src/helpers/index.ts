@@ -1,3 +1,4 @@
 import { getUser } from "./getUser";
+import { getUserInitials } from "./getUserInitials";
 
-export { getUser };
+export { getUser, getUserInitials };

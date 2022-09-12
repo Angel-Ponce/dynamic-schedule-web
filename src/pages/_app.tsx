@@ -1,21 +1,18 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { type ColorScheme, MantineProvider } from "@mantine/core";
+import { MantineProvider, ColorSchemeProvider } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useLocalStorage } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
 import { getUser } from "$helpers";
+import { useUserTheme } from "$hooks";
 
 export default function App(props: AppProps) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [loadingPath, setLoadingPath] = useState(false);
-  const [userTheme, setUserTheme] = useLocalStorage<ColorScheme>({
-    key: "userTheme",
-    defaultValue: "light",
-  });
+  const [userTheme, toggleColorScheme] = useUserTheme();
 
   useEffect(() => {
     const redirect = async () => {
@@ -46,7 +43,10 @@ export default function App(props: AppProps) {
   const { Component, pageProps } = props;
 
   return (
-    <>
+    <ColorSchemeProvider
+      colorScheme={userTheme}
+      toggleColorScheme={toggleColorScheme}
+    >
       <Head>
         <title>Dynamic Schedule</title>
         <meta
@@ -68,6 +68,6 @@ export default function App(props: AppProps) {
           {!mounted || loadingPath ? <></> : <Component {...pageProps} />}
         </NotificationsProvider>
       </MantineProvider>
-    </>
+    </ColorSchemeProvider>
   );
 }
