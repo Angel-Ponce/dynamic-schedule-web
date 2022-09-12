@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useState } from "react";
 import { NotificationsProvider } from "@mantine/notifications";
-import { getUser } from "$helpers";
+import { getUserFromLocalStorage } from "$helpers";
 import { useUserTheme } from "$hooks";
 
 export default function App(props: AppProps) {
@@ -20,7 +20,7 @@ export default function App(props: AppProps) {
         setLoadingPath(false);
       });
 
-      let [, exists, logedIn] = getUser();
+      let [, exists, logedIn] = getUserFromLocalStorage();
       if (router.pathname == "/login" || router.pathname == "/register") {
         if (exists && logedIn) {
           setLoadingPath(true);

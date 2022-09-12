@@ -1,6 +1,6 @@
 import { UserAccount } from "$types";
 
-const getUser = (): [UserAccount | null, boolean, boolean] => {
+const getUserFromLocalStorage = (): [UserAccount | null, boolean, boolean] => {
   const userRef = window.localStorage.getItem("user");
   let user: UserAccount | null = null;
 
@@ -14,4 +14,4 @@ const getUser = (): [UserAccount | null, boolean, boolean] => {
   return [user, exists, logedIn];
 };
 
-export { getUser };
+export { getUserFromLocalStorage };
