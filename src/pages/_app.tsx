@@ -6,14 +6,11 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useLocalStorage } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
-import { UserAccount } from "$types";
+import { getUser } from "$helpers";
 
 export default function App(props: AppProps) {
   const router = useRouter();
-  const [user] = useLocalStorage<null | UserAccount>({
-    key: "user",
-    defaultValue: null,
-  });
+  const [mounted, setMounted] = useState(false);
   const [loadingPath, setLoadingPath] = useState(false);
   const [userTheme, setUserTheme] = useLocalStorage<ColorScheme>({
     key: "userTheme",
@@ -21,27 +18,30 @@ export default function App(props: AppProps) {
   });
 
   useEffect(() => {
-    if (!userTheme) setUserTheme("light");
-  }, [userTheme, setUserTheme]);
+    const redirect = async () => {
+      router.events.on("routeChangeComplete", () => {
+        setLoadingPath(false);
+      });
 
-  useEffect(() => {
-    router.events.on("routeChangeComplete", () => {
-      setLoadingPath(false);
-    });
-
-    if (router.pathname == "/login" || router.pathname == "/register") {
-      if (user) {
-        setLoadingPath(true);
-        router.push("/");
+      let [, exists, logedIn] = getUser();
+      if (router.pathname == "/login" || router.pathname == "/register") {
+        if (exists && logedIn) {
+          setLoadingPath(true);
+          await router.push("/");
+        }
+        setMounted(true);
+        return;
       }
-      return;
-    }
 
-    if (!user) {
-      setLoadingPath(true);
-      router.push("/login");
-    }
-  }, [router, user, setLoadingPath]);
+      if (!exists || !logedIn) {
+        setLoadingPath(true);
+        await router.push("/login");
+      }
+      setMounted(true);
+    };
+
+    redirect();
+  }, [router, setMounted, setLoadingPath]);
 
   const { Component, pageProps } = props;
 
@@ -65,7 +65,7 @@ export default function App(props: AppProps) {
         }}
       >
         <NotificationsProvider>
-          {loadingPath ? <></> : <Component {...pageProps} />}
+          {!mounted || loadingPath ? <></> : <Component {...pageProps} />}
         </NotificationsProvider>
       </MantineProvider>
     </>

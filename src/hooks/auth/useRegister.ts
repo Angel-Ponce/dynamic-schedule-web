@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 export {};
 import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useState } from "react";
@@ -20,31 +21,28 @@ const useRegister = (): [
   string,
   boolean
 ] => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [userName, setUserName] = useState("");
-  const [validate, userAccount, successfully] = useCreateAccount();
+  const [validate, successfully] = useCreateAccount();
   const [registerWithGoogle, , , googleError] = useSignInWithGoogle(auth);
   const [registerWithGithub, , , githubError] = useSignInWithGithub(auth);
   const [registerWithEmailAndPassword, , , registerError] =
     useCreateUserWithEmailAndPassword(auth);
   const [firebaseUser] = useAuthState(auth);
-  const [, setUser] = useLocalStorage<null | UserAccount>({
-    key: "user",
-  });
 
   let register = async (type: RegisterType, params?: RegisterParams) => {
     setLoading(true);
+
     if (type == "google") {
       await registerWithGoogle();
-      setLoading(false);
       return;
     }
 
     if (type == "github") {
       await registerWithGithub();
-      setLoading(false);
       return;
     }
 
@@ -54,8 +52,6 @@ const useRegister = (): [
       params?.email || "",
       params?.password || ""
     );
-
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -63,18 +59,21 @@ const useRegister = (): [
       setErrorMessage(
         "Un error ha ocurrido al registrarte con tu cuenta de Google"
       );
+      setLoading(false);
     }
 
     if (githubError) {
       setErrorMessage(
         "Un error ha ocurrido al registrarte con tu cuenta de Github"
       );
+      setLoading(false);
     }
 
     if (registerError) {
       setErrorMessage(
         "Un error ha ocurrido al registrarse con correo y contraseña"
       );
+      setLoading(false);
     }
 
     setError(googleError || githubError || registerError ? true : false);
@@ -83,12 +82,12 @@ const useRegister = (): [
   useEffect(() => {
     const validateAccount = async () => {
       if (!firebaseUser) {
-        setUser(null);
         return;
       }
 
       if (successfully) {
-        setUser(userAccount);
+        await router.push("/");
+        setLoading(false);
         return;
       }
 
@@ -100,7 +99,7 @@ const useRegister = (): [
     };
 
     validateAccount();
-  }, [firebaseUser, setUser, validate, successfully, userName, userAccount]);
+  }, [firebaseUser, validate, successfully, userName, router]);
 
   return [register, error, errorMessage, loading];
 };
