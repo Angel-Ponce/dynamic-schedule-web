@@ -13,7 +13,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "$app/firebase";
 import React from "react";
 import { IoLogOut, IoMoon, IoSettings, IoSunny } from "react-icons/io5";
-import { signOut } from "firebase/auth";
 import { useLocalStorage } from "@mantine/hooks";
 import { useLogout } from "$hooks";
 
