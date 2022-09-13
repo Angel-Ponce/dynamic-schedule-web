@@ -13,15 +13,15 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
+import { useAppDispatch } from "../useAppDispatch";
+import { setUser } from "$slices/userSlice";
 
 const useCreateAccount = (): [
   { (user: UserAccount): Promise<void> },
   boolean
 ] => {
   const [successfully, setSuccessfully] = useState(false);
-  const [, setUser] = useLocalStorage<undefined | UserAccount>({
-    key: "user",
-  });
+  const disptach = useAppDispatch();
 
   const validate = async (user: UserAccount) => {
     const usersRef = collection(
@@ -33,12 +33,15 @@ const useCreateAccount = (): [
 
     if (users && users.size == 1) {
       setSuccessfully(true);
-      setUser({
-        uid: users.docs[0].data().uid,
-        name: users.docs[0].data().name,
-        email: users.docs[0].data().email,
-        photoURL: users.docs[0].data().photoURL,
-      });
+
+      disptach(
+        setUser({
+          uid: users.docs[0].data().uid,
+          name: users.docs[0].data().name,
+          email: users.docs[0].data().email,
+          photoURL: users.docs[0].data().photoURL,
+        })
+      );
       return;
     }
 
@@ -51,12 +54,14 @@ const useCreateAccount = (): [
       photoURL: user.photoURL,
     });
 
-    setUser({
-      uid: user.name,
-      name: user.email,
-      email: userUid,
-      photoURL: user.photoURL,
-    });
+    disptach(
+      setUser({
+        uid: user.name,
+        name: user.email,
+        email: userUid,
+        photoURL: user.photoURL,
+      })
+    );
 
     let scheduleUid = uuidv4();
 

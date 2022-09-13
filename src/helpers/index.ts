@@ -1,4 +1,4 @@
-import { getUser } from "./getUser";
+import { getUserFromLocalStorage } from "./getUserFromLocalStorage";
 import { getUserInitials } from "./getUserInitials";
 
-export { getUser, getUserInitials };
+export { getUserFromLocalStorage, getUserInitials };
