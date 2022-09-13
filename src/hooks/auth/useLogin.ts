@@ -9,7 +9,6 @@ import {
   useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
 import { useCreateAccount } from "./useCreateAccount";
-import { UserAccount } from "$types";
 
 type LoginType = "google" | "github" | "emailAndPassword";
 type LoginParams = { email: string; password: string };

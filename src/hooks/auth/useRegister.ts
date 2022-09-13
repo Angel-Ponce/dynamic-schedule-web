@@ -13,7 +13,6 @@ import {
 type RegisterType = "google" | "github" | "emailAndPassword";
 type RegisterParams = { name: string; email: string; password: string };
 import { useCreateAccount } from "./useCreateAccount";
-import { UserAccount } from "$types";
 
 const useRegister = (): [
   { (type: RegisterType, params?: RegisterParams): Promise<void> },

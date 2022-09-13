@@ -56,9 +56,9 @@ const useCreateAccount = (): [
 
     disptach(
       setUser({
-        uid: user.name,
-        name: user.email,
-        email: userUid,
+        uid: userUid,
+        name: user.name,
+        email: user.email,
         photoURL: user.photoURL,
       })
     );
