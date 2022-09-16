@@ -1,5 +1,6 @@
 import React from "react";
-import { Drawer } from "@mantine/core";
+import { Drawer, Checkbox, Stack, Select, Group, Text } from "@mantine/core";
+import { IoLanguageOutline } from "react-icons/io5";
 
 const Settings: React.FC<{
   opened: boolean;
@@ -16,7 +17,39 @@ const Settings: React.FC<{
       overlayBlur={4}
       overlayOpacity={0.5}
     >
-      Configuration go here
+      <Stack spacing="xl">
+        <Select
+          label="Idioma"
+          data={[{ value: "es", label: "Español" }]}
+          transition="slide-down"
+          icon={<IoLanguageOutline />}
+          value="es"
+        />
+
+        <Group position="left" sx={{ cursor: "pointer" }}>
+          <Checkbox id="hiddeSaturday" label="Ocultar día Sábado" />
+        </Group>
+
+        <Group position="left" sx={{ cursor: "pointer" }}>
+          <Checkbox id="hiddeSunday" label="Ocultar día Domingo" />
+        </Group>
+
+        <Group position="left" sx={{ cursor: "pointer" }}>
+          <Checkbox id="hiddeWeek" label="Ocultar Lunes a Viernes" />
+        </Group>
+
+        <Group position="left" sx={{ cursor: "pointer" }}>
+          <Checkbox id="sendNotifications" label="Notificaciones push" />
+        </Group>
+
+        <Group position="left" sx={{ cursor: "pointer" }}>
+          <Checkbox
+            id="sendEmailNotifications"
+            label="Notificaciones por correo"
+            disabled
+          />
+        </Group>
+      </Stack>
     </Drawer>
   );
 };
