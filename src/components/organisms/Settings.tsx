@@ -1,6 +1,15 @@
 import React from "react";
-import { Drawer, Checkbox, Stack, Select, Group, Text } from "@mantine/core";
-import { IoLanguageOutline } from "react-icons/io5";
+import {
+  Drawer,
+  Checkbox,
+  Stack,
+  Select,
+  Button,
+  Group,
+  Tooltip,
+  Box,
+} from "@mantine/core";
+import { IoLanguageOutline, IoHelpCircle } from "react-icons/io5";
 
 const Settings: React.FC<{
   opened: boolean;
@@ -25,29 +34,39 @@ const Settings: React.FC<{
           icon={<IoLanguageOutline />}
           value="es"
         />
-
-        <Group position="left" sx={{ cursor: "pointer" }}>
-          <Checkbox id="hiddeSaturday" label="Ocultar día Sábado" />
-        </Group>
-
-        <Group position="left" sx={{ cursor: "pointer" }}>
-          <Checkbox id="hiddeSunday" label="Ocultar día Domingo" />
-        </Group>
-
-        <Group position="left" sx={{ cursor: "pointer" }}>
-          <Checkbox id="hiddeWeek" label="Ocultar Lunes a Viernes" />
-        </Group>
-
-        <Group position="left" sx={{ cursor: "pointer" }}>
+        <Checkbox id="hiddeSaturday" label="Ocultar día Sábado" />
+        <Checkbox id="hiddeSunday" label="Ocultar día Domingo" />
+        <Checkbox id="hiddeWeek" label="Ocultar Lunes a Viernes" />
+        <Group align="center" spacing={4}>
           <Checkbox id="sendNotifications" label="Notificaciones push" />
+          <Tooltip
+            label="Envía una alerta cuando un curso se aproxima"
+            position="top"
+            withArrow
+          >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <IoHelpCircle width={18} height={18} />
+            </Box>
+          </Tooltip>
         </Group>
-
-        <Group position="left" sx={{ cursor: "pointer" }}>
+        <Group align="center" spacing={4}>
           <Checkbox
             id="sendEmailNotifications"
             label="Notificaciones por correo"
             disabled
           />
+          <Tooltip
+            label="Envía un correo cuando un curso se aproxima"
+            position="top"
+            withArrow
+          >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <IoHelpCircle width={18} height={18} />
+            </Box>
+          </Tooltip>
+        </Group>
+        <Group position="right">
+          <Button sx={{ width: "fit-content" }}>Guardar</Button>
         </Group>
       </Stack>
     </Drawer>
