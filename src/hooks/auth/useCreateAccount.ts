@@ -62,6 +62,9 @@ const useCreateAccount = (): [
       hiddeSaturday: false,
       hiddeSunday: false,
       hiddeWeek: false,
+      sendNotifications: false,
+      sendEmailNotifications: false,
+      language: "es",
     });
 
     let notesUid = uuidv4();
