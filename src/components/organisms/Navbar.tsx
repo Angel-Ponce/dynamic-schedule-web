@@ -16,7 +16,7 @@ const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
     <MantineNavbar
       p="xs"
       width={{ sm: 250 }}
-      hiddenBreakpoint="md"
+      hiddenBreakpoint="sm"
       hidden={hidden}
     >
       <MantineNavbar.Section grow>

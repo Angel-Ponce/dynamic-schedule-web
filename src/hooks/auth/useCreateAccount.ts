@@ -54,15 +54,6 @@ const useCreateAccount = (): [
       photoURL: user.photoURL,
     });
 
-    disptach(
-      setUser({
-        uid: userUid,
-        name: user.name,
-        email: user.email,
-        photoURL: user.photoURL,
-      })
-    );
-
     let scheduleUid = uuidv4();
 
     await setDoc(doc(db, `users/${userUid}/schedules`, scheduleUid), {
@@ -71,15 +62,31 @@ const useCreateAccount = (): [
       hiddeSaturday: false,
       hiddeSunday: false,
       hiddeWeek: false,
+      sendNotifications: false,
+      sendEmailNotifications: false,
+      language: "es",
     });
 
     let notesUid = uuidv4();
 
-    await setDoc(doc(db, `users/${userUid}/notes`, notesUid), {});
+    await setDoc(doc(db, `users/${userUid}/notes`, notesUid), {
+      uid: notesUid,
+    });
 
-    let todosUuid = uuidv4();
+    let todosUid = uuidv4();
 
-    await setDoc(doc(db, `users/${userUid}/todos`, todosUuid), {});
+    await setDoc(doc(db, `users/${userUid}/todos`, todosUid), {
+      uid: todosUid,
+    });
+
+    disptach(
+      setUser({
+        uid: userUid,
+        name: user.name,
+        email: user.email,
+        photoURL: user.photoURL,
+      })
+    );
 
     setSuccessfully(true);
   };

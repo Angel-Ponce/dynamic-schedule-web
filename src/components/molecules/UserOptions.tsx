@@ -9,15 +9,17 @@ import {
   ActionIcon,
   useMantineColorScheme,
 } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import { IoLogOut, IoMoon, IoSettings, IoSunny } from "react-icons/io5";
 import { useAppSelector, useLogout } from "$hooks";
 import { getUserInitials } from "$helpers";
+import { Settings } from "$organisms";
 
 const UserOptions: React.FC = () => {
   const user = useAppSelector((state) => state.user);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [logout] = useLogout();
+  const [opened, setOpened] = useState(false);
 
   return (
     <Stack spacing="xs">
@@ -32,9 +34,15 @@ const UserOptions: React.FC = () => {
         >
           {colorScheme == "light" ? <IoMoon /> : <IoSunny />}
         </ActionIcon>
-        <ActionIcon variant="light" color="gray">
+        <ActionIcon
+          variant="light"
+          color="gray"
+          size="lg"
+          onClick={() => setOpened(true)}
+        >
           <IoSettings></IoSettings>
         </ActionIcon>
+        <Settings opened={opened} setOpened={setOpened} />
       </Group>
       <Popover position="top" transition="slide-up" width="target">
         <Popover.Target>
