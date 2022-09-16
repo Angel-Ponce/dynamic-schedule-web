@@ -27,7 +27,7 @@ const Header: React.FC<{
             </Text>
           </Group>
           <Group position="right">
-            <MediaQuery largerThan="md" styles={{ display: "none" }}>
+            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Burger
                 opened={!hiddenNavbar}
                 onClick={() => setHiddenNavbar((hiddenNavbar) => !hiddenNavbar)}
