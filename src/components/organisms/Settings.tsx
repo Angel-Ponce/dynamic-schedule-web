@@ -8,13 +8,16 @@ import {
   Group,
   Tooltip,
   Box,
+  useMantineColorScheme,
 } from "@mantine/core";
-import { IoLanguageOutline, IoHelpCircle } from "react-icons/io5";
+import { IoLanguageOutline, IoHelpCircle, IoContrast } from "react-icons/io5";
 
 const Settings: React.FC<{
   opened: boolean;
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ opened, setOpened }) => {
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+
   return (
     <Drawer
       opened={opened}
@@ -26,7 +29,7 @@ const Settings: React.FC<{
       overlayBlur={4}
       overlayOpacity={0.5}
     >
-      <Stack spacing="xl">
+      <Stack>
         <Select
           label="Idioma"
           data={[{ value: "es", label: "Español" }]}
@@ -34,40 +37,55 @@ const Settings: React.FC<{
           icon={<IoLanguageOutline />}
           value="es"
         />
-        <Checkbox id="hiddeSaturday" label="Ocultar día Sábado" />
-        <Checkbox id="hiddeSunday" label="Ocultar día Domingo" />
-        <Checkbox id="hiddeWeek" label="Ocultar Lunes a Viernes" />
-        <Group align="center" spacing={4}>
-          <Checkbox id="sendNotifications" label="Notificaciones push" />
-          <Tooltip
-            label="Envía una alerta cuando un curso se aproxima"
-            position="top"
-            withArrow
-          >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <IoHelpCircle width={18} height={18} />
-            </Box>
-          </Tooltip>
-        </Group>
-        <Group align="center" spacing={4}>
-          <Checkbox
-            id="sendEmailNotifications"
-            label="Notificaciones por correo"
-            disabled
-          />
-          <Tooltip
-            label="Envía un correo cuando un curso se aproxima"
-            position="top"
-            withArrow
-          >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <IoHelpCircle width={18} height={18} />
-            </Box>
-          </Tooltip>
-        </Group>
-        <Group position="right">
-          <Button sx={{ width: "fit-content" }}>Guardar</Button>
-        </Group>
+        <Select
+          label="Tema"
+          data={[
+            { value: "light", label: "Claro" },
+            { value: "dark", label: "Oscuro" },
+          ]}
+          transition="slide-down"
+          icon={<IoContrast />}
+          value={colorScheme}
+          onChange={(value) => {
+            if (value == "dark" || value == "light") toggleColorScheme(value);
+          }}
+        />
+        <Stack spacing="xl" mt="md">
+          <Checkbox id="hiddeSaturday" label="Ocultar día Sábado" />
+          <Checkbox id="hiddeSunday" label="Ocultar día Domingo" />
+          <Checkbox id="hiddeWeek" label="Ocultar Lunes a Viernes" />
+          <Group align="center" spacing={4}>
+            <Checkbox id="sendNotifications" label="Notificaciones push" />
+            <Tooltip
+              label="Envía una alerta cuando un curso se aproxima"
+              position="top"
+              withArrow
+            >
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <IoHelpCircle width={18} height={18} />
+              </Box>
+            </Tooltip>
+          </Group>
+          <Group align="center" spacing={4}>
+            <Checkbox
+              id="sendEmailNotifications"
+              label="Notificaciones por correo"
+              disabled
+            />
+            <Tooltip
+              label="Envía un correo cuando un curso se aproxima"
+              position="top"
+              withArrow
+            >
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <IoHelpCircle width={18} height={18} />
+              </Box>
+            </Tooltip>
+          </Group>
+          <Group position="right">
+            <Button sx={{ width: "fit-content" }}>Guardar</Button>
+          </Group>
+        </Stack>
       </Stack>
     </Drawer>
   );
