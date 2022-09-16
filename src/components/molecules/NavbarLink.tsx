@@ -8,7 +8,6 @@ import {
 } from "@mantine/core";
 import React, { ReactNode } from "react";
 import Link from "next/link";
-import { useUserTheme } from "$hooks";
 
 const NavbarLink: React.FC<{
   pathname: string;
