@@ -65,6 +65,16 @@ const Index: NextPage = () => {
               size={7}
               columns={columns.filter((_, index) => index != 0)}
             />
+            <ScrollArea.Autosize
+              maxHeight={330}
+              styles={{
+                scrollbar: {
+                  maxWidth: 8,
+                },
+              }}
+            >
+              {/* Content shedule */}
+            </ScrollArea.Autosize>
           </ScrollArea>
         </Box>
       </Center>
