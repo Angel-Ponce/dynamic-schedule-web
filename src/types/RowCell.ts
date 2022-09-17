@@ -1,7 +1,9 @@
 interface RowCell {
   uid: string;
   title: string;
-  color: string;
+  bgColor: string;
+  textColor: string;
+  order: number;
   href: string;
   professor: string;
   rowUid: string;
