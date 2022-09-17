@@ -1,4 +1,4 @@
-import { AppShell, Grid, Box, Text, Stack, Group, Center } from "@mantine/core";
+import { AppShell, ScrollArea, Center, Box } from "@mantine/core";
 import type { NextPage } from "next";
 import { Navbar, Header } from "$organisms";
 import { useState } from "react";
@@ -52,12 +52,20 @@ const Index: NextPage = () => {
           <Box sx={{ minWidth: "135px" }}>
             <RowCell row={columns[0]} />
           </Box>
-          <Box sx={{ flexGrow: 1, overflowX: "auto" }}>
+          <ScrollArea
+            scrollHideDelay={0}
+            sx={{ flexGrow: 1 }}
+            styles={{
+              scrollbar: {
+                maxHeight: 8,
+              },
+            }}
+          >
             <ScheduleRow
               size={7}
               columns={columns.filter((_, index) => index != 0)}
             />
-          </Box>
+          </ScrollArea>
         </Box>
       </Center>
     </AppShell>
