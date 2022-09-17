@@ -7,6 +7,7 @@ interface RowCell {
   href: string;
   professor: string;
   rowUid: string;
+  type: "hour" | "header" | "course";
 }
 
 export type { RowCell };

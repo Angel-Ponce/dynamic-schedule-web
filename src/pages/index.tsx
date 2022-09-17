@@ -2,8 +2,15 @@ import { AppShell, Grid, Box, Text, Stack, Group, Center } from "@mantine/core";
 import type { NextPage } from "next";
 import { Navbar, Header } from "$organisms";
 import { useState } from "react";
+import { RowCell } from "$atoms";
+import { v4 as uuidv4 } from "uuid";
+import { type RowCell as RowCellType } from "$types";
+import { ScheduleRow } from "$molecules";
 
-const columns = [
+const rowUid = uuidv4();
+
+const headers = [
+  "Hora",
   "Lunes",
   "Martes",
   "Miércoles",
@@ -12,6 +19,18 @@ const columns = [
   "Sábado",
   "Domingo",
 ];
+
+const columns: RowCellType[] = headers.map((header, index) => ({
+  uid: uuidv4(),
+  bgColor: "",
+  href: "",
+  order: index,
+  professor: "",
+  rowUid: rowUid,
+  textColor: "",
+  title: header,
+  type: "header",
+}));
 
 const Index: NextPage = () => {
   let [hidden, setHidden] = useState(true);
@@ -31,29 +50,13 @@ const Index: NextPage = () => {
           }}
         >
           <Box sx={{ minWidth: "135px" }}>
-            <Box sx={{ width: "100%", border: "1px solid lightgray" }} py="xs">
-              <Text align="center">Hora</Text>
-            </Box>
+            <RowCell row={columns[0]} />
           </Box>
           <Box sx={{ flexGrow: 1, overflowX: "auto" }}>
-            <Grid columns={7} gutter={0} sx={{ flexWrap: "nowrap" }}>
-              {columns.map((col) => {
-                return (
-                  <Grid.Col
-                    key={`column-${col}`}
-                    span={1}
-                    sx={{ minWidth: "130px" }}
-                  >
-                    <Box
-                      py="xs"
-                      sx={{ width: "100%", border: "1px solid lightgray" }}
-                    >
-                      <Text align="center">{col}</Text>
-                    </Box>
-                  </Grid.Col>
-                );
-              })}
-            </Grid>
+            <ScheduleRow
+              size={7}
+              columns={columns.filter((_, index) => index != 0)}
+            />
           </Box>
         </Box>
       </Center>
