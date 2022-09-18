@@ -17,8 +17,8 @@ const RowCell: React.FC<{
         backgroundColor:
           cell.type != "course"
             ? colorScheme == "light"
-              ? theme.colors.gray[1]
-              : theme.colors.gray[9]
+              ? theme.colors.gray[0]
+              : theme.colors.gray[8]
             : cell.bgColor
             ? cell.bgColor
             : "transparent",
