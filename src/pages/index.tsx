@@ -1,4 +1,4 @@
-import { AppShell, ScrollArea, Center, Box } from "@mantine/core";
+import { AppShell, ScrollArea, Center, Box, Stack } from "@mantine/core";
 import type { NextPage } from "next";
 import { Navbar, Header } from "$organisms";
 import { useState } from "react";
@@ -42,38 +42,31 @@ const Index: NextPage = () => {
       header={<Header setHiddenNavbar={setHidden} hiddenNavbar={hidden} />}
     >
       <Center sx={{ width: "100%" }}>
-        <Box
+        <ScrollArea
           sx={{
             width: "100%",
             maxWidth: "1300px",
             display: "flex",
+            flexDirection: "column",
           }}
         >
-          <Box sx={{ minWidth: "135px" }}>
-            <RowCell cell={headerRow[0]} />
+          <Box sx={{ display: "flex", width: "100%" }}>
+            <Box sx={{ minWidth: "135px" }}>
+              {/* Cell hour header */}
+              <RowCell cell={headerRow[0]} />
+            </Box>
+            <Box sx={{ flexGrow: 1 }}>
+              {/* Cell day headers */}
+              <ScheduleRow size={7} row={headerRow} />
+            </Box>
           </Box>
-          <ScrollArea
-            scrollHideDelay={0}
-            sx={{ flexGrow: 1 }}
-            styles={{
-              scrollbar: {
-                maxHeight: 8,
-              },
-            }}
-          >
-            <ScheduleRow size={7} row={headerRow} />
-            <ScrollArea.Autosize
-              maxHeight={330}
-              styles={{
-                scrollbar: {
-                  maxWidth: 8,
-                },
-              }}
-            >
-              {/* Content shedule */}
-            </ScrollArea.Autosize>
-          </ScrollArea>
-        </Box>
+          <ScrollArea.Autosize maxHeight="calc(100vh - 250px)">
+            <Box sx={{ display: "flex", width: "100%" }}>
+              <Box sx={{ minWidth: "135px" }}>{/* Cell hour go here */}</Box>
+              <Box sx={{ flexGrow: 1 }}>{/* Cell courses go here */}</Box>
+            </Box>
+          </ScrollArea.Autosize>
+        </ScrollArea>
       </Center>
     </AppShell>
   );

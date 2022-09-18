@@ -15,11 +15,17 @@ const RowCell: React.FC<{
         borderColor:
           colorScheme == "light" ? theme.colors.gray[1] : theme.colors.gray[9],
         backgroundColor:
-          colorScheme == "light" ? theme.colors.gray[1] : theme.colors.gray[9],
+          cell.type != "course"
+            ? colorScheme == "light"
+              ? theme.colors.gray[1]
+              : theme.colors.gray[9]
+            : cell.bgColor
+            ? cell.bgColor
+            : "transparent",
       })}
-      py="xs"
+      py={8}
     >
-      <Text align="center" weight={cell.type == "header" ? 600 : 400}>
+      <Text size="sm" align="center" weight={cell.type == "header" ? 600 : 400}>
         {cell.title}
       </Text>
     </Box>
