@@ -3,23 +3,25 @@ import { Grid } from "@mantine/core";
 import { RowCell } from "$atoms";
 import React from "react";
 
-const ScheduleRow: React.FC<{ columns: RowCellType[]; size: number }> = ({
-  columns,
+const ScheduleRow: React.FC<{ row: RowCellType[]; size: number }> = ({
+  row,
   size,
 }) => {
   return (
     <Grid columns={size} gutter={0} sx={{ flexWrap: "nowrap" }}>
-      {columns.map((col) => {
-        return (
-          <Grid.Col
-            key={`column-${col.uid}`}
-            span={1}
-            sx={{ minWidth: "130px" }}
-          >
-            <RowCell row={col} />
-          </Grid.Col>
-        );
-      })}
+      {row
+        .filter((cell) => cell.order != 0)
+        .map((cell) => {
+          return (
+            <Grid.Col
+              key={`column-${cell.uid}`}
+              span={1}
+              sx={{ minWidth: "130px" }}
+            >
+              <RowCell cell={cell} />
+            </Grid.Col>
+          );
+        })}
     </Grid>
   );
 };

@@ -20,7 +20,7 @@ const headers = [
   "Domingo",
 ];
 
-const columns: RowCellType[] = headers.map((header, index) => ({
+const headerRow: RowCellType[] = headers.map((header, index) => ({
   uid: uuidv4(),
   bgColor: "",
   href: "",
@@ -50,7 +50,7 @@ const Index: NextPage = () => {
           }}
         >
           <Box sx={{ minWidth: "135px" }}>
-            <RowCell row={columns[0]} />
+            <RowCell cell={headerRow[0]} />
           </Box>
           <ScrollArea
             scrollHideDelay={0}
@@ -61,10 +61,7 @@ const Index: NextPage = () => {
               },
             }}
           >
-            <ScheduleRow
-              size={7}
-              columns={columns.filter((_, index) => index != 0)}
-            />
+            <ScheduleRow size={7} row={headerRow} />
             <ScrollArea.Autosize
               maxHeight={330}
               styles={{
