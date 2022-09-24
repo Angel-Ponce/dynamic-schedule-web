@@ -11,7 +11,7 @@ const RowCell: React.FC<{
     <Box
       sx={(theme) => ({
         width: "100%",
-        border: "2px solid",
+        border: "1px solid",
         borderColor:
           colorScheme == "light" ? theme.colors.gray[1] : theme.colors.gray[9],
         backgroundColor:

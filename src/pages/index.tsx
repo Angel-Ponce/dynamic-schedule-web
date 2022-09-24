@@ -6,6 +6,7 @@ import {
   Stack,
   Button,
   Group,
+  useMantineColorScheme,
 } from "@mantine/core";
 import type { NextPage } from "next";
 import { Navbar, Header } from "$organisms";
@@ -77,6 +78,7 @@ const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
 
 const Index: NextPage = () => {
   let [hidden, setHidden] = useState(true);
+  const { colorScheme } = useMantineColorScheme();
 
   return (
     <AppShell
@@ -93,8 +95,27 @@ const Index: NextPage = () => {
             flexDirection: "column",
           }}
         >
-          <Box sx={{ display: "flex", width: "100%" }}>
-            <Box sx={{ minWidth: "135px" }}>
+          <Box
+            sx={(theme) => ({
+              display: "flex",
+              width: "100%",
+              borderBottom: "4px solid",
+              borderColor:
+                colorScheme == "light"
+                  ? theme.colors.gray[1]
+                  : theme.colors.gray[9],
+            })}
+          >
+            <Box
+              sx={(theme) => ({
+                minWidth: "135px",
+                borderRight: "4px solid",
+                borderColor:
+                  colorScheme == "light"
+                    ? theme.colors.gray[1]
+                    : theme.colors.gray[9],
+              })}
+            >
               {/* Cell hour header */}
               <RowCell cell={headerRow[0]} />
             </Box>
@@ -105,7 +126,16 @@ const Index: NextPage = () => {
           </Box>
           <ScrollArea.Autosize maxHeight="calc(100vh - 250px)">
             <Box sx={{ display: "flex", width: "100%" }}>
-              <Box sx={{ minWidth: "135px" }}>
+              <Box
+                sx={(theme) => ({
+                  minWidth: "135px",
+                  borderRight: "4px solid",
+                  borderColor:
+                    colorScheme == "light"
+                      ? theme.colors.gray[1]
+                      : theme.colors.gray[9],
+                })}
+              >
                 {/* Cell hours go here */}
                 {rows.map((row) => (
                   <RowCell key={`hours-${row.uid}`} cell={row.cells[0]} />
