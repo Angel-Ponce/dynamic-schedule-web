@@ -61,8 +61,8 @@ const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
                 twentyfour: true,
               })}: ${chance.minute()}`
             : chance.string({ length: 4 }),
-        bgColor: chance.color({ format: "hex" }),
-        textColor: chance.color({ format: "hex" }),
+        bgColor: null,
+        textColor: null,
         order: i,
         href: "https://www.google.com",
         professor: chance.name(),
@@ -96,7 +96,7 @@ const Index: NextPage = () => {
             sx={(theme) => ({
               display: "flex",
               width: "100%",
-              borderBottom: "4px solid",
+              borderBottom: "3px solid",
               borderColor:
                 colorScheme == "light"
                   ? theme.colors.gray[1]
@@ -106,7 +106,7 @@ const Index: NextPage = () => {
             <Box
               sx={(theme) => ({
                 minWidth: "135px",
-                borderRight: "4px solid",
+                borderRight: "3px solid",
                 borderColor:
                   colorScheme == "light"
                     ? theme.colors.gray[1]
@@ -126,7 +126,7 @@ const Index: NextPage = () => {
               <Box
                 sx={(theme) => ({
                   minWidth: "135px",
-                  borderRight: "4px solid",
+                  borderRight: "3px solid",
                   borderColor:
                     colorScheme == "light"
                       ? theme.colors.gray[1]
