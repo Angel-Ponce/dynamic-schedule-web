@@ -3,9 +3,6 @@ import {
   ScrollArea,
   Center,
   Box,
-  Stack,
-  Button,
-  Group,
   useMantineColorScheme,
 } from "@mantine/core";
 import type { NextPage } from "next";

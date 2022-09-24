@@ -6,6 +6,7 @@ interface Schedule {
   hiddenSaturday: boolean;
   hiddenSunday: boolean;
   hiddenWeek: boolean;
+  showGrid: boolean;
   userUid: string;
   rows: ScheduleRow[];
 }

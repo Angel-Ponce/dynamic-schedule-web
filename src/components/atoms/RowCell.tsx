@@ -19,9 +19,7 @@ const RowCell: React.FC<{
             ? colorScheme == "light"
               ? theme.colors.gray[0]
               : theme.colors.gray[8]
-            : cell.bgColor
-            ? cell.bgColor
-            : "transparent",
+            : cell.bgColor || "transparent",
       })}
       py={8}
     >
