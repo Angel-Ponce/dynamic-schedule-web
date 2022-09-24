@@ -1,3 +1,5 @@
+import { ScheduleRow } from "./ScheduleRow";
+
 interface Schedule {
   uid: string;
   name: string;
@@ -5,6 +7,7 @@ interface Schedule {
   hiddenSunday: boolean;
   hiddenWeek: boolean;
   userUid: string;
+  rows: ScheduleRow[];
 }
 
 export type { Schedule };

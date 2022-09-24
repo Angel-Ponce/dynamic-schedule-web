@@ -12,10 +12,16 @@ import { Navbar, Header } from "$organisms";
 import { useState } from "react";
 import { RowCell } from "$atoms";
 import { v4 as uuidv4 } from "uuid";
-import { type RowCell as RowCellType } from "$types";
+import {
+  type ScheduleRow as ScheduleRowType,
+  type RowCell as RowCellType,
+} from "$types";
 import { ScheduleRow } from "$molecules";
+import Chance from "chance";
 
 const rowUid = uuidv4();
+const chance = new Chance();
+const scheduleUid = uuidv4();
 
 const headers = [
   "Hora",
@@ -40,6 +46,35 @@ const headerRow: RowCellType[] = headers.map((header, index) => ({
   type: "header",
 }));
 
+const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
+  let uid = uuidv4();
+  return {
+    uid: uid,
+    order: i,
+    scheduleUid: scheduleUid,
+    cells: new Array(8).fill({}).map((_, i) => {
+      return {
+        uid: uuidv4(),
+        title:
+          i == 0
+            ? `${chance.hour({
+                twentyfour: true,
+              })}: ${chance.minute()} - ${chance.hour({
+                twentyfour: true,
+              })}: ${chance.minute()}`
+            : chance.string({ length: 4 }),
+        bgColor: chance.color({ format: "hex" }),
+        textColor: chance.color({ format: "hex" }),
+        order: i,
+        href: "https://www.google.com",
+        professor: chance.name(),
+        rowUid: uid,
+        type: i == 0 ? "hour" : "course",
+      };
+    }),
+  };
+});
+
 const Index: NextPage = () => {
   let [hidden, setHidden] = useState(true);
 
@@ -50,38 +85,45 @@ const Index: NextPage = () => {
       header={<Header setHiddenNavbar={setHidden} hiddenNavbar={hidden} />}
     >
       <Center sx={{ width: "100%" }}>
-        <Stack spacing="xs">
-          <Group>
-            <Button variant="light" color="green">
-              Agregar fila
-            </Button>
-          </Group>
-          <ScrollArea
-            sx={{
-              width: "100%",
-              maxWidth: "1300px",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+        <ScrollArea
+          sx={{
+            width: "100%",
+            maxWidth: "1300px",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Box sx={{ display: "flex", width: "100%" }}>
+            <Box sx={{ minWidth: "135px" }}>
+              {/* Cell hour header */}
+              <RowCell cell={headerRow[0]} />
+            </Box>
+            <Box sx={{ flexGrow: 1 }}>
+              {/* Cell day headers */}
+              <ScheduleRow size={7} row={headerRow} />
+            </Box>
+          </Box>
+          <ScrollArea.Autosize maxHeight="calc(100vh - 250px)">
             <Box sx={{ display: "flex", width: "100%" }}>
               <Box sx={{ minWidth: "135px" }}>
-                {/* Cell hour header */}
-                <RowCell cell={headerRow[0]} />
+                {/* Cell hours go here */}
+                {rows.map((row) => (
+                  <RowCell key={`hours-${row.uid}`} cell={row.cells[0]} />
+                ))}
               </Box>
               <Box sx={{ flexGrow: 1 }}>
-                {/* Cell day headers */}
-                <ScheduleRow size={7} row={headerRow} />
+                {/* Cell courses go here */}
+                {rows.map((row) => (
+                  <ScheduleRow
+                    key={`courses-${row.uid}`}
+                    size={7}
+                    row={row.cells}
+                  />
+                ))}
               </Box>
             </Box>
-            <ScrollArea.Autosize maxHeight="calc(100vh - 250px)">
-              <Box sx={{ display: "flex", width: "100%" }}>
-                <Box sx={{ minWidth: "135px" }}>{/* Cell hour go here */}</Box>
-                <Box sx={{ flexGrow: 1 }}>{/* Cell courses go here */}</Box>
-              </Box>
-            </ScrollArea.Autosize>
-          </ScrollArea>
-        </Stack>
+          </ScrollArea.Autosize>
+        </ScrollArea>
       </Center>
     </AppShell>
   );
