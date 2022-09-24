@@ -55,6 +55,8 @@ const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
       return {
         uid: uuidv4(),
         title: i == 0 ? null : chance.string({ length: 4 }),
+        // bgColor: chance.color({ format: "hex" }),
+        // textColor: chance.color({ format: "hex" }),
         bgColor: null,
         textColor: null,
         order: i,

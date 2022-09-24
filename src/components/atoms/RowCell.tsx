@@ -1,3 +1,4 @@
+import { getSwatches } from "$helpers";
 import { useAppSelector } from "$hooks";
 import { emptyClipboard } from "$slices/clipboard";
 import { type RowCell as RowCellType } from "$types";
@@ -8,6 +9,10 @@ import {
   useMantineColorScheme,
   Group,
   Modal,
+  Stack,
+  TextInput,
+  ColorInput,
+  SimpleGrid,
 } from "@mantine/core";
 import { TimeRangeInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -112,14 +117,25 @@ const EditModal: React.FC<{
   setOpen: Dispatch<SetStateAction<boolean>>;
   cell: RowCellType;
 }> = ({ open, setOpen, cell }) => {
-  const form = useForm({
+  const hourForm = useForm({
     initialValues: {
       time: cell.time || undefined,
     },
   });
+
+  const courseForm = useForm({
+    initialValues: {
+      title: cell.title || undefined,
+      proffessor: cell.professor || undefined,
+      href: cell.href || undefined,
+      bgColor: cell.bgColor || undefined,
+      textColor: cell.textColor || undefined,
+    },
+  });
+
   return (
     <Modal
-      zIndex={999}
+      zIndex={300}
       opened={open}
       onClose={() => setOpen(false)}
       title="Editar"
@@ -132,8 +148,35 @@ const EditModal: React.FC<{
           label="Hora"
           clearable
           icon={<IoTimeOutline />}
-          {...form.getInputProps("time")}
+          {...hourForm.getInputProps("time")}
         />
+      )}
+
+      {cell.type == "course" && (
+        <Stack>
+          <SimpleGrid cols={2}>
+            <TextInput label="Titulo" {...courseForm.getInputProps("title")} />
+            <TextInput
+              label="Catedrático"
+              {...courseForm.getInputProps("proffessor")}
+            />
+          </SimpleGrid>
+          <TextInput label="Link" {...courseForm.getInputProps("href")} />
+          <SimpleGrid cols={2}>
+            <ColorInput
+              label="Color de fondo"
+              withPicker={false}
+              swatches={getSwatches()}
+              {...courseForm.getInputProps("bgColor")}
+            />
+            <ColorInput
+              label="Color de letra"
+              withPicker={false}
+              swatches={getSwatches()}
+              {...courseForm.getInputProps("textColor")}
+            />
+          </SimpleGrid>
+        </Stack>
       )}
     </Modal>
   );
