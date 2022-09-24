@@ -15,13 +15,13 @@ import { IoPencil, IoCopyOutline, IoNewspaperOutline } from "react-icons/io5";
 const RowCell: React.FC<{
   cell: RowCellType;
 }> = ({ cell }) => {
-  const [hoverCell, setHoverCell] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const clipboard = useAppSelector((state) => state.clipboard);
   const { colorScheme } = useMantineColorScheme();
 
   return (
     <Box
+      className="group"
       sx={(theme) => ({
         position: "relative",
         width: "100%",
@@ -47,11 +47,13 @@ const RowCell: React.FC<{
         },
       })}
       py={8}
-      onMouseEnter={() => setHoverCell(true)}
-      onMouseLeave={() => setHoverCell(false)}
     >
-      {cell.type != "header" && hoverCell && (
-        <Group sx={{ position: "absolute", top: 0, right: 0 }} spacing={1}>
+      {cell.type != "header" && (
+        <Group
+          sx={{ position: "absolute", top: 0, right: 0 }}
+          spacing={1}
+          className="hidden group-hover:flex"
+        >
           <ActionIcon
             variant="light"
             size="xs"
