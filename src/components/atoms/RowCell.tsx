@@ -11,7 +11,7 @@ const RowCell: React.FC<{
     <Box
       sx={(theme) => ({
         width: "100%",
-        border: "1px solid",
+        border: "2px solid",
         borderColor:
           colorScheme == "light" ? theme.colors.gray[1] : theme.colors.gray[9],
         backgroundColor:
@@ -20,6 +20,17 @@ const RowCell: React.FC<{
               ? theme.colors.gray[0]
               : theme.colors.gray[8]
             : cell.bgColor || "transparent",
+        transitionDuration: "0.15s",
+        cursor: cell.type != "header" ? "pointer" : "default",
+        "&:hover": {
+          border: "2px solid",
+          borderColor:
+            cell.type != "header"
+              ? theme.colors.blue[5]
+              : colorScheme == "light"
+              ? theme.colors.gray[1]
+              : theme.colors.gray[9],
+        },
       })}
       py={8}
     >
