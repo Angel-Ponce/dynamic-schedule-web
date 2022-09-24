@@ -42,6 +42,7 @@ const headerRow: RowCellType[] = headers.map((header, index) => ({
   textColor: "",
   title: header,
   type: "header",
+  time: null,
 }));
 
 const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
@@ -53,14 +54,7 @@ const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
     cells: new Array(8).fill({}).map((_, i) => {
       return {
         uid: uuidv4(),
-        title:
-          i == 0
-            ? `${chance.hour({
-                twentyfour: true,
-              })}: ${chance.minute()} - ${chance.hour({
-                twentyfour: true,
-              })}: ${chance.minute()}`
-            : chance.string({ length: 4 }),
+        title: i == 0 ? null : chance.string({ length: 4 }),
         bgColor: null,
         textColor: null,
         order: i,
@@ -68,6 +62,7 @@ const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
         professor: chance.name(),
         rowUid: uid,
         type: i == 0 ? "hour" : "course",
+        time: [chance.date(), chance.date()],
       };
     }),
   };
@@ -106,6 +101,7 @@ const Index: NextPage = () => {
             <Box
               sx={(theme) => ({
                 minWidth: "135px",
+                maxWidth: "135px",
                 borderRight: "3px solid",
                 borderColor:
                   colorScheme == "light"
@@ -126,6 +122,7 @@ const Index: NextPage = () => {
               <Box
                 sx={(theme) => ({
                   minWidth: "135px",
+                  maxWidth: "135px",
                   borderRight: "3px solid",
                   borderColor:
                     colorScheme == "light"

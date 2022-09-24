@@ -9,8 +9,15 @@ import {
   Group,
   Modal,
 } from "@mantine/core";
+import { TimeRangeInput } from "@mantine/dates";
+import { useForm } from "@mantine/form";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { IoPencil, IoCopyOutline, IoNewspaperOutline } from "react-icons/io5";
+import {
+  IoPencil,
+  IoCopyOutline,
+  IoNewspaperOutline,
+  IoTimeOutline,
+} from "react-icons/io5";
 
 const RowCell: React.FC<{
   cell: RowCellType;
@@ -25,6 +32,7 @@ const RowCell: React.FC<{
       sx={(theme) => ({
         position: "relative",
         width: "100%",
+        minHeight: "40px",
         border: "2px solid",
         borderColor:
           colorScheme == "light" ? theme.colors.gray[1] : theme.colors.gray[9],
@@ -89,10 +97,11 @@ const RowCell: React.FC<{
           overflow: "hidden",
         }}
       >
-        {cell.title}
+        {cell.title ||
+          `${cell.time?.[0]?.getHours()}:${cell.time?.[0]?.getMinutes()} - ${cell.time?.[1]?.getHours()}:${cell.time?.[1]?.getMinutes()}`}
       </Text>
       {cell.type != "header" && (
-        <EditModal open={modalOpen} setOpen={setModalOpen} type={cell.type} />
+        <EditModal open={modalOpen} setOpen={setModalOpen} cell={cell} />
       )}
     </Box>
   );
@@ -101,8 +110,13 @@ const RowCell: React.FC<{
 const EditModal: React.FC<{
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "course" | "hour";
-}> = ({ open, setOpen, type }) => {
+  cell: RowCellType;
+}> = ({ open, setOpen, cell }) => {
+  const form = useForm({
+    initialValues: {
+      time: cell.time || undefined,
+    },
+  });
   return (
     <Modal
       zIndex={999}
@@ -113,7 +127,14 @@ const EditModal: React.FC<{
       overlayOpacity={0.5}
       centered
     >
-      {type}
+      {cell.type == "hour" && (
+        <TimeRangeInput
+          label="Hora"
+          clearable
+          icon={<IoTimeOutline />}
+          {...form.getInputProps("time")}
+        />
+      )}
     </Modal>
   );
 };

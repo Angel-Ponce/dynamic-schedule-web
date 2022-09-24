@@ -1,11 +1,12 @@
 interface RowCell {
   uid: string;
-  title: string;
+  title: string | null;
   bgColor: string | null;
   textColor: string | null;
-  order: number;
   href: string | null;
-  professor: string;
+  time: [Date | null, Date | null] | null;
+  order: number;
+  professor: string | null;
   rowUid: string;
   type: "hour" | "header" | "course";
 }
