@@ -1,4 +1,12 @@
-import { AppShell, ScrollArea, Center, Box, Stack } from "@mantine/core";
+import {
+  AppShell,
+  ScrollArea,
+  Center,
+  Box,
+  Stack,
+  Button,
+  Group,
+} from "@mantine/core";
 import type { NextPage } from "next";
 import { Navbar, Header } from "$organisms";
 import { useState } from "react";
@@ -42,31 +50,38 @@ const Index: NextPage = () => {
       header={<Header setHiddenNavbar={setHidden} hiddenNavbar={hidden} />}
     >
       <Center sx={{ width: "100%" }}>
-        <ScrollArea
-          sx={{
-            width: "100%",
-            maxWidth: "1300px",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box sx={{ display: "flex", width: "100%" }}>
-            <Box sx={{ minWidth: "135px" }}>
-              {/* Cell hour header */}
-              <RowCell cell={headerRow[0]} />
-            </Box>
-            <Box sx={{ flexGrow: 1 }}>
-              {/* Cell day headers */}
-              <ScheduleRow size={7} row={headerRow} />
-            </Box>
-          </Box>
-          <ScrollArea.Autosize maxHeight="calc(100vh - 250px)">
+        <Stack spacing="xs">
+          <Group>
+            <Button variant="light" color="green">
+              Agregar fila
+            </Button>
+          </Group>
+          <ScrollArea
+            sx={{
+              width: "100%",
+              maxWidth: "1300px",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <Box sx={{ display: "flex", width: "100%" }}>
-              <Box sx={{ minWidth: "135px" }}>{/* Cell hour go here */}</Box>
-              <Box sx={{ flexGrow: 1 }}>{/* Cell courses go here */}</Box>
+              <Box sx={{ minWidth: "135px" }}>
+                {/* Cell hour header */}
+                <RowCell cell={headerRow[0]} />
+              </Box>
+              <Box sx={{ flexGrow: 1 }}>
+                {/* Cell day headers */}
+                <ScheduleRow size={7} row={headerRow} />
+              </Box>
             </Box>
-          </ScrollArea.Autosize>
-        </ScrollArea>
+            <ScrollArea.Autosize maxHeight="calc(100vh - 250px)">
+              <Box sx={{ display: "flex", width: "100%" }}>
+                <Box sx={{ minWidth: "135px" }}>{/* Cell hour go here */}</Box>
+                <Box sx={{ flexGrow: 1 }}>{/* Cell courses go here */}</Box>
+              </Box>
+            </ScrollArea.Autosize>
+          </ScrollArea>
+        </Stack>
       </Center>
     </AppShell>
   );
