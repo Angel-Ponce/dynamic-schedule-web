@@ -1,15 +1,24 @@
 import { type RowCell as RowCellType } from "$types";
-import { Box, Text, useMantineColorScheme } from "@mantine/core";
-import React from "react";
+import {
+  ActionIcon,
+  Box,
+  Text,
+  useMantineColorScheme,
+  Group,
+} from "@mantine/core";
+import React, { useState } from "react";
+import { IoPencil, IoCopyOutline, IoNewspaperOutline } from "react-icons/io5";
 
 const RowCell: React.FC<{
   cell: RowCellType;
 }> = ({ cell }) => {
   const { colorScheme } = useMantineColorScheme();
+  const [hoverCell, setHoverCell] = useState<boolean>(false);
 
   return (
     <Box
       sx={(theme) => ({
+        position: "relative",
         width: "100%",
         border: "2px solid",
         borderColor:
@@ -33,7 +42,26 @@ const RowCell: React.FC<{
         },
       })}
       py={8}
+      onMouseEnter={() => setHoverCell(true)}
+      onMouseLeave={() => setHoverCell(false)}
     >
+      {cell.type != "header" && hoverCell && (
+        <Group sx={{ position: "absolute", top: 0, right: 0 }} spacing={1}>
+          <ActionIcon variant="light" size="xs" color="yellow">
+            <IoPencil />
+          </ActionIcon>
+          {cell.type != "hour" && (
+            <>
+              <ActionIcon variant="light" size="xs" color="blue">
+                <IoCopyOutline />
+              </ActionIcon>
+              <ActionIcon variant="light" size="xs" color="cyan">
+                <IoNewspaperOutline />
+              </ActionIcon>
+            </>
+          )}
+        </Group>
+      )}
       <Text
         size={cell.type != "header" ? "xs" : "sm"}
         align="center"
