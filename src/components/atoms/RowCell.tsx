@@ -35,7 +35,7 @@ const RowCell: React.FC<{
       py={8}
     >
       <Text
-        size="sm"
+        size={cell.type != "header" ? "xs" : "sm"}
         align="center"
         weight={cell.type != "course" ? 600 : 400}
         sx={{
@@ -43,6 +43,8 @@ const RowCell: React.FC<{
             cell.textColor && cell.type == "course"
               ? cell.textColor
               : undefined,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
         }}
       >
         {cell.title}
