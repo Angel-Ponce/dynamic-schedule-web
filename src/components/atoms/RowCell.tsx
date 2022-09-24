@@ -1,3 +1,5 @@
+import { useAppSelector } from "$hooks";
+import { emptyClipboard } from "$slices/clipboard";
 import { type RowCell as RowCellType } from "$types";
 import {
   ActionIcon,
@@ -14,6 +16,7 @@ const RowCell: React.FC<{
 }> = ({ cell }) => {
   const { colorScheme } = useMantineColorScheme();
   const [hoverCell, setHoverCell] = useState<boolean>(false);
+  const clipboard = useAppSelector((state) => state.clipboard);
 
   return (
     <Box
@@ -55,9 +58,11 @@ const RowCell: React.FC<{
               <ActionIcon variant="light" size="xs" color="blue">
                 <IoCopyOutline />
               </ActionIcon>
-              <ActionIcon variant="light" size="xs" color="cyan">
-                <IoNewspaperOutline />
-              </ActionIcon>
+              {!emptyClipboard(clipboard) && (
+                <ActionIcon variant="light" size="xs" color="cyan">
+                  <IoNewspaperOutline />
+                </ActionIcon>
+              )}
             </>
           )}
         </Group>
