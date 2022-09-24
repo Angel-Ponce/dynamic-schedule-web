@@ -20,6 +20,7 @@
     "@mantine/spotlight": "^5.2.6",
     "@reduxjs/toolkit": "^1.8.5",
     "@types/uuid": "^8.3.4",
+    "chance": "^1.1.8",
     "dayjs": "^1.11.5",
     "firebase": "^9.9.4",
     "next": "12.2.5",
