@@ -25,7 +25,17 @@ const RowCell: React.FC<{
       })}
       py={8}
     >
-      <Text size="sm" align="center" weight={cell.type != "course" ? 600 : 400}>
+      <Text
+        size="sm"
+        align="center"
+        weight={cell.type != "course" ? 600 : 400}
+        sx={{
+          color:
+            cell.textColor && cell.type == "course"
+              ? cell.textColor
+              : undefined,
+        }}
+      >
         {cell.title}
       </Text>
     </Box>
