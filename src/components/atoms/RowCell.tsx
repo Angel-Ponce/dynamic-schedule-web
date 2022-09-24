@@ -7,16 +7,18 @@ import {
   Text,
   useMantineColorScheme,
   Group,
+  Modal,
 } from "@mantine/core";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { IoPencil, IoCopyOutline, IoNewspaperOutline } from "react-icons/io5";
 
 const RowCell: React.FC<{
   cell: RowCellType;
 }> = ({ cell }) => {
-  const { colorScheme } = useMantineColorScheme();
   const [hoverCell, setHoverCell] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const clipboard = useAppSelector((state) => state.clipboard);
+  const { colorScheme } = useMantineColorScheme();
 
   return (
     <Box
@@ -50,7 +52,12 @@ const RowCell: React.FC<{
     >
       {cell.type != "header" && hoverCell && (
         <Group sx={{ position: "absolute", top: 0, right: 0 }} spacing={1}>
-          <ActionIcon variant="light" size="xs" color="yellow">
+          <ActionIcon
+            variant="light"
+            size="xs"
+            color="yellow"
+            onClick={() => setModalOpen(true)}
+          >
             <IoPencil />
           </ActionIcon>
           {cell.type != "hour" && (
@@ -82,7 +89,30 @@ const RowCell: React.FC<{
       >
         {cell.title}
       </Text>
+      {cell.type != "header" && (
+        <EditModal open={modalOpen} setOpen={setModalOpen} type={cell.type} />
+      )}
     </Box>
+  );
+};
+
+const EditModal: React.FC<{
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  type: "course" | "hour";
+}> = ({ open, setOpen, type }) => {
+  return (
+    <Modal
+      zIndex={999}
+      opened={open}
+      onClose={() => setOpen(false)}
+      title="Editar"
+      overlayBlur={4}
+      overlayOpacity={0.5}
+      centered
+    >
+      {type}
+    </Modal>
   );
 };
 
