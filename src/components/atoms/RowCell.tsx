@@ -25,7 +25,7 @@ const RowCell: React.FC<{
       })}
       py={8}
     >
-      <Text size="sm" align="center" weight={cell.type == "header" ? 600 : 400}>
+      <Text size="sm" align="center" weight={cell.type != "course" ? 600 : 400}>
         {cell.title}
       </Text>
     </Box>
