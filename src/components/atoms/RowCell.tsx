@@ -34,6 +34,11 @@ const RowCell: React.FC<{
 
   return (
     <Box
+      onClick={() => {
+        if (window && cell.type == "course") {
+          window.open(cell.href || "", "_blank");
+        }
+      }}
       className="group"
       sx={(theme) => ({
         position: "relative",
@@ -49,7 +54,7 @@ const RowCell: React.FC<{
               : theme.colors.gray[8]
             : cell.bgColor || "transparent",
         transitionDuration: "0.15s",
-        cursor: cell.type != "header" ? "pointer" : "default",
+        cursor: cell.type == "course" ? "pointer" : "default",
         "&:hover": {
           border: "2px solid",
           borderColor:
