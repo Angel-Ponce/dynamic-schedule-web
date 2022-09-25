@@ -1,10 +1,10 @@
-import { type RowCell as RowCellType } from "$types";
+import { type ScheduleRow as ScheduleRowType } from "$types";
 import { Grid, HoverCard, Group, ActionIcon } from "@mantine/core";
 import { RowCell } from "$atoms";
 import { IoClose, IoAdd } from "react-icons/io5";
 import React from "react";
 
-const ScheduleRow: React.FC<{ row: RowCellType[]; size: number }> = ({
+const ScheduleRow: React.FC<{ row: ScheduleRowType; size: number }> = ({
   row,
   size,
 }) => {
@@ -12,7 +12,7 @@ const ScheduleRow: React.FC<{ row: RowCellType[]; size: number }> = ({
     <HoverCard position="bottom-end" offset={0} openDelay={0}>
       <HoverCard.Target>
         <Grid columns={size} gutter={0} sx={{ flexWrap: "nowrap" }}>
-          {row
+          {row.cells
             .filter((cell) => cell.order != 0)
             .map((cell) => {
               return (
@@ -38,7 +38,12 @@ const ScheduleRow: React.FC<{ row: RowCellType[]; size: number }> = ({
                 : theme.colors.gray[8],
           })}
         >
-          <ActionIcon variant="light" size="md" color="green">
+          <ActionIcon
+            variant="light"
+            size="md"
+            color="green"
+            onClick={() => alert(row.order)}
+          >
             <IoAdd />
           </ActionIcon>
           <ActionIcon variant="light" color="red" size="md">

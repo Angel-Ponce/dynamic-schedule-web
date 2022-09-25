@@ -32,18 +32,23 @@ const headers = [
   "Domingo",
 ];
 
-const headerRow: RowCellType[] = headers.map((header, index) => ({
-  uid: uuidv4(),
-  bgColor: "",
-  href: "",
-  order: index,
-  professor: "",
-  rowUid: rowUid,
-  textColor: "",
-  title: header,
-  type: "header",
-  time: null,
-}));
+const headerRow: ScheduleRowType = {
+  uid: rowUid,
+  order: -1,
+  scheduleUid: scheduleUid,
+  cells: headers.map((header, index) => ({
+    uid: uuidv4(),
+    bgColor: "",
+    href: "",
+    order: index,
+    professor: "",
+    rowUid: rowUid,
+    textColor: "",
+    title: header,
+    type: "header",
+    time: null,
+  })),
+};
 
 const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
   let uid = uuidv4();
@@ -112,7 +117,7 @@ const Index: NextPage = () => {
               })}
             >
               {/* Cell hour header */}
-              <RowCell cell={headerRow[0]} />
+              <RowCell cell={headerRow.cells[0]} />
             </Box>
             <Box sx={{ flexGrow: 1 }}>
               {/* Cell day headers */}
@@ -140,11 +145,7 @@ const Index: NextPage = () => {
               <Box sx={{ flexGrow: 1 }}>
                 {/* Cell courses go here */}
                 {rows.map((row) => (
-                  <ScheduleRow
-                    key={`courses-${row.uid}`}
-                    size={7}
-                    row={row.cells}
-                  />
+                  <ScheduleRow key={`courses-${row.uid}`} size={7} row={row} />
                 ))}
               </Box>
             </Box>
