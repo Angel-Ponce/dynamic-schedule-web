@@ -13,6 +13,8 @@ import {
   TextInput,
   ColorInput,
   SimpleGrid,
+  Button,
+  Input,
 } from "@mantine/core";
 import { TimeRangeInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -90,7 +92,7 @@ const RowCell: React.FC<{
         </Group>
       )}
       <Text
-        size={cell.type != "header" ? "xs" : "sm"}
+        size={cell.type != "header" ? "sm" : "sm"}
         align="center"
         weight={cell.type != "course" ? 600 : 400}
         sx={{
@@ -100,6 +102,7 @@ const RowCell: React.FC<{
               : undefined,
           whiteSpace: "nowrap",
           overflow: "hidden",
+          fontFamily: cell.fontFamily || undefined,
         }}
       >
         {cell.title ||
@@ -143,41 +146,49 @@ const EditModal: React.FC<{
       overlayOpacity={0.5}
       centered
     >
-      {cell.type == "hour" && (
-        <TimeRangeInput
-          label="Hora"
-          clearable
-          icon={<IoTimeOutline />}
-          {...hourForm.getInputProps("time")}
-        />
-      )}
+      <Stack>
+        {cell.type == "hour" && (
+          <TimeRangeInput
+            label="Hora"
+            clearable
+            icon={<IoTimeOutline />}
+            {...hourForm.getInputProps("time")}
+          />
+        )}
 
-      {cell.type == "course" && (
-        <Stack>
-          <SimpleGrid cols={2}>
-            <TextInput label="Titulo" {...courseForm.getInputProps("title")} />
-            <TextInput
-              label="Catedrático"
-              {...courseForm.getInputProps("proffessor")}
-            />
-          </SimpleGrid>
-          <TextInput label="Link" {...courseForm.getInputProps("href")} />
-          <SimpleGrid cols={2}>
-            <ColorInput
-              label="Color de fondo"
-              withPicker={false}
-              swatches={getSwatches()}
-              {...courseForm.getInputProps("bgColor")}
-            />
-            <ColorInput
-              label="Color de letra"
-              withPicker={false}
-              swatches={getSwatches()}
-              {...courseForm.getInputProps("textColor")}
-            />
-          </SimpleGrid>
-        </Stack>
-      )}
+        {cell.type == "course" && (
+          <>
+            <SimpleGrid cols={2}>
+              <TextInput
+                label="Título"
+                {...courseForm.getInputProps("title")}
+              />
+              <TextInput
+                label="Catedrático"
+                {...courseForm.getInputProps("proffessor")}
+              />
+            </SimpleGrid>
+            <TextInput label="Link" {...courseForm.getInputProps("href")} />
+            <SimpleGrid cols={2}>
+              <ColorInput
+                label="Color de fondo"
+                withPicker={false}
+                swatches={getSwatches()}
+                {...courseForm.getInputProps("bgColor")}
+              />
+              <ColorInput
+                label="Color de letra"
+                withPicker={false}
+                swatches={getSwatches()}
+                {...courseForm.getInputProps("textColor")}
+              />
+            </SimpleGrid>
+          </>
+        )}
+        <Group position="right" className="z-50">
+          <Button color="blue">Guardar</Button>
+        </Group>
+      </Stack>
     </Modal>
   );
 };

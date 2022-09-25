@@ -43,6 +43,7 @@ const headerRow: RowCellType[] = headers.map((header, index) => ({
   title: header,
   type: "header",
   time: null,
+  fontFamily: null,
 }));
 
 const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
@@ -65,6 +66,7 @@ const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
         rowUid: uid,
         type: i == 0 ? "hour" : "course",
         time: [chance.date(), chance.date()],
+        fontFamily: null,
       };
     }),
   };

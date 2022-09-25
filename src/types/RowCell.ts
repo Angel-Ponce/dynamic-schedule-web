@@ -8,6 +8,7 @@ interface RowCell {
   order: number;
   professor: string | null;
   rowUid: string;
+  fontFamily: string | null;
   type: "hour" | "header" | "course";
 }
 
