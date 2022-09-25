@@ -104,7 +104,10 @@ const RowCell: React.FC<{
         }}
       >
         {cell.title ||
-          `${cell.time?.[0]?.getHours()}:${cell.time?.[0]?.getMinutes()} - ${cell.time?.[1]?.getHours()}:${cell.time?.[1]?.getMinutes()}`}
+          (cell.time &&
+            cell.time[0] &&
+            cell.time[1] &&
+            `${cell.time?.[0]?.getHours()}:${cell.time?.[0]?.getMinutes()} - ${cell.time?.[1]?.getHours()}:${cell.time?.[1]?.getMinutes()}`)}
       </Text>
       {cell.type != "header" && (
         <EditModal open={modalOpen} setOpen={setModalOpen} cell={cell} />

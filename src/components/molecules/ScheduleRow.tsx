@@ -3,11 +3,22 @@ import { Grid, HoverCard, Group, ActionIcon } from "@mantine/core";
 import { RowCell } from "$atoms";
 import { IoClose, IoAdd } from "react-icons/io5";
 import React from "react";
+import { useAppDispatch } from "$hooks";
+import { addRow, deleteRow } from "$slices/scheduleSlice";
 
-const ScheduleRow: React.FC<{ row: ScheduleRowType; size: number }> = ({
-  row,
-  size,
-}) => {
+const ScheduleRow: React.FC<{
+  row: ScheduleRowType;
+  size: number;
+}> = ({ row, size }) => {
+  const dispatch = useAppDispatch();
+
+  const handleRowAdded = (order: number) => {
+    dispatch(addRow({ indexFrom: order }));
+  };
+  const handleRowDeleted = (uid: string) => {
+    dispatch(deleteRow({ rowUid: uid }));
+  };
+
   return (
     <HoverCard position="bottom-end" offset={0} openDelay={0}>
       <HoverCard.Target>
@@ -42,13 +53,20 @@ const ScheduleRow: React.FC<{ row: ScheduleRowType; size: number }> = ({
             variant="light"
             size="md"
             color="green"
-            onClick={() => alert(row.order)}
+            onClick={() => handleRowAdded(row.order)}
           >
             <IoAdd />
           </ActionIcon>
-          <ActionIcon variant="light" color="red" size="md">
-            <IoClose />
-          </ActionIcon>
+          {row.order != -1 && (
+            <ActionIcon
+              variant="light"
+              color="red"
+              size="md"
+              onClick={() => handleRowDeleted(row.uid)}
+            >
+              <IoClose />
+            </ActionIcon>
+          )}
         </Group>
       </HoverCard.Dropdown>
     </HoverCard>

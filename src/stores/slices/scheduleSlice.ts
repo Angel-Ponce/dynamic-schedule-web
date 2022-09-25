@@ -47,7 +47,7 @@ const scheduleSlice = createSlice({
     },
     addRow: (state, action: PayloadAction<{ indexFrom: number }>) => {
       let uid = uuidv4();
-      state.rows = state.rows.splice(action.payload.indexFrom + 1, 0, {
+      state.rows.splice(action.payload.indexFrom + 1, 0, {
         uid,
         order: action.payload.indexFrom + 1,
         scheduleUid: state.uid,
