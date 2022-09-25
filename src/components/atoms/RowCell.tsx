@@ -139,7 +139,7 @@ const EditModal: React.FC<{
 
   return (
     <Modal
-      zIndex={300}
+      zIndex={400}
       opened={open}
       onClose={() => setOpen(false)}
       title="Editar"
@@ -176,12 +176,14 @@ const EditModal: React.FC<{
                 withPicker={false}
                 swatches={getSwatches()}
                 {...courseForm.getInputProps("bgColor")}
+                dropdownZIndex={401}
               />
               <ColorInput
                 label="Color de letra"
                 withPicker={false}
                 swatches={getSwatches()}
                 {...courseForm.getInputProps("textColor")}
+                dropdownZIndex={401}
               />
             </SimpleGrid>
           </>
