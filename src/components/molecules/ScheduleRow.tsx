@@ -20,7 +20,7 @@ const ScheduleRow: React.FC<{
   };
 
   return (
-    <HoverCard position="bottom-end" offset={0} openDelay={0}>
+    <HoverCard position="bottom-end" offset={0} openDelay={0} withinPortal>
       <HoverCard.Target>
         <Grid columns={size} gutter={0} sx={{ flexWrap: "nowrap" }}>
           {row.cells
