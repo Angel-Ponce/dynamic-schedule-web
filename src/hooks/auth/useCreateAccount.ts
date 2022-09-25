@@ -1,8 +1,5 @@
 import { useState } from "react";
-import { db } from "$app/firebase/config";
 import { UserAccount } from "$types";
-import { doc, setDoc } from "firebase/firestore";
-import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch } from "../useAppDispatch";
 import { setUser } from "$slices/userSlice";
 import { createUser, getUserById } from "$app/firebase/user";
@@ -24,7 +21,7 @@ const useCreateAccount = (): [
       return;
     }
 
-    await createUser();
+    await createUser(user);
 
     disptach(setUser(user));
 
