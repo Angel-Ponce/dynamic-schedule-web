@@ -1,7 +1,7 @@
 import type { UserAccount } from "$types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: UserAccount | null = {
+const initialState: UserAccount = {
   name: "User",
   email: "",
   photoURL: "",

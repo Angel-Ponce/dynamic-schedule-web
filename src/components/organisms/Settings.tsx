@@ -9,14 +9,26 @@ import {
   Tooltip,
   Box,
   useMantineColorScheme,
+  Text,
 } from "@mantine/core";
-import { IoLanguageOutline, IoHelpCircle, IoContrast } from "react-icons/io5";
+import {
+  IoLanguageOutline,
+  IoHelpCircle,
+  IoContrast,
+  IoText,
+} from "react-icons/io5";
+import { useForm } from "@mantine/form";
 
 const Settings: React.FC<{
   opened: boolean;
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ opened, setOpened }) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const form = useForm({
+    initialValues: {
+      fontFamily: "default",
+    },
+  });
 
   return (
     <Drawer
@@ -38,6 +50,33 @@ const Settings: React.FC<{
           value="es"
         />
         <Select
+          label="Tipo de letra"
+          data={[
+            { value: "default", label: "Por defecto" },
+            { value: "poppins", label: "Poppins" },
+            { value: "abyssinicasil", label: "Abyssinica SIL" },
+            { value: "ubuntu", label: "Ubuntu" },
+            { value: "heebo", label: "Heebo" },
+            { value: "lobster", label: "Lobster" },
+            { value: "pacifico", label: "Pacifico" },
+            { value: "shadowsintolight", label: "Shadows Into Light" },
+            { value: "caveat", label: "Caveat" },
+          ]}
+          transition="slide-down"
+          icon={<IoText />}
+          {...form.getInputProps("fontFamily")}
+        />
+        <Text
+          sx={{
+            fontFamily:
+              form.values.fontFamily == "default"
+                ? undefined
+                : form.values.fontFamily,
+          }}
+        >
+          Ej. Tipo de fuente
+        </Text>
+        <Select
           label="Tema"
           data={[
             { value: "light", label: "Claro" },
@@ -51,6 +90,7 @@ const Settings: React.FC<{
           }}
         />
         <Stack spacing="xl" mt="md">
+          <Checkbox id="showGrid" label="Ver celdas" />
           <Checkbox id="hiddeSaturday" label="Ocultar día Sábado" />
           <Checkbox id="hiddeSunday" label="Ocultar día Domingo" />
           <Checkbox id="hiddeWeek" label="Ocultar Lunes a Viernes" />
