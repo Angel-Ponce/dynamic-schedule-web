@@ -50,34 +50,10 @@ const headerRow: ScheduleRowType = {
   })),
 };
 
-const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
-  let uid = uuidv4();
-  return {
-    uid: uid,
-    order: i,
-    scheduleUid: scheduleUid,
-    cells: new Array(8).fill({}).map((_, i) => {
-      return {
-        uid: uuidv4(),
-        title: i == 0 ? null : chance.string({ length: 4 }),
-        // bgColor: chance.color({ format: "hex" }),
-        // textColor: chance.color({ format: "hex" }),
-        bgColor: null,
-        textColor: null,
-        order: i,
-        href: "https://www.google.com",
-        professor: chance.name(),
-        rowUid: uid,
-        type: i == 0 ? "hour" : "course",
-        time: [chance.date(), chance.date()],
-      };
-    }),
-  };
-});
-
 const Index: NextPage = () => {
   let [hidden, setHidden] = useState(true);
   const { colorScheme } = useMantineColorScheme();
+  const rows: ScheduleRowType[] = [];
 
   return (
     <AppShell
