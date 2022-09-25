@@ -63,6 +63,7 @@ const useCreateAccount = (): [
       hiddeSunday: false,
       hiddeWeek: false,
       showGrid: false,
+      fontFamily: "default",
       sendNotifications: false,
       sendEmailNotifications: false,
       language: "es",

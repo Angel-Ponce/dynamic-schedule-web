@@ -102,7 +102,6 @@ const RowCell: React.FC<{
               : undefined,
           whiteSpace: "nowrap",
           overflow: "hidden",
-          fontFamily: cell.fontFamily || undefined,
         }}
       >
         {cell.title ||
