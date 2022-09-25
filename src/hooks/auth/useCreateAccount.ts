@@ -67,6 +67,7 @@ const useCreateAccount = (): [
       sendNotifications: false,
       sendEmailNotifications: false,
       language: "es",
+      rows: [],
     });
 
     let notesUid = uuidv4();
