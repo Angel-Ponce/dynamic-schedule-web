@@ -11,6 +11,7 @@ const initialState: RowCell = {
   title: "",
   type: "course",
   rowUid: "",
+  time: null,
 };
 
 const clipboardSlice = createSlice({
