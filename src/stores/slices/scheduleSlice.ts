@@ -21,6 +21,9 @@ const scheduleSlice = createSlice({
     setSchedule: (state, action: PayloadAction<Schedule>) => {
       return (state = action.payload);
     },
+    resetSchedule: (state) => {
+      return (state = initialState);
+    },
     clearSchedule: (state) => {
       state.rows = [];
       return (state = state);
@@ -74,13 +77,20 @@ const emptySchedule = (schedule: Schedule) => {
   return schedule.uid.trim().length == 0;
 };
 
-const { setSchedule, clearSchedule, updateCell, addRow, deleteRow } =
-  scheduleSlice.actions;
+const {
+  setSchedule,
+  resetSchedule,
+  clearSchedule,
+  updateCell,
+  addRow,
+  deleteRow,
+} = scheduleSlice.actions;
 
 const scheduleReducer = scheduleSlice.reducer;
 
 export {
   scheduleReducer,
+  resetSchedule,
   setSchedule,
   clearSchedule,
   updateCell,

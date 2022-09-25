@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { userReducer } from "$slices/userSlice";
-import { clipboardReducer } from "$slices/clipboard";
-import { scheduleReducer } from "$slices/schedule";
+import { clipboardReducer } from "$slices/clipboardSlice";
+import { scheduleReducer } from "$slices/scheduleSlice";
 
 const defaultStore = configureStore({
   reducer: {

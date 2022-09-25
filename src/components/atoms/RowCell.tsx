@@ -1,6 +1,6 @@
 import { getSwatches } from "$helpers";
 import { useAppSelector } from "$hooks";
-import { emptyClipboard } from "$slices/clipboard";
+import { emptyClipboard } from "$slices/clipboardSlice";
 import { type RowCell as RowCellType } from "$types";
 import {
   ActionIcon,
@@ -14,7 +14,6 @@ import {
   ColorInput,
   SimpleGrid,
   Button,
-  Input,
 } from "@mantine/core";
 import { TimeRangeInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";

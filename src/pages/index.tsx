@@ -7,18 +7,21 @@ import {
 } from "@mantine/core";
 import type { NextPage } from "next";
 import { Navbar, Header } from "$organisms";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RowCell } from "$atoms";
 import { v4 as uuidv4 } from "uuid";
-import {
-  type ScheduleRow as ScheduleRowType,
-  type RowCell as RowCellType,
-} from "$types";
+import { type ScheduleRow as ScheduleRowType } from "$types";
 import { ScheduleRow } from "$molecules";
-import Chance from "chance";
+import { getSchedules } from "$app/firebase/schedule";
+import { useAppDispatch, useAppSelector } from "$hooks";
+import { emptyUser } from "$slices/userSlice";
+import {
+  emptySchedule,
+  resetSchedule,
+  setSchedule,
+} from "$slices/scheduleSlice";
 
 const rowUid = uuidv4();
-const chance = new Chance();
 const scheduleUid = uuidv4();
 
 const headers = [
@@ -53,7 +56,24 @@ const headerRow: ScheduleRowType = {
 const Index: NextPage = () => {
   let [hidden, setHidden] = useState(true);
   const { colorScheme } = useMantineColorScheme();
-  const rows: ScheduleRowType[] = [];
+  const user = useAppSelector((state) => state.user);
+  const schedule = useAppSelector((state) => state.schedule);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const loadSchedule = async () => {
+      if (!emptyUser(user) && !emptySchedule(schedule)) {
+        const firebaseSchedule = await getSchedules(user.uid);
+
+        if (firebaseSchedule) {
+          dispatch(setSchedule(firebaseSchedule));
+        } else {
+          dispatch(resetSchedule());
+        }
+      }
+    };
+    loadSchedule();
+  });
 
   return (
     <AppShell
@@ -100,7 +120,10 @@ const Index: NextPage = () => {
               <ScheduleRow size={7} row={headerRow} />
             </Box>
           </Box>
-          <ScrollArea.Autosize maxHeight="calc(100vh - 250px)">
+          <ScrollArea.Autosize
+            sx={{ minHeight: "40px" }}
+            maxHeight="calc(100vh - 250px)"
+          >
             <Box sx={{ display: "flex", width: "100%" }}>
               <Box
                 sx={(theme) => ({
@@ -114,13 +137,13 @@ const Index: NextPage = () => {
                 })}
               >
                 {/* Cell hours go here */}
-                {rows.map((row) => (
+                {schedule.rows.map((row) => (
                   <RowCell key={`hours-${row.uid}`} cell={row.cells[0]} />
                 ))}
               </Box>
               <Box sx={{ flexGrow: 1 }}>
                 {/* Cell courses go here */}
-                {rows.map((row) => (
+                {schedule.rows.map((row) => (
                   <ScheduleRow key={`courses-${row.uid}`} size={7} row={row} />
                 ))}
               </Box>
