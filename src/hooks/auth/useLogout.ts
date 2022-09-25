@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { UserAccount } from "$types";
 import { useLocalStorage } from "@mantine/hooks";
-import { auth } from "$app/firebase";
+import { auth } from "$app/firebase/config";
 import { signOut } from "firebase/auth";
 import { useAppDispatch } from "../useAppDispatch";
 import { resetUser } from "$slices/userSlice";

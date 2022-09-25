@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useState } from "react";
-import { auth } from "$app/firebase";
+import { auth } from "$app/firebase/config";
 import {
   useAuthState,
   useSignInWithEmailAndPassword,
