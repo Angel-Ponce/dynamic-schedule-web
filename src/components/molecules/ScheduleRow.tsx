@@ -5,6 +5,7 @@ import { IoClose, IoAdd } from "react-icons/io5";
 import React from "react";
 import { addRow } from "$app/firebase/schedule";
 import { useAppSelector } from "$hooks";
+import { deleteRow } from "$app/firebase/schedule/deleteRow";
 
 const ScheduleRow: React.FC<{
   row: ScheduleRowType;
@@ -16,7 +17,7 @@ const ScheduleRow: React.FC<{
     await addRow(schedule, order);
   };
   const handleRowDeleted = async (uid: string) => {
-    // do stuff
+    await deleteRow(schedule, uid);
   };
 
   return (

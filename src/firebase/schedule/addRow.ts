@@ -32,7 +32,7 @@ const addRow = async (schedule: Schedule, indexFrom: number) => {
   });
 
   await updateDoc(scheduleDoc, {
-    rows: rows,
+    rows,
   });
 };
 
