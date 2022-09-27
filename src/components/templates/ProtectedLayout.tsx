@@ -27,7 +27,6 @@ const ProtectedLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
           if (emptyUser(userStore)) {
             dispatch(setUser(user));
           }
-          console.log("asdfasdfsadfñljkdsajklñdfsajkldsf");
         }
         setMounted(true);
         return;
