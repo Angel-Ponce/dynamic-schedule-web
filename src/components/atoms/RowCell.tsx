@@ -1,5 +1,4 @@
 import { updateCell } from "$app/firebase/schedule";
-import { getSwatches } from "$helpers";
 import { useAppDispatch, useAppSelector } from "$hooks";
 import { emptyClipboard, setClipboard } from "$slices/clipboardSlice";
 import { type RowCell as RowCellType } from "$types";
@@ -238,15 +237,11 @@ const EditModal: React.FC<{
             <SimpleGrid cols={2}>
               <ColorInput
                 label="Color de fondo"
-                withPicker={false}
-                swatches={getSwatches()}
                 {...courseForm.getInputProps("bgColor")}
                 dropdownZIndex={401}
               />
               <ColorInput
                 label="Color de letra"
-                withPicker={false}
-                swatches={getSwatches()}
                 {...courseForm.getInputProps("textColor")}
                 dropdownZIndex={401}
               />
