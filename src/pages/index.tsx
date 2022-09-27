@@ -4,21 +4,27 @@ import {
   Center,
   Box,
   useMantineColorScheme,
+  Loader,
 } from "@mantine/core";
 import type { NextPage } from "next";
 import { Navbar, Header } from "$organisms";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RowCell } from "$atoms";
 import { v4 as uuidv4 } from "uuid";
-import {
-  type ScheduleRow as ScheduleRowType,
-  type RowCell as RowCellType,
-} from "$types";
+import { Schedule, type ScheduleRow as ScheduleRowType } from "$types";
 import { ScheduleRow } from "$molecules";
-import Chance from "chance";
+import { emptyUser } from "$slices/userSlice";
+import {
+  emptySchedule,
+  resetSchedule,
+  setSchedule,
+} from "$slices/scheduleSlice";
+import { collection, CollectionReference, query } from "firebase/firestore";
+import { db } from "$app/firebase/config";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useSchedules } from "$hooks";
 
 const rowUid = uuidv4();
-const chance = new Chance();
 const scheduleUid = uuidv4();
 
 const headers = [
@@ -50,34 +56,10 @@ const headerRow: ScheduleRowType = {
   })),
 };
 
-const rows: ScheduleRowType[] = new Array(10).fill({}).map((_, i) => {
-  let uid = uuidv4();
-  return {
-    uid: uid,
-    order: i,
-    scheduleUid: scheduleUid,
-    cells: new Array(8).fill({}).map((_, i) => {
-      return {
-        uid: uuidv4(),
-        title: i == 0 ? null : chance.string({ length: 4 }),
-        // bgColor: chance.color({ format: "hex" }),
-        // textColor: chance.color({ format: "hex" }),
-        bgColor: null,
-        textColor: null,
-        order: i,
-        href: "https://www.google.com",
-        professor: chance.name(),
-        rowUid: uid,
-        type: i == 0 ? "hour" : "course",
-        time: [chance.date(), chance.date()],
-      };
-    }),
-  };
-});
-
 const Index: NextPage = () => {
   let [hidden, setHidden] = useState(true);
   const { colorScheme } = useMantineColorScheme();
+  const [schedule, loading] = useSchedules();
 
   return (
     <AppShell
@@ -94,6 +76,9 @@ const Index: NextPage = () => {
             flexDirection: "column",
           }}
         >
+          <Box sx={{ height: "24px" }}>
+            {loading && <Loader size="sm" variant="oval" />}
+          </Box>
           <Box
             sx={(theme) => ({
               display: "flex",
@@ -124,7 +109,10 @@ const Index: NextPage = () => {
               <ScheduleRow size={7} row={headerRow} />
             </Box>
           </Box>
-          <ScrollArea.Autosize maxHeight="calc(100vh - 250px)">
+          <ScrollArea.Autosize
+            sx={{ minHeight: "40px" }}
+            maxHeight="calc(100vh - 250px)"
+          >
             <Box sx={{ display: "flex", width: "100%" }}>
               <Box
                 sx={(theme) => ({
@@ -138,13 +126,13 @@ const Index: NextPage = () => {
                 })}
               >
                 {/* Cell hours go here */}
-                {rows.map((row) => (
+                {schedule.rows.map((row) => (
                   <RowCell key={`hours-${row.uid}`} cell={row.cells[0]} />
                 ))}
               </Box>
               <Box sx={{ flexGrow: 1 }}>
                 {/* Cell courses go here */}
-                {rows.map((row) => (
+                {schedule.rows.map((row) => (
                   <ScheduleRow key={`courses-${row.uid}`} size={7} row={row} />
                 ))}
               </Box>
