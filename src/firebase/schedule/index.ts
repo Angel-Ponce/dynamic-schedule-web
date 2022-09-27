@@ -1,3 +1,5 @@
 import { addRow } from "./addRow";
+import { deleteRow } from "./deleteRow";
+import { updateCell } from "./updateCell";
 
-export { addRow };
+export { addRow, deleteRow, updateCell };

@@ -1,3 +1,4 @@
+import { updateCell } from "$app/firebase/schedule";
 import { getSwatches } from "$helpers";
 import { useAppSelector } from "$hooks";
 import { emptyClipboard } from "$slices/clipboardSlice";
@@ -34,7 +35,7 @@ const RowCell: React.FC<{
 
   return (
     <Box
-      onClick={() => {
+      onDoubleClick={() => {
         if (window && cell.type == "course") {
           window.open(cell.href || "", "_blank");
         }
@@ -112,7 +113,11 @@ const RowCell: React.FC<{
           (cell.time &&
             cell.time[0] &&
             cell.time[1] &&
-            `${cell.time?.[0]?.getHours()}:${cell.time?.[0]?.getMinutes()} - ${cell.time?.[1]?.getHours()}:${cell.time?.[1]?.getMinutes()}`)}
+            `${new Date(cell.time?.[0])?.getHours()}:${new Date(
+              cell.time?.[0]
+            )?.getMinutes()} - ${new Date(
+              cell.time?.[1]
+            )?.getHours()}:${new Date(cell.time?.[1])?.getMinutes()}`)}
       </Text>
       {cell.type != "header" && (
         <EditModal open={modalOpen} setOpen={setModalOpen} cell={cell} />
@@ -126,9 +131,17 @@ const EditModal: React.FC<{
   setOpen: Dispatch<SetStateAction<boolean>>;
   cell: RowCellType;
 }> = ({ open, setOpen, cell }) => {
+  const schedule = useAppSelector((state) => state.schedule);
+  const [loading, setLoading] = useState(false);
+
   const hourForm = useForm({
     initialValues: {
-      time: cell.time || undefined,
+      time: cell.time
+        ? ([
+            cell.time[0] ? new Date(cell.time[0]) : null,
+            cell.time[1] ? new Date(cell.time[1]) : null,
+          ] as [Date | null, Date | null])
+        : undefined,
     },
   });
 
@@ -141,6 +154,16 @@ const EditModal: React.FC<{
       textColor: cell.textColor || undefined,
     },
   });
+
+  const handleUpdate = async () => {
+    setLoading(true);
+    await updateCell(schedule, cell.rowUid, cell.uid, {
+      ...hourForm.values,
+      ...courseForm.values,
+    });
+    setOpen(false);
+    setLoading(false);
+  };
 
   return (
     <Modal
@@ -194,7 +217,9 @@ const EditModal: React.FC<{
           </>
         )}
         <Group position="right" className="z-50">
-          <Button color="blue">Guardar</Button>
+          <Button color="blue" onClick={handleUpdate} loading={loading}>
+            Guardar
+          </Button>
         </Group>
       </Stack>
     </Modal>

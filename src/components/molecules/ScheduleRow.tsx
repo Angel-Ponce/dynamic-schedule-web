@@ -3,9 +3,8 @@ import { Grid, HoverCard, Group, ActionIcon } from "@mantine/core";
 import { RowCell } from "$atoms";
 import { IoClose, IoAdd } from "react-icons/io5";
 import React from "react";
-import { addRow } from "$app/firebase/schedule";
+import { addRow, deleteRow } from "$app/firebase/schedule";
 import { useAppSelector } from "$hooks";
-import { deleteRow } from "$app/firebase/schedule/deleteRow";
 
 const ScheduleRow: React.FC<{
   row: ScheduleRowType;
