@@ -3,18 +3,19 @@ import { Grid, HoverCard, Group, ActionIcon } from "@mantine/core";
 import { RowCell } from "$atoms";
 import { IoClose, IoAdd } from "react-icons/io5";
 import React from "react";
-import { useAppDispatch } from "$hooks";
+import { addRow } from "$app/firebase/schedule";
+import { useAppSelector } from "$hooks";
 
 const ScheduleRow: React.FC<{
   row: ScheduleRowType;
   size: number;
 }> = ({ row, size }) => {
-  const dispatch = useAppDispatch();
+  const schedule = useAppSelector((state) => state.schedule);
 
-  const handleRowAdded = (order: number) => {
-    // do stuff
+  const handleRowAdded = async (order: number) => {
+    await addRow(schedule, order);
   };
-  const handleRowDeleted = (uid: string) => {
+  const handleRowDeleted = async (uid: string) => {
     // do stuff
   };
 

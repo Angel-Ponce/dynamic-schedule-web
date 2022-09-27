@@ -12,6 +12,9 @@ const initialState: Schedule = {
   hiddenWeek: false,
   rows: [],
   userUid: "",
+  language: "es",
+  sendEmailNotifications: false,
+  sendNotifications: false,
 };
 
 const scheduleSlice = createSlice({

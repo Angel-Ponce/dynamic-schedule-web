@@ -4,6 +4,7 @@ import {
   Center,
   Box,
   useMantineColorScheme,
+  Loader,
 } from "@mantine/core";
 import type { NextPage } from "next";
 import { Navbar, Header } from "$organisms";
@@ -75,6 +76,9 @@ const Index: NextPage = () => {
             flexDirection: "column",
           }}
         >
+          <Box sx={{ height: "24px" }}>
+            {loading && <Loader size="sm" variant="oval" />}
+          </Box>
           <Box
             sx={(theme) => ({
               display: "flex",

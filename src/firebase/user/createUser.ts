@@ -27,6 +27,7 @@ const createUser = async (user: UserAccount) => {
     sendEmailNotifications: false,
     language: "es",
     rows: [],
+    userUid: userUid,
   });
 
   let notesUid = uuidv4();
