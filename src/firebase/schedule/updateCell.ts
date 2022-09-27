@@ -3,12 +3,13 @@ import { doc, updateDoc } from "firebase/firestore";
 import type { Schedule } from "$types";
 
 interface InputValues {
-  time?: [Date | null, Date | null];
-  title?: string;
-  professor?: string;
-  href?: string;
-  bgColor?: string;
-  textColor?: string;
+  time: [Date | null, Date | null] | null;
+  title: string | null;
+  professor: string | null;
+  href: string | null;
+  bgColor: string | null;
+  textColor: string | null;
+  isRecursive: boolean | null;
 }
 
 const updateCell = async (
@@ -24,35 +25,44 @@ const updateCell = async (
   );
 
   let rows = [...schedule.rows];
-  let row = rows.find((r) => r.uid == rowUid);
-  row = row ? { ...row } : undefined;
 
-  if (row) {
-    row.cells = row.cells.map((c) =>
-      c.uid == cellUid
-        ? {
-            ...c,
-            time: params.time
-              ? [
-                  params.time[0] ? params.time[0].getTime() : null,
-                  params.time[1] ? params.time[1].getTime() : null,
-                ]
-              : null,
-            title: params.title || null,
-            professor: params.professor || null,
-            href: params.href || null,
-            bgColor: params.bgColor || null,
-            textColor: params.textColor || null,
-          }
-        : c
-    );
+  rows = rows.map((r) => {
+    return r.uid == rowUid
+      ? {
+          ...r,
+          cells: r.cells.map((c) => {
+            let rule1 = c.uid == cellUid;
+            let rule2 =
+              c.uid == cellUid ||
+              (c.title &&
+                c.title.trim() == params.title?.trim() &&
+                c.type == "course");
+            let ruleSelection = params.isRecursive ? rule2 : rule1;
 
-    rows = rows.map((r) => (r.uid == row?.uid ? row : r));
+            return ruleSelection
+              ? {
+                  ...c,
+                  time: params.time
+                    ? [
+                        params.time[0] ? params.time[0].getTime() : null,
+                        params.time[1] ? params.time[1].getTime() : null,
+                      ]
+                    : null,
+                  title: params.title || null,
+                  professor: params.professor || null,
+                  href: params.href || null,
+                  bgColor: params.bgColor || null,
+                  textColor: params.textColor || null,
+                }
+              : c;
+          }),
+        }
+      : r;
+  });
 
-    await updateDoc(scheduleDoc, {
-      rows,
-    });
-  }
+  await updateDoc(scheduleDoc, {
+    rows,
+  });
 };
 
 export { updateCell };

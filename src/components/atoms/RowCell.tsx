@@ -14,10 +14,11 @@ import {
   ColorInput,
   SimpleGrid,
   Button,
+  Checkbox,
 } from "@mantine/core";
 import { TimeRangeInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   IoPencil,
   IoCopyOutline,
@@ -45,12 +46,13 @@ const RowCell: React.FC<{
             clipboard.time[0] ? new Date(clipboard.time[0]) : null,
             clipboard.time[1] ? new Date(clipboard.time[1]) : null,
           ] as [Date | null, Date | null])
-        : undefined,
-      title: clipboard.title || undefined,
-      professor: clipboard.professor || undefined,
-      href: clipboard.href || undefined,
-      bgColor: clipboard.bgColor || undefined,
-      textColor: clipboard.textColor || undefined,
+        : null,
+      title: clipboard.title || null,
+      professor: clipboard.professor || null,
+      href: clipboard.href || null,
+      bgColor: clipboard.bgColor || null,
+      textColor: clipboard.textColor || null,
+      isRecursive: false,
     });
   };
 
@@ -165,6 +167,7 @@ const EditModal: React.FC<{
 }> = ({ open, setOpen, cell }) => {
   const schedule = useAppSelector((state) => state.schedule);
   const [loading, setLoading] = useState(false);
+  const [isRecursive, setIsRecursive] = useState(true);
 
   const hourForm = useForm({
     initialValues: {
@@ -179,20 +182,46 @@ const EditModal: React.FC<{
 
   const courseForm = useForm({
     initialValues: {
-      title: cell.title || undefined,
-      proffessor: cell.professor || undefined,
-      href: cell.href || undefined,
-      bgColor: cell.bgColor || undefined,
-      textColor: cell.textColor || undefined,
+      title: cell.title || "",
+      proffessor: cell.professor || "",
+      href: cell.href || "",
+      bgColor: cell.bgColor || "",
+      textColor: cell.textColor || "",
     },
   });
 
+  useEffect(() => {
+    hourForm.setValues({
+      time: cell.time
+        ? ([
+            cell.time[0] ? new Date(cell.time[0]) : null,
+            cell.time[1] ? new Date(cell.time[1]) : null,
+          ] as [Date | null, Date | null])
+        : undefined,
+    });
+
+    courseForm.setValues({
+      title: cell.title || "",
+      proffessor: cell.professor || "",
+      href: cell.href || "",
+      bgColor: cell.bgColor || "",
+      textColor: cell.textColor || "",
+    });
+  }, [cell]);
+
   const handleUpdate = async () => {
     setLoading(true);
+
     await updateCell(schedule, cell.rowUid, cell.uid, {
-      ...hourForm.values,
-      ...courseForm.values,
+      time: hourForm.values.time || null,
+      title: courseForm.values.title,
+      professor: courseForm.values.proffessor,
+      href: courseForm.values.href,
+      bgColor: courseForm.values.bgColor,
+      textColor: courseForm.values.textColor,
+      isRecursive: cell.type == "hour" ? false : isRecursive,
     });
+
     setOpen(false);
     setLoading(false);
   };
@@ -246,6 +275,11 @@ const EditModal: React.FC<{
                 dropdownZIndex={401}
               />
             </SimpleGrid>
+            <Checkbox
+              label="Aplicar para todas las celdas de este curso"
+              checked={isRecursive}
+              onChange={(e) => setIsRecursive(e.currentTarget.checked)}
+            />
           </>
         )}
         <Group position="right" className="z-50">
