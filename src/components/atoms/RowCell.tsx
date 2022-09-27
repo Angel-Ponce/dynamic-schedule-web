@@ -1,7 +1,7 @@
 import { updateCell } from "$app/firebase/schedule";
 import { getSwatches } from "$helpers";
-import { useAppSelector } from "$hooks";
-import { emptyClipboard } from "$slices/clipboardSlice";
+import { useAppDispatch, useAppSelector } from "$hooks";
+import { emptyClipboard, setClipboard } from "$slices/clipboardSlice";
 import { type RowCell as RowCellType } from "$types";
 import {
   ActionIcon,
@@ -32,6 +32,28 @@ const RowCell: React.FC<{
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const clipboard = useAppSelector((state) => state.clipboard);
   const { colorScheme } = useMantineColorScheme();
+  const schedule = useAppSelector((state) => state.schedule);
+  const dispatch = useAppDispatch();
+
+  const handleCopyCell = () => {
+    dispatch(setClipboard(cell));
+  };
+
+  const handlePasteCell = async () => {
+    await updateCell(schedule, cell.rowUid, cell.uid, {
+      time: clipboard.time
+        ? ([
+            clipboard.time[0] ? new Date(clipboard.time[0]) : null,
+            clipboard.time[1] ? new Date(clipboard.time[1]) : null,
+          ] as [Date | null, Date | null])
+        : undefined,
+      title: clipboard.title || undefined,
+      professor: clipboard.professor || undefined,
+      href: clipboard.href || undefined,
+      bgColor: clipboard.bgColor || undefined,
+      textColor: clipboard.textColor || undefined,
+    });
+  };
 
   return (
     <Box
@@ -43,6 +65,7 @@ const RowCell: React.FC<{
       className="group"
       sx={(theme) => ({
         position: "relative",
+        userSelect: "none",
         width: "100%",
         minHeight: "40px",
         border: "2px solid",
@@ -84,11 +107,21 @@ const RowCell: React.FC<{
           </ActionIcon>
           {cell.type != "hour" && (
             <>
-              <ActionIcon variant="light" size="xs" color="blue">
+              <ActionIcon
+                variant="light"
+                size="xs"
+                color="blue"
+                onClick={handleCopyCell}
+              >
                 <IoCopyOutline />
               </ActionIcon>
               {!emptyClipboard(clipboard) && (
-                <ActionIcon variant="light" size="xs" color="cyan">
+                <ActionIcon
+                  variant="light"
+                  size="xs"
+                  color="cyan"
+                  onClick={handlePasteCell}
+                >
                   <IoNewspaperOutline />
                 </ActionIcon>
               )}
@@ -197,7 +230,11 @@ const EditModal: React.FC<{
                 {...courseForm.getInputProps("proffessor")}
               />
             </SimpleGrid>
-            <TextInput label="Link" {...courseForm.getInputProps("href")} />
+            <TextInput
+              label="Link"
+              {...courseForm.getInputProps("href")}
+              description="Tu link debe siempre tener 'https://' o 'http://' al principio"
+            />
             <SimpleGrid cols={2}>
               <ColorInput
                 label="Color de fondo"
