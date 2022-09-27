@@ -10,16 +10,18 @@ import { Navbar, Header } from "$organisms";
 import { useEffect, useState } from "react";
 import { RowCell } from "$atoms";
 import { v4 as uuidv4 } from "uuid";
-import { type ScheduleRow as ScheduleRowType } from "$types";
+import { Schedule, type ScheduleRow as ScheduleRowType } from "$types";
 import { ScheduleRow } from "$molecules";
-import { getSchedules } from "$app/firebase/schedule";
-import { useAppDispatch, useAppSelector } from "$hooks";
 import { emptyUser } from "$slices/userSlice";
 import {
   emptySchedule,
   resetSchedule,
   setSchedule,
 } from "$slices/scheduleSlice";
+import { collection, CollectionReference, query } from "firebase/firestore";
+import { db } from "$app/firebase/config";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useSchedules } from "$hooks";
 
 const rowUid = uuidv4();
 const scheduleUid = uuidv4();
@@ -56,24 +58,7 @@ const headerRow: ScheduleRowType = {
 const Index: NextPage = () => {
   let [hidden, setHidden] = useState(true);
   const { colorScheme } = useMantineColorScheme();
-  const user = useAppSelector((state) => state.user);
-  const schedule = useAppSelector((state) => state.schedule);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const loadSchedule = async () => {
-      if (!emptyUser(user) && !emptySchedule(schedule)) {
-        const firebaseSchedule = await getSchedules(user.uid);
-
-        if (firebaseSchedule) {
-          dispatch(setSchedule(firebaseSchedule));
-        } else {
-          dispatch(resetSchedule());
-        }
-      }
-    };
-    loadSchedule();
-  });
+  const [schedule, loading] = useSchedules();
 
   return (
     <AppShell

@@ -4,7 +4,6 @@ import { RowCell } from "$atoms";
 import { IoClose, IoAdd } from "react-icons/io5";
 import React from "react";
 import { useAppDispatch } from "$hooks";
-import { addRow, deleteRow } from "$slices/scheduleSlice";
 
 const ScheduleRow: React.FC<{
   row: ScheduleRowType;
@@ -13,10 +12,10 @@ const ScheduleRow: React.FC<{
   const dispatch = useAppDispatch();
 
   const handleRowAdded = (order: number) => {
-    dispatch(addRow({ indexFrom: order }));
+    // do stuff
   };
   const handleRowDeleted = (uid: string) => {
-    dispatch(deleteRow({ rowUid: uid }));
+    // do stuff
   };
 
   return (
