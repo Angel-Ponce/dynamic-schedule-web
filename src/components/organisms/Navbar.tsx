@@ -8,9 +8,11 @@ import {
 } from "react-icons/io5";
 import { useRouter } from "next/router";
 import { NavbarDropdown, NavbarLink, UserOptions } from "$molecules";
+import { useAppSelector } from "$hooks";
 
 const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
   const router = useRouter();
+  let schedules = useAppSelector((state) => state.schedules);
 
   return (
     <MantineNavbar
@@ -24,7 +26,10 @@ const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
           <NavbarDropdown
             title="Horarios"
             pathname={router.pathname}
-            links={[{ title: "test", redirectTo: "/" }]}
+            links={schedules.map((schedule) => ({
+              title: schedule.name,
+              redirectTo: `/schedule/${schedule.uid}`,
+            }))}
           />
           <NavbarLink
             icon={<IoDocument />}
