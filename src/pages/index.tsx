@@ -11,18 +11,9 @@ import { Navbar, Header } from "$organisms";
 import { useEffect, useState } from "react";
 import { RowCell } from "$atoms";
 import { v4 as uuidv4 } from "uuid";
-import { Schedule, type ScheduleRow as ScheduleRowType } from "$types";
+import { type ScheduleRow as ScheduleRowType } from "$types";
 import { ScheduleRow } from "$molecules";
-import { emptyUser } from "$slices/userSlice";
-import {
-  emptySchedule,
-  resetSchedule,
-  setSchedule,
-} from "$slices/scheduleSlice";
-import { collection, CollectionReference, query } from "firebase/firestore";
-import { db } from "$app/firebase/config";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { useSchedules } from "$hooks";
+import { useAppSelector } from "$hooks";
 
 const rowUid = uuidv4();
 const scheduleUid = uuidv4();
@@ -59,7 +50,7 @@ const headerRow: ScheduleRowType = {
 const Index: NextPage = () => {
   let [hidden, setHidden] = useState(true);
   const { colorScheme } = useMantineColorScheme();
-  const [schedule, loading] = useSchedules();
+  let schedule = useAppSelector((state) => state.schedule);
 
   return (
     <AppShell
@@ -76,9 +67,6 @@ const Index: NextPage = () => {
             flexDirection: "column",
           }}
         >
-          <Box sx={{ height: "24px" }}>
-            {loading && <Loader size="sm" variant="oval" />}
-          </Box>
           <Box
             sx={(theme) => ({
               display: "flex",

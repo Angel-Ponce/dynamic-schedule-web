@@ -39,7 +39,7 @@ const NavbarDropdown: React.FC<{
           {opened ? <IoArrowUp /> : <IoArrowDown />}
         </Group>
       </UnstyledButton>
-      <Collapse in={opened} className="mt-2 ml-6">
+      <Collapse in={opened} className="ml-6">
         <Stack spacing={2}>
           {links.map((link, i) => (
             <NavbarLink
