@@ -1,6 +1,5 @@
-import type { Schedule, RowCell } from "$types";
+import type { Schedule } from "$types";
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
 
 const initialState: Schedule = {
   uid: "",
