@@ -14,7 +14,7 @@ import { type ScheduleRow as ScheduleRowType } from "$types";
 import { ScheduleRow } from "$molecules";
 import { useAppDispatch, useAppSelector } from "$hooks";
 import { useRouter } from "next/router";
-import { setSchedule } from "$slices/scheduleSlice";
+import { emptySchedule, setSchedule } from "$slices/scheduleSlice";
 
 const rowUid = uuidv4();
 const scheduleUid = uuidv4();
@@ -68,6 +68,8 @@ const DynamicSchedule: NextPage = () => {
 
     router.push("/");
   });
+
+  if (emptySchedule(schedule)) return <></>;
 
   return (
     <AppShell
