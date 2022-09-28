@@ -40,7 +40,8 @@ const RowCell: React.FC<{
   };
 
   const handlePasteCell = async () => {
-    await updateCell(schedule, cell.rowUid, cell.uid, {
+    await updateCell(schedule, cell.uid, {
+      prevTitle: cell.title,
       time: clipboard.time
         ? ([
             clipboard.time[0] ? new Date(clipboard.time[0]) : null,
@@ -212,7 +213,8 @@ const EditModal: React.FC<{
   const handleUpdate = async () => {
     setLoading(true);
 
-    await updateCell(schedule, cell.rowUid, cell.uid, {
+    await updateCell(schedule, cell.uid, {
+      prevTitle: cell.title,
       time: hourForm.values.time || null,
       title: courseForm.values.title,
       professor: courseForm.values.proffessor,

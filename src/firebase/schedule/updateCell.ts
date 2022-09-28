@@ -3,6 +3,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import type { Schedule } from "$types";
 
 interface InputValues {
+  prevTitle: string | null;
   time: [Date | null, Date | null] | null;
   title: string | null;
   professor: string | null;
@@ -14,7 +15,6 @@ interface InputValues {
 
 const updateCell = async (
   schedule: Schedule,
-  rowUid: string,
   cellUid: string,
   params: InputValues
 ) => {
@@ -33,7 +33,7 @@ const updateCell = async (
       let rule2 =
         c.uid == cellUid ||
         (c.title &&
-          c.title.trim() == params.title?.trim() &&
+          c.title.trim() == params.prevTitle?.trim() &&
           c.type == "course");
       let ruleSelection = params.isRecursive ? rule2 : rule1;
 
