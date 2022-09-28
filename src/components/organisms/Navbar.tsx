@@ -7,7 +7,7 @@ import {
   IoTime,
 } from "react-icons/io5";
 import { useRouter } from "next/router";
-import { NavbarLink, UserOptions } from "$molecules";
+import { NavbarDropdown, NavbarLink, UserOptions } from "$molecules";
 
 const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
   const router = useRouter();
@@ -21,12 +21,10 @@ const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
     >
       <MantineNavbar.Section grow>
         <Stack spacing={2}>
-          <NavbarLink
-            icon={<IoCalendarClear />}
-            title="Horario"
-            redirectTo="/"
+          <NavbarDropdown
+            title="Horarios"
             pathname={router.pathname}
-            color="cyan"
+            links={[{ title: "test", redirectTo: "/" }]}
           />
           <NavbarLink
             icon={<IoDocument />}
