@@ -25,7 +25,7 @@ const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
         <Stack spacing={2}>
           <NavbarDropdown
             title="Horarios"
-            pathname={router.pathname}
+            pathname={router.asPath}
             links={schedules.map((schedule) => ({
               title: schedule.name,
               redirectTo: `/schedule/${schedule.uid}`,
@@ -35,21 +35,21 @@ const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
             icon={<IoDocument />}
             title="Notas"
             redirectTo="/notes"
-            pathname={router.pathname}
+            pathname={router.asPath}
             color="orange"
           />
           <NavbarLink
             icon={<IoCheckmarkCircle />}
             title="Tareas"
             redirectTo="/todo"
-            pathname={router.pathname}
+            pathname={router.asPath}
             color="blue"
           />
           <NavbarLink
             icon={<IoTime />}
             title="Pomodoro"
             redirectTo="/pomodoro"
-            pathname={router.pathname}
+            pathname={router.asPath}
             color="yellow"
           />
         </Stack>

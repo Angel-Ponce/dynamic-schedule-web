@@ -16,7 +16,7 @@ const useSchedules = (): [boolean] => {
 
   const scheduleCollectionRef = collection(
     db,
-    `users/${user.uid}/schedules`
+    `users/${user.uid || "id"}/schedules`
   ) as CollectionReference<Schedule>;
 
   const scheduleQuery = query(scheduleCollectionRef);

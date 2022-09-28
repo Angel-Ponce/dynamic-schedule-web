@@ -4,6 +4,10 @@ import {
   Center,
   Box,
   useMantineColorScheme,
+  Group,
+  Button,
+  Popover,
+  Text,
 } from "@mantine/core";
 import type { NextPage } from "next";
 import { Navbar, Header } from "$organisms";
@@ -14,7 +18,12 @@ import { type ScheduleRow as ScheduleRowType } from "$types";
 import { ScheduleRow } from "$molecules";
 import { useAppDispatch, useAppSelector } from "$hooks";
 import { useRouter } from "next/router";
-import { emptySchedule, setSchedule } from "$slices/scheduleSlice";
+import {
+  emptySchedule,
+  resetSchedule,
+  setSchedule,
+} from "$slices/scheduleSlice";
+import { IoCheckmarkCircle, IoShareSocialOutline } from "react-icons/io5";
 
 const rowUid = uuidv4();
 const scheduleUid = uuidv4();
@@ -66,8 +75,13 @@ const DynamicSchedule: NextPage = () => {
       return;
     }
 
-    router.push("/");
+    dispatch(resetSchedule());
   });
+
+  const handleShareSchedule = async () => {
+    const url = `${location.origin}/schedule/share/${schedule.userUid}/${schedule.uid}`;
+    await navigator.clipboard.writeText(url);
+  };
 
   if (emptySchedule(schedule)) return <></>;
 
@@ -86,6 +100,29 @@ const DynamicSchedule: NextPage = () => {
             flexDirection: "column",
           }}
         >
+          <Group position="right" pb="md">
+            <Popover position="left" transition="scale">
+              <Popover.Target>
+                <Box>
+                  <Button
+                    leftIcon={<IoShareSocialOutline />}
+                    variant="light"
+                    onClick={handleShareSchedule}
+                  >
+                    Compartir
+                  </Button>
+                </Box>
+              </Popover.Target>
+              <Popover.Dropdown p={3}>
+                <Text color="green">
+                  <Group spacing={3} align="center">
+                    <IoCheckmarkCircle />
+                    <Text>Se copió el enlace</Text>
+                  </Group>
+                </Text>
+              </Popover.Dropdown>
+            </Popover>
+          </Group>
           <Box
             sx={(theme) => ({
               display: "flex",
