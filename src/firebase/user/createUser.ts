@@ -17,7 +17,7 @@ const createUser = async (user: UserAccount) => {
 
   await setDoc(doc(db, `users/${userUid}/schedules`, scheduleUid), {
     uid: scheduleUid,
-    name: "Horario",
+    name: "Principal",
     hiddeSaturday: false,
     hiddeSunday: false,
     hiddeWeek: false,
