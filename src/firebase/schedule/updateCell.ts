@@ -20,7 +20,7 @@ const updateCell = async (
 ) => {
   const scheduleDoc = doc(
     db,
-    `users/${schedule.userUid}/schedules`,
+    `users/${schedule.userUid || "id"}/schedules`,
     schedule.uid
   );
 

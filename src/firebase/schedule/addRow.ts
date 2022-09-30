@@ -9,7 +9,7 @@ const addRow = async (schedule: Schedule, indexFrom: number) => {
 
   const scheduleDoc = doc(
     db,
-    `users/${schedule.userUid}/schedules`,
+    `users/${schedule.userUid || "id"}/schedules`,
     schedule.uid
   );
 
