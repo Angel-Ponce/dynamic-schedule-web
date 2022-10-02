@@ -171,7 +171,16 @@ const DynamicSchedule: NextPage = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }}>
               {/* Cell day headers */}
-              <ScheduleRow index={-1} size={7} row={headerRow} />
+              <ScheduleRow
+                index={-1}
+                size={
+                  7 -
+                  (schedule.hiddeSaturday ? 1 : 0) -
+                  (schedule.hiddeSunday ? 1 : 0) -
+                  (schedule.hiddeWeek ? 5 : 0)
+                }
+                row={headerRow}
+              />
             </Box>
           </Box>
           <ScrollArea.Autosize
@@ -201,7 +210,12 @@ const DynamicSchedule: NextPage = () => {
                   <ScheduleRow
                     index={i}
                     key={`courses-${row.uid}`}
-                    size={7}
+                    size={
+                      7 -
+                      (schedule.hiddeSaturday ? 1 : 0) -
+                      (schedule.hiddeSunday ? 1 : 0) -
+                      (schedule.hiddeWeek ? 5 : 0)
+                    }
                     row={row}
                   />
                 ))}

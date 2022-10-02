@@ -70,7 +70,7 @@ const RowCell: React.FC<{
         userSelect: "none",
         width: "100%",
         minHeight: "40px",
-        border: "2px solid",
+        border: `${schedule.showGrid ? "2px" : "0px"} solid`,
         borderColor:
           colorScheme == "light" ? theme.colors.gray[1] : theme.colors.gray[9],
         backgroundColor:
@@ -82,7 +82,7 @@ const RowCell: React.FC<{
         transitionDuration: "0.15s",
         cursor: cell.type == "course" ? "pointer" : "default",
         "&:hover": {
-          border: "2px solid",
+          border: `${schedule.showGrid ? "2px" : "0px"} solid`,
           borderColor:
             cell.type != "header"
               ? theme.colors.blue[5]

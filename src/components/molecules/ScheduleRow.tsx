@@ -25,7 +25,23 @@ const ScheduleRow: React.FC<{
       <HoverCard.Target>
         <Grid columns={size} gutter={0} sx={{ flexWrap: "nowrap" }}>
           {row.cells
-            .filter((cell) => cell.order != 0)
+            .filter((cell) => {
+              if (cell.order == 0) return false;
+
+              if (schedule.hiddeWeek && cell.order > 0 && cell.order < 6) {
+                return false;
+              }
+
+              if (schedule.hiddeSaturday && cell.order == 6) {
+                return false;
+              }
+
+              if (schedule.hiddeSunday && cell.order == 7) {
+                return false;
+              }
+
+              return true;
+            })
             .map((cell) => {
               return (
                 <Grid.Col
