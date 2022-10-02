@@ -1,5 +1,6 @@
 import { db } from "$app/firebase/config";
 import { Schedule } from "$types";
+import to from "await-to-ts";
 import { doc, DocumentReference, getDoc, setDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 
@@ -14,15 +15,21 @@ const copySchedule = async (
     externalScheduleUid || "id"
   ) as DocumentReference<Schedule>;
 
-  const schedule = await getDoc(scheduleRef);
+  const [e1, schedule] = await to(getDoc(scheduleRef));
+
+  if (e1) return null;
 
   const uid = uuidv4();
 
-  setDoc(doc(db, `users/${actualUserUid || ""}/schedules`, uid), {
-    ...schedule.data(),
-    uid,
-    name: `${schedule?.data()?.name} - copia`,
-  });
+  const [e2] = await to(
+    setDoc(doc(db, `users/${actualUserUid || ""}/schedules`, uid), {
+      ...schedule.data(),
+      uid,
+      name: `${schedule?.data()?.name} - copia`,
+    })
+  );
+
+  if (e2) return null;
 
   return { ...schedule.data(), uid, name: `${schedule?.data()?.name} - copia` };
 };

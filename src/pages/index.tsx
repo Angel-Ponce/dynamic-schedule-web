@@ -11,12 +11,13 @@ import { Navbar, Header } from "$organisms";
 import { useState } from "react";
 import { useAppSelector } from "$hooks";
 import { IoCalendarClear } from "react-icons/io5";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 const DynamicSchedule: NextPage = () => {
   let [hidden, setHidden] = useState(true);
   let user = useAppSelector((state) => state.user);
   let schedules = useAppSelector((state) => state.schedules);
+  const router = useRouter();
 
   return (
     <AppShell
@@ -35,7 +36,7 @@ const DynamicSchedule: NextPage = () => {
             mt="xl"
             py={8}
             px={16}
-            className="rounded-xl cursor-pointer transition-all"
+            className="rounded-xl cursor-pointer transition-all flex-1 max-w-xs"
             sx={(theme) => ({
               "&:hover": {
                 backgroundColor:
@@ -44,15 +45,12 @@ const DynamicSchedule: NextPage = () => {
                     : theme.colors.gray[8],
               },
             })}
+            onClick={() => router.push(`/schedule/${schedule.uid}`)}
           >
             <ThemeIcon variant="light" size="xl" radius={999}>
               <IoCalendarClear />
             </ThemeIcon>
-            <Link passHref href={`/schedule/${schedule.uid}`}>
-              <Text component="a" className="select-none">
-                {schedule.name}
-              </Text>
-            </Link>
+            <Text className="select-none">{schedule.name}</Text>
           </Group>
         ))}
       </Group>

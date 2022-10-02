@@ -1364,6 +1364,11 @@ autoprefixer@^10.4.12:
     picocolors "^1.0.0"
     postcss-value-parser "^4.2.0"
 
+await-to-ts@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/await-to-ts/-/await-to-ts-1.0.6.tgz#62e87400ebfb052c382cc34c3d24c6e1b39c54ba"
+  integrity sha512-Lx6mzgdTbu6GHGhLd9jP5d3iE3fKDmkiI2JoLk37zZfMI4xau/8x/Iwh2Xmo/jH4O5hqnRfVpbjtxZoB7m8jQA==
+
 axe-core@^4.4.3:
   version "4.4.3"
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.4.3.tgz#11c74d23d5013c0fa5d183796729bc3482bd2f6f"
