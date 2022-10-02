@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Drawer,
   Checkbox,
@@ -20,17 +20,40 @@ import {
   IoText,
 } from "react-icons/io5";
 import { useForm } from "@mantine/form";
+import { useAppSelector } from "$hooks";
+import { updateSchedule } from "$app/firebase/schedule";
 
 const Settings: React.FC<{
   opened: boolean;
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ opened, setOpened }) => {
+  const [loading, setLoading] = useState(false);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const schedule = useAppSelector((state) => state.schedule);
+
   const form = useForm({
     initialValues: {
-      fontFamily: "default",
+      name: schedule.name,
+      language: schedule.language,
+      hiddeSaturday: schedule.hiddeSaturday,
+      hiddeSunday: schedule.hiddeSunday,
+      hiddeWeek: schedule.hiddeWeek,
+      showGrid: schedule.showGrid,
+      sendEmailNotifications: schedule.sendEmailNotifications,
+      sendNotifications: schedule.sendNotifications,
+      fontFamily: schedule.fontFamily,
     },
   });
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    const updated = await updateSchedule(
+      schedule.userUid,
+      schedule.uid,
+      form.values
+    );
+    setLoading(false);
+  };
 
   return (
     <Drawer
@@ -45,13 +68,17 @@ const Settings: React.FC<{
     >
       <ScrollArea.Autosize maxHeight="calc(100vh - 100px)">
         <Stack>
-          <TextInput label="Nombre" placeholder="Nombre de horario" />
+          <TextInput
+            label="Nombre"
+            placeholder="Nombre de horario"
+            {...form.getInputProps("name")}
+          />
           <Select
             label="Idioma"
             data={[{ value: "es", label: "Español" }]}
             transition="slide-down"
             icon={<IoLanguageOutline />}
-            value="es"
+            {...form.getInputProps("language")}
           />
           <Select
             label="Tipo de letra"
@@ -94,12 +121,44 @@ const Settings: React.FC<{
             }}
           />
           <Stack spacing="xl" mt="md">
-            <Checkbox id="showGrid" label="Ver celdas" />
-            <Checkbox id="hiddeSaturday" label="Ocultar día Sábado" />
-            <Checkbox id="hiddeSunday" label="Ocultar día Domingo" />
-            <Checkbox id="hiddeWeek" label="Ocultar Lunes a Viernes" />
+            <Checkbox
+              id="showGrid"
+              label="Ver celdas"
+              checked={form.values.showGrid}
+              onChange={(e) =>
+                form.setFieldValue("showGrid", e.currentTarget.checked)
+              }
+            />
+            <Checkbox
+              id="hiddeSaturday"
+              label="Ocultar día Sábado"
+              checked={form.values.hiddeSaturday}
+              onChange={(e) =>
+                form.setFieldValue("hiddeSaturday", e.currentTarget.checked)
+              }
+            />
+            <Checkbox
+              id="hiddeSunday"
+              label="Ocultar día Domingo"
+              checked={form.values.hiddeSunday}
+              onChange={(e) =>
+                form.setFieldValue("hiddeSunday", e.currentTarget.checked)
+              }
+            />
+            <Checkbox
+              id="hiddeWeek"
+              label="Ocultar Lunes a Viernes"
+              checked={form.values.hiddeWeek}
+              onChange={(e) =>
+                form.setFieldValue("hiddeWeek", e.currentTarget.checked)
+              }
+            />
             <Group align="center" spacing={4}>
-              <Checkbox id="sendNotifications" label="Notificaciones push" />
+              <Checkbox
+                id="sendNotifications"
+                label="Notificaciones push"
+                disabled
+              />
               <Tooltip
                 label="Envía una alerta cuando un curso se aproxima"
                 position="top"
@@ -127,7 +186,13 @@ const Settings: React.FC<{
               </Tooltip>
             </Group>
             <Group position="right">
-              <Button sx={{ width: "fit-content" }}>Guardar</Button>
+              <Button
+                loading={loading}
+                onClick={handleSubmit}
+                sx={{ width: "fit-content" }}
+              >
+                Guardar
+              </Button>
             </Group>
           </Stack>
         </Stack>
