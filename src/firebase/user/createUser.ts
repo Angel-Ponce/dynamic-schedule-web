@@ -13,7 +13,7 @@ const createUser = async (user: UserAccount) => {
     photoURL: user.photoURL,
   });
 
-  let scheduleUid = uuidv4();
+  let scheduleUid = `main-${uuidv4()}`;
 
   await setDoc(doc(db, `users/${userUid}/schedules`, scheduleUid), {
     uid: scheduleUid,

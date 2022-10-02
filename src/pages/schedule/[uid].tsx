@@ -23,7 +23,11 @@ import {
   resetSchedule,
   setSchedule,
 } from "$slices/scheduleSlice";
-import { IoCheckmarkCircle, IoShareSocialOutline } from "react-icons/io5";
+import {
+  IoCheckmarkCircle,
+  IoShareSocialOutline,
+  IoTrashOutline,
+} from "react-icons/io5";
 
 const rowUid = uuidv4();
 const scheduleUid = uuidv4();
@@ -122,6 +126,9 @@ const DynamicSchedule: NextPage = () => {
                 </Text>
               </Popover.Dropdown>
             </Popover>
+            <Button leftIcon={<IoTrashOutline />} variant="light" color="red">
+              Eliminar
+            </Button>
           </Group>
           <Box
             sx={(theme) => ({
@@ -150,7 +157,7 @@ const DynamicSchedule: NextPage = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }}>
               {/* Cell day headers */}
-              <ScheduleRow size={7} row={headerRow} />
+              <ScheduleRow index={-1} size={7} row={headerRow} />
             </Box>
           </Box>
           <ScrollArea.Autosize
@@ -176,8 +183,13 @@ const DynamicSchedule: NextPage = () => {
               </Box>
               <Box sx={{ flexGrow: 1 }}>
                 {/* Cell courses go here */}
-                {schedule.rows.map((row) => (
-                  <ScheduleRow key={`courses-${row.uid}`} size={7} row={row} />
+                {schedule.rows.map((row, i) => (
+                  <ScheduleRow
+                    index={i}
+                    key={`courses-${row.uid}`}
+                    size={7}
+                    row={row}
+                  />
                 ))}
               </Box>
             </Box>

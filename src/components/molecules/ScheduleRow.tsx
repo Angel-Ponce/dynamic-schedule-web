@@ -9,11 +9,12 @@ import { useAppSelector } from "$hooks";
 const ScheduleRow: React.FC<{
   row: ScheduleRowType;
   size: number;
-}> = ({ row, size }) => {
+  index: number;
+}> = ({ row, size, index }) => {
   const schedule = useAppSelector((state) => state.schedule);
 
-  const handleRowAdded = async (order: number) => {
-    await addRow(schedule, order);
+  const handleRowAdded = async () => {
+    await addRow(schedule, index);
   };
   const handleRowDeleted = async (uid: string) => {
     await deleteRow(schedule, uid);
@@ -53,11 +54,11 @@ const ScheduleRow: React.FC<{
             variant="light"
             size="md"
             color="green"
-            onClick={() => handleRowAdded(row.order)}
+            onClick={handleRowAdded}
           >
             <IoAdd />
           </ActionIcon>
-          {row.order != -1 && (
+          {index != -1 && (
             <ActionIcon
               variant="light"
               color="red"
