@@ -6,7 +6,7 @@ import { NotificationsProvider } from "@mantine/notifications";
 import { Provider } from "react-redux";
 import { defaultStore } from "$stores";
 import { useUserTheme } from "$hooks";
-import { ProtectedLayout } from "$templates";
+import { LoadGeneralData, ProtectedLayout } from "$templates";
 
 import "../../styles/globals.css";
 
@@ -40,7 +40,9 @@ export default function App(props: AppProps) {
         >
           <NotificationsProvider>
             <ProtectedLayout>
-              <Component {...pageProps} />
+              <LoadGeneralData>
+                <Component {...pageProps} />
+              </LoadGeneralData>
             </ProtectedLayout>
           </NotificationsProvider>
         </MantineProvider>

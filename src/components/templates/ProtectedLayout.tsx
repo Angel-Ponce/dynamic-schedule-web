@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "$hooks";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useState } from "react";
+import GeneralLoader from "./GeneralLoader";
 
 const ProtectedLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
@@ -46,7 +47,9 @@ const ProtectedLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
     redirect();
   }, [router, setMounted, setLoadingPath, dispatch, userStore]);
 
-  return <>{!mounted || loadingPath ? <></> : <>{children}</>}</>;
+  if (!mounted || loadingPath) return <GeneralLoader />;
+
+  return <>{children}</>;
 };
 
 export default ProtectedLayout;

@@ -9,11 +9,12 @@ import { useAppSelector } from "$hooks";
 const ScheduleRow: React.FC<{
   row: ScheduleRowType;
   size: number;
-}> = ({ row, size }) => {
+  index: number;
+}> = ({ row, size, index }) => {
   const schedule = useAppSelector((state) => state.schedule);
 
-  const handleRowAdded = async (order: number) => {
-    await addRow(schedule, order);
+  const handleRowAdded = async () => {
+    await addRow(schedule, index);
   };
   const handleRowDeleted = async (uid: string) => {
     await deleteRow(schedule, uid);
@@ -24,7 +25,23 @@ const ScheduleRow: React.FC<{
       <HoverCard.Target>
         <Grid columns={size} gutter={0} sx={{ flexWrap: "nowrap" }}>
           {row.cells
-            .filter((cell) => cell.order != 0)
+            .filter((cell) => {
+              if (cell.order == 0) return false;
+
+              if (schedule.hiddeWeek && cell.order > 0 && cell.order < 6) {
+                return false;
+              }
+
+              if (schedule.hiddeSaturday && cell.order == 6) {
+                return false;
+              }
+
+              if (schedule.hiddeSunday && cell.order == 7) {
+                return false;
+              }
+
+              return true;
+            })
             .map((cell) => {
               return (
                 <Grid.Col
@@ -53,11 +70,11 @@ const ScheduleRow: React.FC<{
             variant="light"
             size="md"
             color="green"
-            onClick={() => handleRowAdded(row.order)}
+            onClick={handleRowAdded}
           >
             <IoAdd />
           </ActionIcon>
-          {row.order != -1 && (
+          {index != -1 && (
             <ActionIcon
               variant="light"
               color="red"
