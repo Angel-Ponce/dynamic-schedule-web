@@ -21,6 +21,7 @@ const copySchedule = async (
   setDoc(doc(db, `users/${actualUserUid || ""}/schedules`, uid), {
     ...schedule.data(),
     uid,
+    name: `${schedule?.data()?.name} - copia`,
   });
 
   return { ...schedule.data(), uid, name: `${schedule?.data()?.name} - copia` };
