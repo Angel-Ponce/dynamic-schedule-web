@@ -2,6 +2,7 @@ import { copySchedule } from "$app/firebase/schedule";
 import { useAppSelector } from "$hooks";
 import { GeneralLoader } from "$templates";
 import { Button, Center, Group, Stack, Title } from "@mantine/core";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { IoCheckmarkCircle, IoCloseCircle } from "react-icons/io5";
@@ -39,7 +40,9 @@ const ShareSchedule: React.FC = () => {
             <IoCheckmarkCircle className="text-green-500" size={40} />
           </Group>
           <Title order={4}>Horario cargado con éxito</Title>
-          <Button>Ir a inicio</Button>
+          <Link passHref href="/">
+            <Button component="a">Regresar a inicio</Button>
+          </Link>
         </Stack>
       </Center>
     );
@@ -51,7 +54,9 @@ const ShareSchedule: React.FC = () => {
           <IoCloseCircle className="text-red-500" size={40} />
         </Group>
         <Title order={4}>Ups! algo ha salido mal</Title>
-        <Button>Regresar a inicio</Button>
+        <Link passHref href="/">
+          <Button component="a">Regresar a inicio</Button>
+        </Link>
       </Stack>
     </Center>
   );

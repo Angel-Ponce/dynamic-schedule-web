@@ -28,6 +28,7 @@ import {
   IoShareSocialOutline,
   IoTrashOutline,
 } from "react-icons/io5";
+import { deleteSchedule } from "$app/firebase/schedule";
 
 const rowUid = uuidv4();
 const scheduleUid = uuidv4();
@@ -87,6 +88,12 @@ const DynamicSchedule: NextPage = () => {
     await navigator.clipboard.writeText(url);
   };
 
+  const handleDeleteSchedule = async () => {
+    const deleted = await deleteSchedule(schedule.userUid, schedule.uid);
+
+    if (deleted) await router.push("/");
+  };
+
   if (emptySchedule(schedule)) return <></>;
 
   return (
@@ -127,7 +134,12 @@ const DynamicSchedule: NextPage = () => {
               </Popover.Dropdown>
             </Popover>
             {!schedule.uid.startsWith("main") && (
-              <Button leftIcon={<IoTrashOutline />} variant="light" color="red">
+              <Button
+                leftIcon={<IoTrashOutline />}
+                variant="light"
+                color="red"
+                onClick={handleDeleteSchedule}
+              >
                 Eliminar
               </Button>
             )}

@@ -26,12 +26,18 @@ const copySchedule = async (
       ...schedule.data(),
       uid,
       name: `${schedule?.data()?.name} - copia`,
+      userUid: externalUserUid,
     })
   );
 
   if (e2) return null;
 
-  return { ...schedule.data(), uid, name: `${schedule?.data()?.name} - copia` };
+  return {
+    ...schedule.data(),
+    uid,
+    name: `${schedule?.data()?.name} - copia`,
+    userUid: externalUserUid,
+  };
 };
 
 export { copySchedule };
