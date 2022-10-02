@@ -126,9 +126,11 @@ const DynamicSchedule: NextPage = () => {
                 </Text>
               </Popover.Dropdown>
             </Popover>
-            <Button leftIcon={<IoTrashOutline />} variant="light" color="red">
-              Eliminar
-            </Button>
+            {!schedule.uid.startsWith("main") && (
+              <Button leftIcon={<IoTrashOutline />} variant="light" color="red">
+                Eliminar
+              </Button>
+            )}
           </Group>
           <Box
             sx={(theme) => ({
