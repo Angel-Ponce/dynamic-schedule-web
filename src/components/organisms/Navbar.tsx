@@ -7,10 +7,12 @@ import {
   IoTime,
 } from "react-icons/io5";
 import { useRouter } from "next/router";
-import { NavbarLink, UserOptions } from "$molecules";
+import { NavbarDropdown, NavbarLink, UserOptions } from "$molecules";
+import { useAppSelector } from "$hooks";
 
 const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
   const router = useRouter();
+  let schedules = useAppSelector((state) => state.schedules);
 
   return (
     <MantineNavbar
@@ -21,32 +23,33 @@ const Navbar: React.FC<{ hidden: boolean }> = ({ hidden }) => {
     >
       <MantineNavbar.Section grow>
         <Stack spacing={2}>
-          <NavbarLink
-            icon={<IoCalendarClear />}
-            title="Horario"
-            redirectTo="/"
-            pathname={router.pathname}
-            color="cyan"
+          <NavbarDropdown
+            title="Horarios"
+            pathname={router.asPath}
+            links={schedules.map((schedule) => ({
+              title: schedule.name,
+              redirectTo: `/schedule/${schedule.uid}`,
+            }))}
           />
           <NavbarLink
             icon={<IoDocument />}
             title="Notas"
             redirectTo="/notes"
-            pathname={router.pathname}
+            pathname={router.asPath}
             color="orange"
           />
           <NavbarLink
             icon={<IoCheckmarkCircle />}
             title="Tareas"
             redirectTo="/todo"
-            pathname={router.pathname}
+            pathname={router.asPath}
             color="blue"
           />
           <NavbarLink
             icon={<IoTime />}
             title="Pomodoro"
             redirectTo="/pomodoro"
-            pathname={router.pathname}
+            pathname={router.asPath}
             color="yellow"
           />
         </Stack>

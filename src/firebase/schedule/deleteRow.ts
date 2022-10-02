@@ -7,7 +7,7 @@ const deleteRow = async (schedule: Schedule, rowUid: string) => {
 
   const scheduleDoc = doc(
     db,
-    `users/${schedule.userUid}/schedules`,
+    `users/${schedule.userUid || "id"}/schedules`,
     schedule.uid
   );
 

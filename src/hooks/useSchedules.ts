@@ -8,16 +8,15 @@ import {
 } from "firebase/firestore";
 import { db } from "$app/firebase/config";
 import { useAppDispatch, useAppSelector } from "$hooks";
-import { resetSchedule, setSchedule } from "$slices/scheduleSlice";
+import { resetSchedules, setSchedules } from "$slices/schedulesSlice";
 
-const useSchedules = (): [Schedule, boolean] => {
+const useSchedules = (): [boolean] => {
   const user = useAppSelector((state) => state.user);
-  const schedule = useAppSelector((state) => state.schedule);
   const dispatch = useAppDispatch();
 
   const scheduleCollectionRef = collection(
     db,
-    `users/${user.uid}/schedules`
+    `users/${user.uid || "id"}/schedules`
   ) as CollectionReference<Schedule>;
 
   const scheduleQuery = query(scheduleCollectionRef);
@@ -26,14 +25,14 @@ const useSchedules = (): [Schedule, boolean] => {
 
   useEffect(() => {
     if (schedules && schedules.length > 0 && !error) {
-      dispatch(setSchedule(schedules[0]));
+      dispatch(setSchedules(schedules));
       return;
     }
 
-    dispatch(resetSchedule());
+    dispatch(resetSchedules());
   }, [schedules, dispatch, error]);
 
-  return [schedule, loading];
+  return [loading];
 };
 
 export { useSchedules };

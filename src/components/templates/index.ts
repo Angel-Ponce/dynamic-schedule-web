@@ -1,3 +1,5 @@
 import ProtectedLayout from "./ProtectedLayout";
+import LoadGeneralData from "./LoadGeneralData";
+import GeneralLoader from "./GeneralLoader";
 
-export { ProtectedLayout };
+export { ProtectedLayout, LoadGeneralData, GeneralLoader };

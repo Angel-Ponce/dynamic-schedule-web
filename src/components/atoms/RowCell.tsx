@@ -40,7 +40,8 @@ const RowCell: React.FC<{
   };
 
   const handlePasteCell = async () => {
-    await updateCell(schedule, cell.rowUid, cell.uid, {
+    await updateCell(schedule, cell.uid, {
+      prevTitle: cell.title,
       time: clipboard.time
         ? ([
             clipboard.time[0] ? new Date(clipboard.time[0]) : null,
@@ -69,7 +70,7 @@ const RowCell: React.FC<{
         userSelect: "none",
         width: "100%",
         minHeight: "40px",
-        border: "2px solid",
+        border: `${schedule.showGrid ? "2px" : "0px"} solid`,
         borderColor:
           colorScheme == "light" ? theme.colors.gray[1] : theme.colors.gray[9],
         backgroundColor:
@@ -81,7 +82,7 @@ const RowCell: React.FC<{
         transitionDuration: "0.15s",
         cursor: cell.type == "course" ? "pointer" : "default",
         "&:hover": {
-          border: "2px solid",
+          border: `${schedule.showGrid ? "2px" : "0px"} solid`,
           borderColor:
             cell.type != "header"
               ? theme.colors.blue[5]
@@ -212,7 +213,8 @@ const EditModal: React.FC<{
   const handleUpdate = async () => {
     setLoading(true);
 
-    await updateCell(schedule, cell.rowUid, cell.uid, {
+    await updateCell(schedule, cell.uid, {
+      prevTitle: cell.title,
       time: hourForm.values.time || null,
       title: courseForm.values.title,
       professor: courseForm.values.proffessor,

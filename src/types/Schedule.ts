@@ -4,9 +4,9 @@ interface Schedule {
   uid: string;
   name: string;
   language: "es" | "en";
-  hiddenSaturday: boolean;
-  hiddenSunday: boolean;
-  hiddenWeek: boolean;
+  hiddeSaturday: boolean;
+  hiddeSunday: boolean;
+  hiddeWeek: boolean;
   showGrid: boolean;
   sendEmailNotifications: boolean;
   sendNotifications: boolean;
