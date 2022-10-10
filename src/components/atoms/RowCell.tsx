@@ -142,6 +142,8 @@ const RowCell: React.FC<{
               : undefined,
           whiteSpace: "nowrap",
           overflow: "hidden",
+          fontFamily:
+            schedule.fontFamily == "deafult" ? undefined : schedule.fontFamily,
         }}
       >
         {cell.title ||
