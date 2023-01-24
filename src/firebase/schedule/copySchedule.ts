@@ -26,7 +26,7 @@ const copySchedule = async (
       ...schedule.data(),
       uid,
       name: `${schedule?.data()?.name} - copia`,
-      userUid: externalUserUid,
+      userUid: actualUserUid,
     })
   );
 
@@ -36,7 +36,7 @@ const copySchedule = async (
     ...schedule.data(),
     uid,
     name: `${schedule?.data()?.name} - copia`,
-    userUid: externalUserUid,
+    userUid: actualUserUid,
   };
 };
 
