@@ -133,7 +133,7 @@ const DynamicSchedule: NextPage = () => {
                 </Text>
               </Popover.Dropdown>
             </Popover>
-            {!schedule.uid.startsWith("main") && (
+            {schedules.length > 1 && (
               <Button
                 leftIcon={<IoTrashOutline />}
                 variant="light"
