@@ -15,7 +15,7 @@ import {
 import { Chance } from "chance";
 import { useForm } from "@mantine/form";
 import { IoCheckmarkCircle, IoTrash } from "react-icons/io5";
-import { updateNote } from "$app/firebase/notes/updateNote";
+import { deleteNote, updateNote } from "$app/firebase/notes";
 
 const colors = [
   ...Object.keys(DEFAULT_THEME.colors).map(
@@ -45,6 +45,7 @@ const Note: FC<{ note?: Note; loading?: boolean }> = ({
   };
 
   const onDelete = async () => {
+    await deleteNote(note?.uid || "");
     setEditing(false);
   };
 
