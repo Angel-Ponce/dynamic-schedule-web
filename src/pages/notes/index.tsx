@@ -16,14 +16,13 @@ const Notes: NextPage = () => {
       header={<Header setHiddenNavbar={setHidden} hiddenNavbar={hidden} />}
     >
       <Box className="w-full columns-1 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5 3xl:columns-6">
-        {loading ||
-          (error && (
-            <>
-              {new Array(20).fill({}).map((_n, i) => (
-                <Note key={i} loading></Note>
-              ))}
-            </>
-          ))}
+        {(loading || error) && (
+          <>
+            {new Array(15).fill({}).map((_n, i) => (
+              <Note key={i} loading></Note>
+            ))}
+          </>
+        )}
 
         {!error && !loading && (
           <>
