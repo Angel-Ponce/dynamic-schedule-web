@@ -33,14 +33,17 @@ const Note: FC<{ note?: Note; loading?: boolean }> = ({
     initialValues: {
       title: note?.title || "",
       content: note?.content || "",
-      color: color || "",
       important: note?.important || false,
     },
   });
   const theme = useMantineTheme();
 
   const onUpdate = async () => {
-    await updateNote({ ...form.values, uid: note?.uid || "" });
+    await updateNote({
+      ...form.values,
+      uid: note?.uid || "",
+      color: color || "",
+    });
     setEditing(false);
   };
 
@@ -105,7 +108,6 @@ const Note: FC<{ note?: Note; loading?: boolean }> = ({
             withPicker={false}
             swatches={colors}
             swatchesPerRow={7}
-            {...form.getInputProps("color")}
             onChange={(e) => setColor(e)}
           />
         </Box>
