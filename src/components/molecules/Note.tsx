@@ -14,7 +14,13 @@ import {
 } from "@mantine/core";
 import { Chance } from "chance";
 import { useForm } from "@mantine/form";
-import { IoCheckmark, IoRemove } from "react-icons/io5";
+import {
+  IoCheckmark,
+  IoCheckmarkCircle,
+  IoRemove,
+  IoRemoveCircle,
+  IoTrash,
+} from "react-icons/io5";
 
 const colors = [
   ...Object.keys(DEFAULT_THEME.colors).map(
@@ -27,11 +33,12 @@ const Note: FC<{ note?: Note; loading?: boolean }> = ({
   loading = false,
 }) => {
   const [editing, setEditing] = useState(false);
+  const [color, setColor] = useState(note?.color);
   const form = useForm({
     initialValues: {
       title: note?.title || "",
       content: note?.content || "",
-      color: note?.color || "",
+      color: color || "",
       important: note?.important || false,
     },
   });
@@ -60,10 +67,7 @@ const Note: FC<{ note?: Note; loading?: boolean }> = ({
       className="cursor-pointer min-w-[240px] max-w-[240px] min-h-[100px] max-h-[300px] overflow-y-auto h-auto rounded-xl inline-flex flex-col gap-2 p-6 relative my-3"
       onClick={() => setEditing(true)}
       sx={{
-        backgroundColor: theme.fn.rgba(
-          note?.color || theme.colors.gray[6],
-          0.3
-        ),
+        backgroundColor: theme.fn.rgba(color || theme.colors.gray[6], 0.2),
       }}
     >
       {!editing && (
@@ -97,33 +101,32 @@ const Note: FC<{ note?: Note; loading?: boolean }> = ({
             swatches={colors}
             swatchesPerRow={7}
             {...form.getInputProps("color")}
+            onChange={(e) => setColor(e)}
           />
         </Box>
       )}
 
       {editing && (
-        <Box className="w-full flex justify-end items-center gap-3 mt-5">
+        <Box className="absolute top-2 right-2 flex justify-end items-center">
           <ActionIcon
-            size="lg"
-            color="green"
-            variant="light"
+            size="md"
+            variant="transparent"
             onClick={(e) => {
               e.stopPropagation();
               onUpdate();
             }}
           >
-            <IoCheckmark className="text-xl" />
+            <IoCheckmarkCircle className="text-xl" color="#2F9E44" />
           </ActionIcon>
           <ActionIcon
-            size="lg"
-            color="red"
-            variant="light"
+            size="md"
+            variant="transparent"
             onClick={(e) => {
               e.stopPropagation();
               onRemove();
             }}
           >
-            <IoRemove className="text-xl" />
+            <IoTrash className="text-xl" color="#FA5252" />
           </ActionIcon>
         </Box>
       )}
