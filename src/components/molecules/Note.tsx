@@ -17,7 +17,7 @@ const Note: FC<{ note?: Note; loading?: boolean }> = ({
   }
 
   return (
-    <Box className="min-w-[240px] min-h-[100px] max-h-[300px] overflow-auto h-auto rounded-xl inline-flex flex-col gap-2 p-6 relative my-3">
+    <Box className="min-w-[240px] max-w-[240px] min-h-[100px] max-h-[300px] overflow-y-auto h-auto rounded-xl inline-flex flex-col gap-2 p-6 relative my-3">
       <Title className="max-w-max" order={4}>
         {note?.title}
       </Title>
