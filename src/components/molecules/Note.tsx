@@ -14,13 +14,8 @@ import {
 } from "@mantine/core";
 import { Chance } from "chance";
 import { useForm } from "@mantine/form";
-import {
-  IoCheckmark,
-  IoCheckmarkCircle,
-  IoRemove,
-  IoRemoveCircle,
-  IoTrash,
-} from "react-icons/io5";
+import { IoCheckmarkCircle, IoTrash } from "react-icons/io5";
+import { updateNote } from "$app/firebase/notes/updateNote";
 
 const colors = [
   ...Object.keys(DEFAULT_THEME.colors).map(
@@ -45,11 +40,11 @@ const Note: FC<{ note?: Note; loading?: boolean }> = ({
   const theme = useMantineTheme();
 
   const onUpdate = async () => {
-    console.log(form.values);
+    await updateNote({ ...form.values, uid: note?.uid || "" });
     setEditing(false);
   };
 
-  const onRemove = async () => {
+  const onDelete = async () => {
     setEditing(false);
   };
 
@@ -123,7 +118,7 @@ const Note: FC<{ note?: Note; loading?: boolean }> = ({
             variant="transparent"
             onClick={(e) => {
               e.stopPropagation();
-              onRemove();
+              onDelete();
             }}
           >
             <IoTrash className="text-xl" color="#FA5252" />
