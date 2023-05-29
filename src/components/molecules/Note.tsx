@@ -59,7 +59,7 @@ const Note: FC<{ note?: Note; loading?: boolean }> = ({
 
   return (
     <Box
-      className="cursor-pointer min-w-[240px] max-w-[240px] min-h-[100px] max-h-[300px] overflow-y-auto h-auto rounded-xl inline-flex flex-col gap-2 p-6 relative my-3"
+      className="cursor-pointer min-w-[240px] max-w-[240px] min-h-[100px] overflow-auto h-auto rounded-xl inline-flex flex-col gap-2 p-6 relative my-3"
       onClick={() => setEditing(true)}
       sx={{
         backgroundColor: theme.fn.rgba(color || theme.colors.gray[6], 0.2),
@@ -75,16 +75,25 @@ const Note: FC<{ note?: Note; loading?: boolean }> = ({
           placeholder="Escribe algo"
           variant="unstyled"
           {...form.getInputProps("title")}
+          size="xl"
         />
       )}
-      {!editing && <Text className="max-w-max">{note?.content}</Text>}
+
+      {!editing && (
+        <Box className="max-h-[200px] overflow-y-auto">
+          <Text className="max-w-max">{note?.content}</Text>
+        </Box>
+      )}
       {editing && (
         <Textarea
           placeholder="Completa tu nota"
           variant="unstyled"
           {...form.getInputProps("content")}
+          autosize
+          maxRows={6}
         />
       )}
+
       {note?.important && (
         <Box className="absolute -top-1 -right-1 rounded-full w-3 h-3 bg-blue-600"></Box>
       )}
