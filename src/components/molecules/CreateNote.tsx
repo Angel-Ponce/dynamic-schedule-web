@@ -1,5 +1,8 @@
+import { createNote } from "$app/firebase/notes";
+import { useAppSelector } from "$hooks";
 import { Box, TextInput, ActionIcon, DEFAULT_THEME } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { Chance } from "chance";
 import { IoAdd } from "react-icons/io5";
 
 const colors = [
@@ -9,14 +12,21 @@ const colors = [
 ];
 
 const CreateNote = () => {
+  const user = useAppSelector((state) => state.user);
   const form = useForm({
     initialValues: {
       title: "",
     },
   });
 
-  const onSubmit = () => {
-    console.log({ form });
+  const onSubmit = async () => {
+    await createNote({
+      title: form.values.title,
+      userUid: user.uid,
+      color: colors[new Chance().integer({ min: 0, max: colors.length - 1 })],
+    });
+
+    form.reset();
   };
 
   return (
