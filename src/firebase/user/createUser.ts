@@ -29,18 +29,6 @@ const createUser = async (user: UserAccount) => {
     rows: [],
     userUid: userUid,
   });
-
-  let notesUid = uuidv4();
-
-  await setDoc(doc(db, `users/${userUid}/notes`, notesUid), {
-    uid: notesUid,
-  });
-
-  let todosUid = uuidv4();
-
-  await setDoc(doc(db, `users/${userUid}/todos`, todosUid), {
-    uid: todosUid,
-  });
 };
 
 export { createUser };

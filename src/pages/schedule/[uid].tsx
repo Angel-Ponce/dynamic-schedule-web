@@ -112,7 +112,7 @@ const DynamicSchedule: NextPage = () => {
           }}
         >
           <Group position="right" pb="md">
-            <Popover position="left" transition="scale">
+            <Popover position="left" transitionProps={{ transition: "scale" }}>
               <Popover.Target>
                 <Box>
                   <Button
@@ -185,7 +185,7 @@ const DynamicSchedule: NextPage = () => {
           </Box>
           <ScrollArea.Autosize
             sx={{ minHeight: "40px" }}
-            maxHeight="calc(100vh - 250px)"
+            mah="calc(100vh - 250px)"
           >
             <Box sx={{ display: "flex", width: "100%" }}>
               <Box

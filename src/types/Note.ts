@@ -3,7 +3,7 @@ interface Note {
   title: string;
   content: string;
   color: string;
-  important: string;
+  important: boolean;
   userUid: string;
 }
 

@@ -1,7 +1,7 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { MantineProvider, ColorSchemeProvider } from "@mantine/core";
-import { NotificationsProvider } from "@mantine/notifications";
+import { Notifications } from "@mantine/notifications";
 
 import { Provider } from "react-redux";
 import { defaultStore } from "$stores";
@@ -38,13 +38,12 @@ export default function App(props: AppProps) {
             loader: "dots",
           }}
         >
-          <NotificationsProvider>
-            <ProtectedLayout>
-              <LoadGeneralData>
-                <Component {...pageProps} />
-              </LoadGeneralData>
-            </ProtectedLayout>
-          </NotificationsProvider>
+          <Notifications />
+          <ProtectedLayout>
+            <LoadGeneralData>
+              <Component {...pageProps} />
+            </LoadGeneralData>
+          </ProtectedLayout>
         </MantineProvider>
       </ColorSchemeProvider>
     </Provider>

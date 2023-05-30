@@ -44,7 +44,11 @@ const UserOptions: React.FC = () => {
         </ActionIcon>
         <Settings opened={opened} setOpened={setOpened} />
       </Group>
-      <Popover position="top" transition="slide-up" width="target">
+      <Popover
+        position="top"
+        transitionProps={{ transition: "slide-up" }}
+        width="target"
+      >
         <Popover.Target>
           <UnstyledButton
             p="md"
