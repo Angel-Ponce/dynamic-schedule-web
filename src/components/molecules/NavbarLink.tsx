@@ -39,7 +39,6 @@ const NavbarLink: React.FC<{
         })}
         py="sm"
         px="sm"
-        component="a"
       >
         <Group position="left">
           <ThemeIcon variant="light" color={color}>
