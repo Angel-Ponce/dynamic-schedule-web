@@ -61,7 +61,7 @@ const Settings: React.FC<{
       onClose={() => setOpened(false)}
       title="Configuración"
       padding="xl"
-      size="lg"
+      size="md"
       position="right"
       overlayProps={{ blur: 4, opacity: 0.5 }}
     >
@@ -75,7 +75,7 @@ const Settings: React.FC<{
           <Select
             label="Idioma"
             data={[{ value: "es", label: "Español" }]}
-            transitionProps={{ transition: "slide-down" }}
+            transitionProps={{ transition: "scale" }}
             icon={<IoLanguageOutline />}
             {...form.getInputProps("language")}
           />
@@ -92,7 +92,7 @@ const Settings: React.FC<{
               { value: "shadowsintolight", label: "Shadows Into Light" },
               { value: "caveat", label: "Caveat" },
             ]}
-            transitionProps={{ transition: "slide-down" }}
+            transitionProps={{ transition: "scale" }}
             icon={<IoText />}
             {...form.getInputProps("fontFamily")}
           />
@@ -112,7 +112,7 @@ const Settings: React.FC<{
               { value: "light", label: "Claro" },
               { value: "dark", label: "Oscuro" },
             ]}
-            transitionProps={{ transition: "slide-down" }}
+            transitionProps={{ transition: "scale" }}
             icon={<IoContrast />}
             value={colorScheme}
             onChange={(value) => {

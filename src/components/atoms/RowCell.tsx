@@ -16,7 +16,7 @@ import {
   Button,
   Checkbox,
 } from "@mantine/core";
-import { DatePickerInput } from "@mantine/dates";
+import { TimeInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
@@ -43,10 +43,7 @@ const RowCell: React.FC<{
     await updateCell(schedule, cell.uid, {
       prevTitle: cell.title,
       time: clipboard.time
-        ? ([
-            clipboard.time[0] ? new Date(clipboard.time[0]) : null,
-            clipboard.time[1] ? new Date(clipboard.time[1]) : null,
-          ] as [Date | null, Date | null])
+        ? [clipboard.time[0] || null, clipboard.time[1] || null]
         : null,
       title: clipboard.title || null,
       professor: clipboard.professor || null,
@@ -150,11 +147,7 @@ const RowCell: React.FC<{
           (cell.time &&
             cell.time[0] &&
             cell.time[1] &&
-            `${new Date(cell.time?.[0])?.getHours()}:${new Date(
-              cell.time?.[0]
-            )?.getMinutes()} - ${new Date(
-              cell.time?.[1]
-            )?.getHours()}:${new Date(cell.time?.[1])?.getMinutes()}`)}
+            `${cell.time[0]} - ${cell.time[1]}`)}
       </Text>
       {cell.type != "header" && (
         <EditModal open={modalOpen} setOpen={setModalOpen} cell={cell} />
@@ -174,12 +167,8 @@ const EditModal: React.FC<{
 
   const hourForm = useForm({
     initialValues: {
-      time: cell.time
-        ? ([
-            cell.time[0] ? new Date(cell.time[0]) : null,
-            cell.time[1] ? new Date(cell.time[1]) : null,
-          ] as [Date | null, Date | null])
-        : undefined,
+      from: cell.time ? cell.time[0] || "" : "",
+      to: cell.time ? cell.time[1] || "" : "",
     },
   });
 
@@ -195,12 +184,8 @@ const EditModal: React.FC<{
 
   useEffect(() => {
     hourForm.setValues({
-      time: cell.time
-        ? ([
-            cell.time[0] ? new Date(cell.time[0]) : null,
-            cell.time[1] ? new Date(cell.time[1]) : null,
-          ] as [Date | null, Date | null])
-        : undefined,
+      from: cell.time ? cell.time[0] || "" : "",
+      to: cell.time ? cell.time[1] || "" : "",
     });
 
     courseForm.setValues({
@@ -217,7 +202,10 @@ const EditModal: React.FC<{
 
     await updateCell(schedule, cell.uid, {
       prevTitle: cell.title,
-      time: hourForm.values.time || null,
+      time:
+        hourForm.values.from && hourForm.values.to
+          ? [hourForm.values.from, hourForm.values.to]
+          : null,
       title: courseForm.values.title,
       professor: courseForm.values.proffessor,
       href: courseForm.values.href,
@@ -241,12 +229,20 @@ const EditModal: React.FC<{
     >
       <Stack>
         {cell.type == "hour" && (
-          <DatePickerInput
-            label="Hora"
-            clearable
-            icon={<IoTimeOutline />}
-            {...hourForm.getInputProps("time")}
-          />
+          <Group>
+            <TimeInput
+              label="Desde"
+              icon={<IoTimeOutline />}
+              {...hourForm.getInputProps("from")}
+              className="flex-1"
+            />
+            <TimeInput
+              label="Hasta"
+              icon={<IoTimeOutline />}
+              {...hourForm.getInputProps("to")}
+              className="flex-1"
+            />
+          </Group>
         )}
 
         {cell.type == "course" && (

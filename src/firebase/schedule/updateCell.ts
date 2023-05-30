@@ -4,7 +4,7 @@ import type { Schedule } from "$types";
 
 interface InputValues {
   prevTitle: string | null;
-  time: [Date | null, Date | null] | null;
+  time: [string | null, string | null] | null;
   title: string | null;
   professor: string | null;
   href: string | null;
@@ -42,8 +42,8 @@ const updateCell = async (
             ...c,
             time: params.time
               ? [
-                  params.time[0] ? params.time[0].getTime() : null,
-                  params.time[1] ? params.time[1].getTime() : null,
+                  params.time[0] ? params.time[0] : null,
+                  params.time[1] ? params.time[1] : null,
                 ]
               : null,
             title: params.title || null,

@@ -39,10 +39,14 @@ const ShareSchedule: React.FC = () => {
           <Group position="center">
             <IoCheckmarkCircle className="text-green-500" size={40} />
           </Group>
-          <Title order={4}>Horario cargado con éxito</Title>
-          <Link passHref href="/">
-            <Button component="a">Regresar a inicio</Button>
-          </Link>
+          <Title align="center" order={4}>
+            Horario cargado con éxito
+          </Title>
+          <Group position="center">
+            <Link href="/">
+              <Button>Regresar a inicio</Button>
+            </Link>
+          </Group>
         </Stack>
       </Center>
     );

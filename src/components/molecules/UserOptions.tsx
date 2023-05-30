@@ -46,7 +46,7 @@ const UserOptions: React.FC = () => {
       </Group>
       <Popover
         position="top"
-        transitionProps={{ transition: "slide-up" }}
+        transitionProps={{ transition: "scale" }}
         width="target"
       >
         <Popover.Target>
