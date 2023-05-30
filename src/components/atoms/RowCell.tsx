@@ -16,7 +16,7 @@ import {
   Button,
   Checkbox,
 } from "@mantine/core";
-import { TimeRangeInput } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
@@ -236,13 +236,12 @@ const EditModal: React.FC<{
       opened={open}
       onClose={() => setOpen(false)}
       title="Editar"
-      overlayBlur={4}
-      overlayOpacity={0.5}
+      overlayProps={{ blur: 4, opacity: 0.5 }}
       centered
     >
       <Stack>
         {cell.type == "hour" && (
-          <TimeRangeInput
+          <DatePickerInput
             label="Hora"
             clearable
             icon={<IoTimeOutline />}

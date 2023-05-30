@@ -1,4 +1,4 @@
-import { Note } from "$types";
+import type { Note as NoteType } from "$types";
 import { FC, useState } from "react";
 import {
   Box,
@@ -23,7 +23,7 @@ const colors = [
   ),
 ];
 
-const Note: FC<{ note?: Note; loading?: boolean }> = ({
+const Note: FC<{ note?: NoteType; loading?: boolean }> = ({
   note,
   loading = false,
 }) => {
