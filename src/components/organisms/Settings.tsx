@@ -63,10 +63,9 @@ const Settings: React.FC<{
       padding="xl"
       size="lg"
       position="right"
-      overlayBlur={4}
-      overlayOpacity={0.5}
+      overlayProps={{ blur: 4, opacity: 0.5 }}
     >
-      <ScrollArea.Autosize maxHeight="calc(100vh - 100px)">
+      <ScrollArea.Autosize mah="calc(100vh - 100px)">
         <Stack>
           <TextInput
             label="Nombre"
@@ -76,7 +75,7 @@ const Settings: React.FC<{
           <Select
             label="Idioma"
             data={[{ value: "es", label: "Español" }]}
-            transition="slide-down"
+            transitionProps={{ transition: "slide-down" }}
             icon={<IoLanguageOutline />}
             {...form.getInputProps("language")}
           />
@@ -93,7 +92,7 @@ const Settings: React.FC<{
               { value: "shadowsintolight", label: "Shadows Into Light" },
               { value: "caveat", label: "Caveat" },
             ]}
-            transition="slide-down"
+            transitionProps={{ transition: "slide-down" }}
             icon={<IoText />}
             {...form.getInputProps("fontFamily")}
           />
@@ -113,7 +112,7 @@ const Settings: React.FC<{
               { value: "light", label: "Claro" },
               { value: "dark", label: "Oscuro" },
             ]}
-            transition="slide-down"
+            transitionProps={{ transition: "slide-down" }}
             icon={<IoContrast />}
             value={colorScheme}
             onChange={(value) => {

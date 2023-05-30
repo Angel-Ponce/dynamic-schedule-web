@@ -5,6 +5,7 @@ import { useUserTheme } from "./useUserTheme";
 import { useAppDispatch } from "./useAppDispatch";
 import { useAppSelector } from "./useAppSelector";
 import { useSchedules } from "./useSchedules";
+import { useNotes } from "./useNotes";
 
 export {
   useLogin,
@@ -14,4 +15,5 @@ export {
   useAppDispatch,
   useAppSelector,
   useSchedules,
+  useNotes,
 };
