@@ -43,8 +43,8 @@ const ShareSchedule: React.FC = () => {
             Horario cargado con éxito
           </Title>
           <Group position="center">
-            <Link passHref href="/">
-              <Button component="a">Regresar a inicio</Button>
+            <Link href="/">
+              <Button>Regresar a inicio</Button>
             </Link>
           </Group>
         </Stack>

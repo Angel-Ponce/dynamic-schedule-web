@@ -19,7 +19,7 @@ const NavbarLink: React.FC<{
   const { colorScheme } = useMantineColorScheme();
 
   return (
-    <Link passHref href={redirectTo}>
+    <Link href={redirectTo}>
       <UnstyledButton
         sx={(theme) => ({
           width: "100%",
